@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "projetocodersgrowth", "projetocodersgrowth\projetocodersgrowth.csproj", "{7D43A9C6-4201-4F07-B278-C4C1344739C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodersGrowthProjeto.Dominio", "CodersGrowthProjeto.Dominio\CodersGrowthProjeto.Dominio.csproj", "{7B6569BF-3951-46E2-A2D8-B76C2D25AB26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.Dominio", "CodersGrowthProjeto.Dominio\ControleDeAnimaisSilvestres.Dominio.csproj", "{7B6569BF-3951-46E2-A2D8-B76C2D25AB26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
