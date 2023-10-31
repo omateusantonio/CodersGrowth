@@ -1,6 +1,6 @@
 ﻿namespace CodersGrowthProjeto.Dominio
 {
-    public class ControleDeAnimaisSilvestres
+    public class AnimalSilvestre
     {
         public string NomeDoAnimal { get; set; }
 
