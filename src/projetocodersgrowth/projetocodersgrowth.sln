@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres", "projetocodersgrowth\ControleDeAnimaisSilvestres.csproj", "{7D43A9C6-4201-4F07-B278-C4C1344739C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7B6569BF-3951-46E2-A2D8-B76C2D25AB26} = {7B6569BF-3951-46E2-A2D8-B76C2D25AB26}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.Dominio", "CodersGrowthProjeto.Dominio\ControleDeAnimaisSilvestres.Dominio.csproj", "{7B6569BF-3951-46E2-A2D8-B76C2D25AB26}"
 EndProject
