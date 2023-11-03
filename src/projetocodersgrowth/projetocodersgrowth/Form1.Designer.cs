@@ -30,6 +30,14 @@
         {
             components = new System.ComponentModel.Container();
             DataGridView = new DataGridView();
+            nomeDoAnimalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            nomeDaEspecieDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            idDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataDoResgateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            classeDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            emExtincaoDataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+            custoDeVacinacaoDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            animalSilvestreBindingSource1 = new BindingSource(components);
             nomeDoAnimalDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             nomeDaEspecieDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -41,17 +49,9 @@
             BotaoAdicionar = new Button();
             BotaoEditar = new Button();
             BotaoRemover = new Button();
-            animalSilvestreBindingSource1 = new BindingSource(components);
-            nomeDoAnimalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            nomeDaEspecieDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            idDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            dataDoResgateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            classeDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            emExtincaoDataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
-            custoDeVacinacaoDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)DataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).BeginInit();
             SuspendLayout();
             // 
             // DataGridView
@@ -64,6 +64,52 @@
             DataGridView.Name = "DataGridView";
             DataGridView.Size = new Size(800, 346);
             DataGridView.TabIndex = 4;
+            // 
+            // nomeDoAnimalDataGridViewTextBoxColumn1
+            // 
+            nomeDoAnimalDataGridViewTextBoxColumn1.DataPropertyName = "NomeDoAnimal";
+            nomeDoAnimalDataGridViewTextBoxColumn1.HeaderText = "NomeDoAnimal";
+            nomeDoAnimalDataGridViewTextBoxColumn1.Name = "nomeDoAnimalDataGridViewTextBoxColumn1";
+            // 
+            // nomeDaEspecieDataGridViewTextBoxColumn1
+            // 
+            nomeDaEspecieDataGridViewTextBoxColumn1.DataPropertyName = "NomeDaEspecie";
+            nomeDaEspecieDataGridViewTextBoxColumn1.HeaderText = "NomeDaEspecie";
+            nomeDaEspecieDataGridViewTextBoxColumn1.Name = "nomeDaEspecieDataGridViewTextBoxColumn1";
+            // 
+            // idDataGridViewTextBoxColumn1
+            // 
+            idDataGridViewTextBoxColumn1.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn1.HeaderText = "Id";
+            idDataGridViewTextBoxColumn1.Name = "idDataGridViewTextBoxColumn1";
+            // 
+            // dataDoResgateDataGridViewTextBoxColumn1
+            // 
+            dataDoResgateDataGridViewTextBoxColumn1.DataPropertyName = "DataDoResgate";
+            dataDoResgateDataGridViewTextBoxColumn1.HeaderText = "DataDoResgate";
+            dataDoResgateDataGridViewTextBoxColumn1.Name = "dataDoResgateDataGridViewTextBoxColumn1";
+            // 
+            // classeDataGridViewTextBoxColumn1
+            // 
+            classeDataGridViewTextBoxColumn1.DataPropertyName = "Classe";
+            classeDataGridViewTextBoxColumn1.HeaderText = "Classe";
+            classeDataGridViewTextBoxColumn1.Name = "classeDataGridViewTextBoxColumn1";
+            // 
+            // emExtincaoDataGridViewCheckBoxColumn1
+            // 
+            emExtincaoDataGridViewCheckBoxColumn1.DataPropertyName = "EmExtincao";
+            emExtincaoDataGridViewCheckBoxColumn1.HeaderText = "EmExtincao";
+            emExtincaoDataGridViewCheckBoxColumn1.Name = "emExtincaoDataGridViewCheckBoxColumn1";
+            // 
+            // custoDeVacinacaoDataGridViewTextBoxColumn1
+            // 
+            custoDeVacinacaoDataGridViewTextBoxColumn1.DataPropertyName = "CustoDeVacinacao";
+            custoDeVacinacaoDataGridViewTextBoxColumn1.HeaderText = "CustoDeVacinacao";
+            custoDeVacinacaoDataGridViewTextBoxColumn1.Name = "custoDeVacinacaoDataGridViewTextBoxColumn1";
+            // 
+            // animalSilvestreBindingSource1
+            // 
+            animalSilvestreBindingSource1.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
             // 
             // nomeDoAnimalDataGridViewTextBoxColumn
             // 
@@ -135,52 +181,6 @@
             BotaoRemover.Text = "Remover";
             BotaoRemover.UseVisualStyleBackColor = true;
             // 
-            // animalSilvestreBindingSource1
-            // 
-            animalSilvestreBindingSource1.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
-            // 
-            // nomeDoAnimalDataGridViewTextBoxColumn1
-            // 
-            nomeDoAnimalDataGridViewTextBoxColumn1.DataPropertyName = "NomeDoAnimal";
-            nomeDoAnimalDataGridViewTextBoxColumn1.HeaderText = "NomeDoAnimal";
-            nomeDoAnimalDataGridViewTextBoxColumn1.Name = "nomeDoAnimalDataGridViewTextBoxColumn1";
-            // 
-            // nomeDaEspecieDataGridViewTextBoxColumn1
-            // 
-            nomeDaEspecieDataGridViewTextBoxColumn1.DataPropertyName = "NomeDaEspecie";
-            nomeDaEspecieDataGridViewTextBoxColumn1.HeaderText = "NomeDaEspecie";
-            nomeDaEspecieDataGridViewTextBoxColumn1.Name = "nomeDaEspecieDataGridViewTextBoxColumn1";
-            // 
-            // idDataGridViewTextBoxColumn1
-            // 
-            idDataGridViewTextBoxColumn1.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn1.HeaderText = "Id";
-            idDataGridViewTextBoxColumn1.Name = "idDataGridViewTextBoxColumn1";
-            // 
-            // dataDoResgateDataGridViewTextBoxColumn1
-            // 
-            dataDoResgateDataGridViewTextBoxColumn1.DataPropertyName = "DataDoResgate";
-            dataDoResgateDataGridViewTextBoxColumn1.HeaderText = "DataDoResgate";
-            dataDoResgateDataGridViewTextBoxColumn1.Name = "dataDoResgateDataGridViewTextBoxColumn1";
-            // 
-            // classeDataGridViewTextBoxColumn1
-            // 
-            classeDataGridViewTextBoxColumn1.DataPropertyName = "Classe";
-            classeDataGridViewTextBoxColumn1.HeaderText = "Classe";
-            classeDataGridViewTextBoxColumn1.Name = "classeDataGridViewTextBoxColumn1";
-            // 
-            // emExtincaoDataGridViewCheckBoxColumn1
-            // 
-            emExtincaoDataGridViewCheckBoxColumn1.DataPropertyName = "EmExtincao";
-            emExtincaoDataGridViewCheckBoxColumn1.HeaderText = "EmExtincao";
-            emExtincaoDataGridViewCheckBoxColumn1.Name = "emExtincaoDataGridViewCheckBoxColumn1";
-            // 
-            // custoDeVacinacaoDataGridViewTextBoxColumn1
-            // 
-            custoDeVacinacaoDataGridViewTextBoxColumn1.DataPropertyName = "CustoDeVacinacao";
-            custoDeVacinacaoDataGridViewTextBoxColumn1.HeaderText = "CustoDeVacinacao";
-            custoDeVacinacaoDataGridViewTextBoxColumn1.Name = "custoDeVacinacaoDataGridViewTextBoxColumn1";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -193,14 +193,12 @@
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)DataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DataGridView DataGridView;
         private Button BotaoAdicionar;
         private Button BotaoEditar;
         private Button BotaoRemover;
@@ -220,5 +218,6 @@
         private DataGridViewCheckBoxColumn emExtincaoDataGridViewCheckBoxColumn1;
         private DataGridViewTextBoxColumn custoDeVacinacaoDataGridViewTextBoxColumn1;
         private BindingSource animalSilvestreBindingSource1;
+        private DataGridView DataGridView;
     }
 }

@@ -61,6 +61,7 @@
             BotaoAdicionarAnimal.TabIndex = 0;
             BotaoAdicionarAnimal.Text = "Adicionar animal";
             BotaoAdicionarAnimal.UseVisualStyleBackColor = true;
+            BotaoAdicionarAnimal.Click += BotaoAdicionarAnimal_Click;
             // 
             // BotaoCancelar
             // 
@@ -70,6 +71,7 @@
             BotaoCancelar.TabIndex = 0;
             BotaoCancelar.Text = "Cancelar";
             BotaoCancelar.UseVisualStyleBackColor = true;
+            BotaoCancelar.Click += BotaoCancelar_Click;
             // 
             // GrupoCamposNovoAnimal
             // 
@@ -97,6 +99,7 @@
             // 
             CaixaDeTextoPrecoDaVacinacao.Location = new Point(156, 218);
             CaixaDeTextoPrecoDaVacinacao.Name = "CaixaDeTextoPrecoDaVacinacao";
+            CaixaDeTextoPrecoDaVacinacao.PlaceholderText = "R$";
             CaixaDeTextoPrecoDaVacinacao.Size = new Size(142, 23);
             CaixaDeTextoPrecoDaVacinacao.TabIndex = 6;
             // 
