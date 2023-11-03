@@ -1,4 +1,5 @@
 using CodersGrowthProjeto.Dominio;
+using ControleDeAnimaisSilvestres;
 
 namespace projetocodersgrowth
 {
@@ -42,7 +43,9 @@ namespace projetocodersgrowth
 
         private void BotaoAdicionar_Click(object sender, EventArgs e)
         {
-            
+            Form2 f2 = new Form2();
+            f2.ShowDialog();
+
         }
 
     }
