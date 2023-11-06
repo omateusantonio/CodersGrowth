@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -15,14 +16,16 @@ namespace ControleDeAnimaisSilvestres
 {
     public partial class Form2 : Form
     {
-        Form1 variavel;
+        public List<AnimalSilvestre> _novoAnimal;
+        static int id = 0;
 
-        public Form2()
+        public Form2(List<AnimalSilvestre> animalSilvestre)
         {
             InitializeComponent();
             InitializeComboBox(); // preencher a combobox com os itens que estao dentro do enum
 
-            List<AnimalSilvestre> adicionarNovoAnimal = new List<AnimalSilvestre>();
+            _novoAnimal = animalSilvestre;
+
 
         }
 
@@ -48,21 +51,25 @@ namespace ControleDeAnimaisSilvestres
 
         private void BotaoCancelar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
+        public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-            string nomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-            string especieDoAnimal = CaixaDeTextoEspecieDoAnimal.Text;
-            string dataDoResgate = Convert.ToString(SelecaoDataDoResgate.Value);
-            string classeDeAnimal = ComboBoxClasseDeAnimal.Text;
-            string emExtincao = OpcaoEmExtincaoSim.Checked ? "sim" : "não";
-            string custoDoResgate = CaixaDeTextoPrecoDaVacinacao.Text;
+            AnimalSilvestre animal = new AnimalSilvestre();
 
+            animal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
+            animal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
+            animal.DataDoResgate = SelecaoDataDoResgate.Value;
+            animal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
+            animal.EmExtincao = OpcaoEmExtincaoSim.Checked;
+            animal.Id = id;
+            animal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
+            id++;
 
-            MessageBox.Show(nomeDoAnimal + "\n" + especieDoAnimal + "\n" + dataDoResgate + "\n" + classeDeAnimal + "\n" + emExtincao);
-            
+            _novoAnimal.Add(animal);
+
+            Close();
         }
     }
 }

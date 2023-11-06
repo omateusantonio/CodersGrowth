@@ -1,51 +1,31 @@
 using CodersGrowthProjeto.Dominio;
 using ControleDeAnimaisSilvestres;
+using System.Drawing.Text;
 
 namespace projetocodersgrowth
 {
     public partial class Form1 : Form
     {
 
+        List<AnimalSilvestre> novoAnimal = new List<AnimalSilvestre>();
+
         public Form1()
         {
             InitializeComponent();
 
-            List<AnimalSilvestre> animalSilvestre = new List<AnimalSilvestre>();
-
-            animalSilvestre.Add(new AnimalSilvestre
-            {
-                NomeDoAnimal = "José",
-                NomeDaEspecie = "Canis lupus",
-                Id = 000,
-                DataDoResgate = DateTime.Parse("21/02/2023"),
-                Classe = AnimalSilvestre.ClasseDeAnimal.Mamifero,
-                EmExtincao = false,
-                CustoDeVacinacao = 25
-
-            });
-
-            DataGridView.DataSource = animalSilvestre;
-
-            animalSilvestre.Add(new AnimalSilvestre
-            {
-                NomeDoAnimal = "Carlos",
-                NomeDaEspecie = "Felis catus",
-                Id = 001,
-                DataDoResgate = DateTime.Parse("24/02/2023"),
-                Classe = AnimalSilvestre.ClasseDeAnimal.Mamifero,
-                EmExtincao = false,
-                CustoDeVacinacao = 60
-
-            });
-
-            DataGridView.DataSource = animalSilvestre;
         }
 
         private void BotaoAdicionar_Click(object sender, EventArgs e)
         {
-            Form2 f2 = new Form2();
+
+            AnimalSilvestre animalSilvestre = new AnimalSilvestre();
+            Form2 f2 = new Form2(novoAnimal);
             f2.ShowDialog();
 
+            //novoAnimal.Add(f2.novoAnimal);
+
+            DataGridView.DataSource = null;
+            DataGridView.DataSource = f2._novoAnimal;
         }
 
     }
