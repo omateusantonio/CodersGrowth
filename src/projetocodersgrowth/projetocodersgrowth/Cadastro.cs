@@ -14,12 +14,12 @@ using projetocodersgrowth;
 
 namespace ControleDeAnimaisSilvestres
 {
-    public partial class Form2 : Form
+    public partial class Cadastro : Form
     {
-        public List<AnimalSilvestre> _novoAnimal;
+        public AnimalSilvestre _novoAnimal = new AnimalSilvestre();
         static int id = 0;
 
-        public Form2(List<AnimalSilvestre> animalSilvestre)
+        public Cadastro(AnimalSilvestre animalSilvestre)
         {
             InitializeComponent();
             InitializeComboBox(); // preencher a combobox com os itens que estao dentro do enum
@@ -51,25 +51,36 @@ namespace ControleDeAnimaisSilvestres
 
         private void BotaoCancelar_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
         public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-            AnimalSilvestre animal = new AnimalSilvestre();
+            
 
-            animal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-            animal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-            animal.DataDoResgate = SelecaoDataDoResgate.Value;
-            animal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-            animal.EmExtincao = OpcaoEmExtincaoSim.Checked;
-            animal.Id = id;
-            animal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
+            _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
+            _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
+            _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
+            _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
+            _novoAnimal.Id = id;
+            _novoAnimal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
             id++;
-
-            _novoAnimal.Add(animal);
+            DialogResult = DialogResult.OK;
 
             Close();
+
+            //animal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
+            //animal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
+            //animal.DataDoResgate = SelecaoDataDoResgate.Value;
+            //animal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
+            //animal.EmExtincao = OpcaoEmExtincaoSim.Checked;
+            //animal.Id = id;
+            //animal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
+            //id++;
+            //DialogResult = DialogResult.OK;
+
+            //_novoAnimal.Add(animal);
         }
     }
 }

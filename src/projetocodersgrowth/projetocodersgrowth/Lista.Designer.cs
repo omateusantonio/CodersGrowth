@@ -1,6 +1,6 @@
 ﻿namespace projetocodersgrowth
 {
-    partial class Form1
+    partial class Lista
     {
         /// <summary>
         ///  Required designer variable.
