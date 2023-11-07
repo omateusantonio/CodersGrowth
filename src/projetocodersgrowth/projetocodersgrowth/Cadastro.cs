@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CodersGrowthProjeto.Dominio;
+using ControleDeAnimaisSilvestres.Dominio;
 using projetocodersgrowth;
 
 namespace ControleDeAnimaisSilvestres
@@ -57,8 +58,7 @@ namespace ControleDeAnimaisSilvestres
 
         public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-            
-
+   
             _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
             _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
             _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
@@ -69,18 +69,6 @@ namespace ControleDeAnimaisSilvestres
             DialogResult = DialogResult.OK;
 
             Close();
-
-            //animal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-            //animal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-            //animal.DataDoResgate = SelecaoDataDoResgate.Value;
-            //animal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-            //animal.EmExtincao = OpcaoEmExtincaoSim.Checked;
-            //animal.Id = id;
-            //animal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
-            //id++;
-            //DialogResult = DialogResult.OK;
-
-            //_novoAnimal.Add(animal);
         }
     }
 }
