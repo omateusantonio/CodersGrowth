@@ -58,7 +58,8 @@ namespace ControleDeAnimaisSilvestres
 
         public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-   
+            
+           
             _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
             _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
             _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
@@ -66,9 +67,22 @@ namespace ControleDeAnimaisSilvestres
             _novoAnimal.Id = id;
             _novoAnimal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
             id++;
-            DialogResult = DialogResult.OK;
 
-            Close();
+            var validacao = new ValidacaoDeDados(_novoAnimal);
+
+            try
+            {
+                validacao.CamposEstaoValidos();
+
+                DialogResult = DialogResult.OK;
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
