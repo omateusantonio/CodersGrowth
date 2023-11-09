@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CodersGrowthProjeto.Dominio;
+using ControleDeAnimaisSilvestres.Dominio;
 using projetocodersgrowth;
 
 namespace ControleDeAnimaisSilvestres
@@ -32,6 +33,7 @@ namespace ControleDeAnimaisSilvestres
         private void InitializeComboBox()
         {
             ComboBoxClasseDeAnimal.Items.AddRange(Enum.GetNames(typeof(AnimalSilvestre.ClasseDeAnimal)));
+            ComboBoxClasseDeAnimal.SelectedIndex = 0; //deixa o campo setado como o primeiro item do enum
         }
 
         private void ComboBoxClasseDeAnimal_SelectedIndexChanged(object sender, EventArgs e)
@@ -57,30 +59,35 @@ namespace ControleDeAnimaisSilvestres
 
         public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-            
-
             _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
             _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
             _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
             _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
             _novoAnimal.Id = id;
-            _novoAnimal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
-            id++;
-            DialogResult = DialogResult.OK;
+            if (string.IsNullOrEmpty(CaixaDeTextoMascaraPrecoDeVacinacao.Text))
+            {
+                CaixaDeTextoMascaraPrecoDeVacinacao.Text = "0";
+            }
+            _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoMascaraPrecoDeVacinacao.Text).Replace("R$", "").Trim());
+            
 
-            Close();
+            var validacao = new ValidacaoDeDados(_novoAnimal);
 
-            //animal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-            //animal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-            //animal.DataDoResgate = SelecaoDataDoResgate.Value;
-            //animal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-            //animal.EmExtincao = OpcaoEmExtincaoSim.Checked;
-            //animal.Id = id;
-            //animal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
-            //id++;
-            //DialogResult = DialogResult.OK;
+            try
+            {
+                validacao.CamposEstaoValidos();
 
-            //_novoAnimal.Add(animal);
+                DialogResult = DialogResult.OK;
+
+                id++;
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }

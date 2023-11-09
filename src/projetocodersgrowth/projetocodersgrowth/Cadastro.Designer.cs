@@ -32,7 +32,7 @@
             BotaoAdicionarAnimal = new Button();
             BotaoCancelar = new Button();
             GrupoCamposNovoAnimal = new GroupBox();
-            CaixaDeTextoPrecoDaVacinacao = new TextBox();
+            CaixaDeTextoMascaraPrecoDeVacinacao = new MaskedTextBox();
             OpcaoEmExtincaoNao = new RadioButton();
             OpcaoEmExtincaoSim = new RadioButton();
             RotuloPrecoDaVacinacao = new Label();
@@ -75,7 +75,7 @@
             // 
             // GrupoCamposNovoAnimal
             // 
-            GrupoCamposNovoAnimal.Controls.Add(CaixaDeTextoPrecoDaVacinacao);
+            GrupoCamposNovoAnimal.Controls.Add(CaixaDeTextoMascaraPrecoDeVacinacao);
             GrupoCamposNovoAnimal.Controls.Add(OpcaoEmExtincaoNao);
             GrupoCamposNovoAnimal.Controls.Add(OpcaoEmExtincaoSim);
             GrupoCamposNovoAnimal.Controls.Add(RotuloPrecoDaVacinacao);
@@ -95,13 +95,14 @@
             GrupoCamposNovoAnimal.TabStop = false;
             GrupoCamposNovoAnimal.Text = "Novo Animal";
             // 
-            // CaixaDeTextoPrecoDaVacinacao
+            // CaixaDeTextoMascaraPrecoDeVacinacao
             // 
-            CaixaDeTextoPrecoDaVacinacao.Location = new Point(156, 218);
-            CaixaDeTextoPrecoDaVacinacao.Name = "CaixaDeTextoPrecoDaVacinacao";
-            CaixaDeTextoPrecoDaVacinacao.PlaceholderText = "R$";
-            CaixaDeTextoPrecoDaVacinacao.Size = new Size(142, 23);
-            CaixaDeTextoPrecoDaVacinacao.TabIndex = 6;
+            CaixaDeTextoMascaraPrecoDeVacinacao.Location = new Point(156, 218);
+            CaixaDeTextoMascaraPrecoDeVacinacao.Mask = "$ 9900.00";
+            CaixaDeTextoMascaraPrecoDeVacinacao.Name = "CaixaDeTextoMascaraPrecoDeVacinacao";
+            CaixaDeTextoMascaraPrecoDeVacinacao.RightToLeft = RightToLeft.No;
+            CaixaDeTextoMascaraPrecoDeVacinacao.Size = new Size(142, 23);
+            CaixaDeTextoMascaraPrecoDeVacinacao.TabIndex = 7;
             // 
             // OpcaoEmExtincaoNao
             // 
@@ -229,7 +230,7 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
-            // Form2
+            // Cadastro
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -237,8 +238,8 @@
             Controls.Add(GrupoCamposNovoAnimal);
             Controls.Add(BotaoCancelar);
             Controls.Add(BotaoAdicionarAnimal);
-            Name = "Form2";
-            Text = "Form2";
+            Name = "Cadastro";
+            Text = "Cadastro";
             GrupoCamposNovoAnimal.ResumeLayout(false);
             GrupoCamposNovoAnimal.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).EndInit();
@@ -265,7 +266,8 @@
         private RadioButton OpcaoEmExtincaoSim;
         private Label RotuloEmExtincao;
         private RadioButton OpcaoEmExtincaoNao;
-        private TextBox CaixaDeTextoPrecoDaVacinacao;
         private Label RotuloPrecoDaVacinacao;
+        private MaskedTextBox CaixaDeTextoMascaraPrecoDeVacinacao;
+        private MaskedTextBox maskedTextBox1;
     }
 }
