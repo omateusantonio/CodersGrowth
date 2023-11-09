@@ -33,6 +33,7 @@ namespace ControleDeAnimaisSilvestres
         private void InitializeComboBox()
         {
             ComboBoxClasseDeAnimal.Items.AddRange(Enum.GetNames(typeof(AnimalSilvestre.ClasseDeAnimal)));
+            ComboBoxClasseDeAnimal.SelectedIndex = 0; //deixa o campo setado como o primeiro item do enum
         }
 
         private void ComboBoxClasseDeAnimal_SelectedIndexChanged(object sender, EventArgs e)
@@ -58,15 +59,17 @@ namespace ControleDeAnimaisSilvestres
 
         public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
         {
-            
-           
             _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
             _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
             _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
             _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
             _novoAnimal.Id = id;
-            _novoAnimal.CustoDeVacinacao = Convert.ToDecimal(CaixaDeTextoPrecoDaVacinacao.Text);
-            id++;
+            if (string.IsNullOrEmpty(CaixaDeTextoMascaraPrecoDeVacinacao.Text))
+            {
+                CaixaDeTextoMascaraPrecoDeVacinacao.Text = "0";
+            }
+            _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoMascaraPrecoDeVacinacao.Text).Replace("R$", "").Trim());
+            
 
             var validacao = new ValidacaoDeDados(_novoAnimal);
 
@@ -75,6 +78,8 @@ namespace ControleDeAnimaisSilvestres
                 validacao.CamposEstaoValidos();
 
                 DialogResult = DialogResult.OK;
+
+                id++;
 
                 Close();
             }

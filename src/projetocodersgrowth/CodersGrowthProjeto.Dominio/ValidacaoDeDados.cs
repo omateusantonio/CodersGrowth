@@ -21,35 +21,32 @@ namespace ControleDeAnimaisSilvestres.Dominio
 
         public void CamposEstaoValidos()
         {
+        
+             if (string.IsNullOrEmpty(animal.NomeDoAnimal))
+             {
+                 throw new Exception("Nome do animal não pode ficar em branco");
+                 //validacoes.Add(new Exception("Nome do animal não pode ficar vazio"));
+             }
 
-            try
-            {
+             if (string.IsNullOrEmpty(animal.NomeDaEspecie))
+             {
+                 throw new Exception("Nome da espécie não pode ficar em branco");
+             }
 
-                if (string.IsNullOrEmpty(animal.NomeDoAnimal))
-                {
-                    throw new Exception("Nome do animal não pode ficar vazio");
-                    //validacoes.Add(new Exception("Nome do animal não pode ficar vazio"));
-                }
+             if (animal.DataDoResgate > DateTime.Now)
+             {
+                 throw new Exception("A data não pode ser maior do que a data atual");
+                 //validacoes.Add(new Exception("A data não pode ser maior do que a data atual."));
+             }
 
-                if (string.IsNullOrEmpty(animal.NomeDaEspecie))
-                {
-                    throw new Exception("Nome da espécie não pode ficar vazio");
-                }
+             if (animal.CustoDeVacinacao == 0)
+             {
 
-                if (animal.DataDoResgate > DateTime.Now)
-                {
-                    throw new Exception("A data não pode ser maior do que a data atual");
-                    //validacoes.Add(new Exception("A data não pode ser maior do que a data atual."));
-                }
+                throw new Exception("O preço da vacinação não pode ficar em branco");
+             }
 
 
                 //throw new AggregateException(validacoes);
-
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
         }
 
         
