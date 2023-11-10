@@ -7,7 +7,7 @@ namespace projetocodersgrowth
     public partial class Lista : Form
     {
         List<AnimalSilvestre> listaAnimal = new List<AnimalSilvestre>();
-        
+
 
         public Lista()
         {
@@ -19,7 +19,7 @@ namespace projetocodersgrowth
         {
             bool edicaoDeItem = false;
             AnimalSilvestre animalSilvestre = new AnimalSilvestre();
-            Cadastro formularioCadastro = new Cadastro(animalSilvestre,edicaoDeItem);
+            Cadastro formularioCadastro = new Cadastro(animalSilvestre, edicaoDeItem);
             var resultadoDoCadastro = formularioCadastro.ShowDialog();
 
 
@@ -44,10 +44,20 @@ namespace projetocodersgrowth
 
                 animalSelecionado = listaAnimal.First(x => x.Id.Equals(idSelecionada));
 
-                Cadastro formularioEdicao = new Cadastro(animalSelecionado, edicaoDeItem);
-                formularioEdicao.ShowDialog();
-               
-            } else
+                Cadastro formularioEdicao = new Cadastro(animalSelecionado.Copiar(), edicaoDeItem);
+                var resultadoDoCadastro = formularioEdicao.ShowDialog();
+
+                if (resultadoDoCadastro == DialogResult.OK)
+                {
+                    int posicaoDoAnimal = listaAnimal.FindIndex(x => x.Id.Equals(idSelecionada));
+                    listaAnimal[posicaoDoAnimal] = formularioEdicao._animalSelecionado;
+                }
+
+                DataGridView.DataSource = null;
+                DataGridView.DataSource = listaAnimal;
+
+            }
+            else
             {
                 MessageBox.Show("Selecione primeiro uma linha para editar");
             }
