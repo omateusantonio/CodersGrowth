@@ -42,15 +42,33 @@ namespace projetocodersgrowth
                 AnimalSilvestre animalSelecionado = new AnimalSilvestre();
                 int idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
 
-                animalSelecionado = listaAnimal.First(x => x.Id.Equals(idSelecionada));
+                animalSelecionado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada)).Copiar();
 
                 Cadastro formularioEdicao = new Cadastro(animalSelecionado.Copiar(), edicaoDeItem);
                 var resultadoDoCadastro = formularioEdicao.ShowDialog();
-
+                
                 if (resultadoDoCadastro == DialogResult.OK)
                 {
-                    int posicaoDoAnimal = listaAnimal.FindIndex(x => x.Id.Equals(idSelecionada));
-                    listaAnimal[posicaoDoAnimal] = formularioEdicao._animalSelecionado;
+
+                    var animalEditado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada));
+
+                    animalEditado.NomeDoAnimal = formularioEdicao._animalSelecionado.NomeDoAnimal;
+                    animalEditado.NomeDaEspecie = formularioEdicao._animalSelecionado.NomeDaEspecie;
+                    animalEditado.DataDoResgate = formularioEdicao._animalSelecionado.DataDoResgate;
+                    animalEditado.Classe = formularioEdicao._animalSelecionado.Classe;
+                    animalEditado.EmExtincao = formularioEdicao._animalSelecionado.EmExtincao;
+                    animalEditado.CustoDeVacinacao = formularioEdicao._animalSelecionado.CustoDeVacinacao;
+
+                    //animalSelecionado.NomeDoAnimal = formularioEdicao._animalSelecionado.NomeDoAnimal;
+                    //animalSelecionado.NomeDaEspecie = formularioEdicao._animalSelecionado.NomeDaEspecie;
+                    //animalSelecionado.DataDoResgate = formularioEdicao._animalSelecionado.DataDoResgate;
+                    //animalSelecionado.Classe = formularioEdicao._animalSelecionado.Classe;
+                    //animalSelecionado.EmExtincao = formularioEdicao._animalSelecionado.EmExtincao;
+                    //animalSelecionado.CustoDeVacinacao = formularioEdicao._animalSelecionado.CustoDeVacinacao;
+
+                    //int posicaoDoAnimal = listaAnimal.FindIndex(x => x.Id.Equals(idSelecionada));
+
+                    //listaAnimal[posicaoDoAnimal] = formularioEdicao._animalSelecionado;
                 }
 
                 DataGridView.DataSource = null;
