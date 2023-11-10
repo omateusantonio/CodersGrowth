@@ -58,7 +58,7 @@
             BotaoAdicionarAnimal.Location = new Point(32, 361);
             BotaoAdicionarAnimal.Name = "BotaoAdicionarAnimal";
             BotaoAdicionarAnimal.Size = new Size(100, 23);
-            BotaoAdicionarAnimal.TabIndex = 0;
+            BotaoAdicionarAnimal.TabIndex = 7;
             BotaoAdicionarAnimal.Text = "Adicionar animal";
             BotaoAdicionarAnimal.UseVisualStyleBackColor = true;
             BotaoAdicionarAnimal.Click += BotaoAdicionarAnimal_Click;
@@ -68,7 +68,7 @@
             BotaoCancelar.Location = new Point(197, 361);
             BotaoCancelar.Name = "BotaoCancelar";
             BotaoCancelar.Size = new Size(113, 23);
-            BotaoCancelar.TabIndex = 0;
+            BotaoCancelar.TabIndex = 8;
             BotaoCancelar.Text = "Cancelar";
             BotaoCancelar.UseVisualStyleBackColor = true;
             BotaoCancelar.Click += BotaoCancelar_Click;
@@ -102,7 +102,7 @@
             CaixaDeTextoMascaraPrecoDeVacinacao.Name = "CaixaDeTextoMascaraPrecoDeVacinacao";
             CaixaDeTextoMascaraPrecoDeVacinacao.RightToLeft = RightToLeft.No;
             CaixaDeTextoMascaraPrecoDeVacinacao.Size = new Size(142, 23);
-            CaixaDeTextoMascaraPrecoDeVacinacao.TabIndex = 7;
+            CaixaDeTextoMascaraPrecoDeVacinacao.TabIndex = 6;
             // 
             // OpcaoEmExtincaoNao
             // 
@@ -121,7 +121,7 @@
             OpcaoEmExtincaoSim.Location = new Point(20, 218);
             OpcaoEmExtincaoSim.Name = "OpcaoEmExtincaoSim";
             OpcaoEmExtincaoSim.Size = new Size(45, 19);
-            OpcaoEmExtincaoSim.TabIndex = 5;
+            OpcaoEmExtincaoSim.TabIndex = 4;
             OpcaoEmExtincaoSim.TabStop = true;
             OpcaoEmExtincaoSim.Text = "Sim";
             OpcaoEmExtincaoSim.UseVisualStyleBackColor = true;
@@ -208,7 +208,7 @@
             CaixaDeTextoEspecieDoAnimal.Location = new Point(18, 107);
             CaixaDeTextoEspecieDoAnimal.Name = "CaixaDeTextoEspecieDoAnimal";
             CaixaDeTextoEspecieDoAnimal.Size = new Size(280, 23);
-            CaixaDeTextoEspecieDoAnimal.TabIndex = 0;
+            CaixaDeTextoEspecieDoAnimal.TabIndex = 1;
             // 
             // CaixaDeTextoNomeDoAnimal
             // 

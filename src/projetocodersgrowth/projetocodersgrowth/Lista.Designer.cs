@@ -63,7 +63,9 @@
             DataGridView.DataSource = animalSilvestreBindingSource1;
             DataGridView.Dock = DockStyle.Top;
             DataGridView.Location = new Point(0, 0);
+            DataGridView.MultiSelect = false;
             DataGridView.Name = "DataGridView";
+            DataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DataGridView.ShowEditingIcon = false;
             DataGridView.Size = new Size(800, 346);
             DataGridView.TabIndex = 4;
@@ -174,6 +176,7 @@
             BotaoEditar.TabIndex = 2;
             BotaoEditar.Text = "Editar";
             BotaoEditar.UseVisualStyleBackColor = true;
+            BotaoEditar.Click += BotaoEditar_Click;
             // 
             // BotaoRemover
             // 
@@ -184,7 +187,7 @@
             BotaoRemover.Text = "Remover";
             BotaoRemover.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // Lista
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -193,7 +196,7 @@
             Controls.Add(BotaoEditar);
             Controls.Add(BotaoAdicionar);
             Controls.Add(DataGridView);
-            Name = "Form1";
+            Name = "Lista";
             Text = "Controle de Animais Silvestres";
             ((System.ComponentModel.ISupportInitialize)DataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource1).EndInit();
