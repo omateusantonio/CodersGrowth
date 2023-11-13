@@ -46,7 +46,7 @@ namespace projetocodersgrowth
 
                 Cadastro formularioEdicao = new Cadastro(animalSelecionado.Copiar(), edicaoDeItem);
                 var resultadoDoCadastro = formularioEdicao.ShowDialog();
-                
+
                 if (resultadoDoCadastro == DialogResult.OK)
                 {
 
@@ -59,16 +59,6 @@ namespace projetocodersgrowth
                     animalEditado.EmExtincao = formularioEdicao._animalSelecionado.EmExtincao;
                     animalEditado.CustoDeVacinacao = formularioEdicao._animalSelecionado.CustoDeVacinacao;
 
-                    //animalSelecionado.NomeDoAnimal = formularioEdicao._animalSelecionado.NomeDoAnimal;
-                    //animalSelecionado.NomeDaEspecie = formularioEdicao._animalSelecionado.NomeDaEspecie;
-                    //animalSelecionado.DataDoResgate = formularioEdicao._animalSelecionado.DataDoResgate;
-                    //animalSelecionado.Classe = formularioEdicao._animalSelecionado.Classe;
-                    //animalSelecionado.EmExtincao = formularioEdicao._animalSelecionado.EmExtincao;
-                    //animalSelecionado.CustoDeVacinacao = formularioEdicao._animalSelecionado.CustoDeVacinacao;
-
-                    //int posicaoDoAnimal = listaAnimal.FindIndex(x => x.Id.Equals(idSelecionada));
-
-                    //listaAnimal[posicaoDoAnimal] = formularioEdicao._animalSelecionado;
                 }
 
                 DataGridView.DataSource = null;
@@ -79,6 +69,33 @@ namespace projetocodersgrowth
             {
                 MessageBox.Show("Selecione primeiro uma linha para editar");
             }
+        }
+
+        private void BotaoRemover_Click(object sender, EventArgs e)
+        {
+            if (DataGridView.SelectedRows.Count > 0)
+            {
+                AnimalSilvestre animalSelecionado = new AnimalSilvestre();
+                int idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
+                MessageBoxButtons botoes = MessageBoxButtons.YesNo;
+                animalSelecionado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada));
+                string nomeDoAnimalSelecionado = animalSelecionado.NomeDoAnimal;
+
+                var resultadoConfirmacao = MessageBox.Show($"Tem certeza de que deseja remover {nomeDoAnimalSelecionado} da lista?", "Excluir item", botoes, MessageBoxIcon.Warning);
+
+                if (resultadoConfirmacao == DialogResult.Yes)
+                {
+                    listaAnimal.Remove(animalSelecionado);
+                    DataGridView.DataSource = null;
+                    DataGridView.DataSource = listaAnimal;
+
+                }
+
+            } else
+            {
+                MessageBox.Show("Primeiro selecione um item para depois removê-lo");
+            }
+
         }
     }
 }
