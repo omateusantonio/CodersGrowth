@@ -32,11 +32,8 @@
             BotaoAdicionarAnimal = new Button();
             BotaoCancelar = new Button();
             GrupoCamposNovoAnimal = new GroupBox();
-            CaixaDeTextoMascaraPrecoDeVacinacao = new MaskedTextBox();
-            OpcaoEmExtincaoNao = new RadioButton();
-            OpcaoEmExtincaoSim = new RadioButton();
+            ChecaAnimalEmExtincao = new CheckBox();
             RotuloPrecoDaVacinacao = new Label();
-            RotuloEmExtincao = new Label();
             ComboBoxClasseDeAnimal = new ComboBox();
             SelecaoDataDoResgate = new DateTimePicker();
             RotuloClasseDeAnimal = new Label();
@@ -48,6 +45,7 @@
             animalSilvestreBindingSource = new BindingSource(components);
             animalSilvestreBindingSource1 = new BindingSource(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
+            CaixaDeTextoPrecoDaVacinacao = new TextBox();
             GrupoCamposNovoAnimal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource1).BeginInit();
@@ -58,7 +56,7 @@
             BotaoAdicionarAnimal.Location = new Point(32, 361);
             BotaoAdicionarAnimal.Name = "BotaoAdicionarAnimal";
             BotaoAdicionarAnimal.Size = new Size(100, 23);
-            BotaoAdicionarAnimal.TabIndex = 0;
+            BotaoAdicionarAnimal.TabIndex = 7;
             BotaoAdicionarAnimal.Text = "Adicionar animal";
             BotaoAdicionarAnimal.UseVisualStyleBackColor = true;
             BotaoAdicionarAnimal.Click += BotaoAdicionarAnimal_Click;
@@ -68,18 +66,16 @@
             BotaoCancelar.Location = new Point(197, 361);
             BotaoCancelar.Name = "BotaoCancelar";
             BotaoCancelar.Size = new Size(113, 23);
-            BotaoCancelar.TabIndex = 0;
+            BotaoCancelar.TabIndex = 8;
             BotaoCancelar.Text = "Cancelar";
             BotaoCancelar.UseVisualStyleBackColor = true;
             BotaoCancelar.Click += BotaoCancelar_Click;
             // 
             // GrupoCamposNovoAnimal
             // 
-            GrupoCamposNovoAnimal.Controls.Add(CaixaDeTextoMascaraPrecoDeVacinacao);
-            GrupoCamposNovoAnimal.Controls.Add(OpcaoEmExtincaoNao);
-            GrupoCamposNovoAnimal.Controls.Add(OpcaoEmExtincaoSim);
+            GrupoCamposNovoAnimal.Controls.Add(CaixaDeTextoPrecoDaVacinacao);
+            GrupoCamposNovoAnimal.Controls.Add(ChecaAnimalEmExtincao);
             GrupoCamposNovoAnimal.Controls.Add(RotuloPrecoDaVacinacao);
-            GrupoCamposNovoAnimal.Controls.Add(RotuloEmExtincao);
             GrupoCamposNovoAnimal.Controls.Add(ComboBoxClasseDeAnimal);
             GrupoCamposNovoAnimal.Controls.Add(SelecaoDataDoResgate);
             GrupoCamposNovoAnimal.Controls.Add(RotuloClasseDeAnimal);
@@ -95,37 +91,15 @@
             GrupoCamposNovoAnimal.TabStop = false;
             GrupoCamposNovoAnimal.Text = "Novo Animal";
             // 
-            // CaixaDeTextoMascaraPrecoDeVacinacao
+            // ChecaAnimalEmExtincao
             // 
-            CaixaDeTextoMascaraPrecoDeVacinacao.Location = new Point(156, 218);
-            CaixaDeTextoMascaraPrecoDeVacinacao.Mask = "$ 9900.00";
-            CaixaDeTextoMascaraPrecoDeVacinacao.Name = "CaixaDeTextoMascaraPrecoDeVacinacao";
-            CaixaDeTextoMascaraPrecoDeVacinacao.RightToLeft = RightToLeft.No;
-            CaixaDeTextoMascaraPrecoDeVacinacao.Size = new Size(142, 23);
-            CaixaDeTextoMascaraPrecoDeVacinacao.TabIndex = 7;
-            // 
-            // OpcaoEmExtincaoNao
-            // 
-            OpcaoEmExtincaoNao.AutoSize = true;
-            OpcaoEmExtincaoNao.Location = new Point(20, 243);
-            OpcaoEmExtincaoNao.Name = "OpcaoEmExtincaoNao";
-            OpcaoEmExtincaoNao.Size = new Size(47, 19);
-            OpcaoEmExtincaoNao.TabIndex = 5;
-            OpcaoEmExtincaoNao.TabStop = true;
-            OpcaoEmExtincaoNao.Text = "Não";
-            OpcaoEmExtincaoNao.UseVisualStyleBackColor = true;
-            // 
-            // OpcaoEmExtincaoSim
-            // 
-            OpcaoEmExtincaoSim.AutoSize = true;
-            OpcaoEmExtincaoSim.Location = new Point(20, 218);
-            OpcaoEmExtincaoSim.Name = "OpcaoEmExtincaoSim";
-            OpcaoEmExtincaoSim.Size = new Size(45, 19);
-            OpcaoEmExtincaoSim.TabIndex = 5;
-            OpcaoEmExtincaoSim.TabStop = true;
-            OpcaoEmExtincaoSim.Text = "Sim";
-            OpcaoEmExtincaoSim.UseVisualStyleBackColor = true;
-            OpcaoEmExtincaoSim.CheckedChanged += OpcaoEmExtincaoSim_CheckedChanged;
+            ChecaAnimalEmExtincao.AutoSize = true;
+            ChecaAnimalEmExtincao.Location = new Point(18, 222);
+            ChecaAnimalEmExtincao.Name = "ChecaAnimalEmExtincao";
+            ChecaAnimalEmExtincao.Size = new Size(96, 19);
+            ChecaAnimalEmExtincao.TabIndex = 7;
+            ChecaAnimalEmExtincao.Text = "Em extinção?";
+            ChecaAnimalEmExtincao.UseVisualStyleBackColor = true;
             // 
             // RotuloPrecoDaVacinacao
             // 
@@ -136,16 +110,6 @@
             RotuloPrecoDaVacinacao.TabIndex = 4;
             RotuloPrecoDaVacinacao.Text = "Preço da vacinação";
             RotuloPrecoDaVacinacao.Click += label1_Click;
-            // 
-            // RotuloEmExtincao
-            // 
-            RotuloEmExtincao.AutoSize = true;
-            RotuloEmExtincao.Location = new Point(18, 200);
-            RotuloEmExtincao.Name = "RotuloEmExtincao";
-            RotuloEmExtincao.Size = new Size(77, 15);
-            RotuloEmExtincao.TabIndex = 4;
-            RotuloEmExtincao.Text = "Em extinção?";
-            RotuloEmExtincao.Click += label1_Click;
             // 
             // ComboBoxClasseDeAnimal
             // 
@@ -208,7 +172,7 @@
             CaixaDeTextoEspecieDoAnimal.Location = new Point(18, 107);
             CaixaDeTextoEspecieDoAnimal.Name = "CaixaDeTextoEspecieDoAnimal";
             CaixaDeTextoEspecieDoAnimal.Size = new Size(280, 23);
-            CaixaDeTextoEspecieDoAnimal.TabIndex = 0;
+            CaixaDeTextoEspecieDoAnimal.TabIndex = 1;
             // 
             // CaixaDeTextoNomeDoAnimal
             // 
@@ -229,6 +193,13 @@
             // 
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
+            // 
+            // CaixaDeTextoPrecoDaVacinacao
+            // 
+            CaixaDeTextoPrecoDaVacinacao.Location = new Point(156, 220);
+            CaixaDeTextoPrecoDaVacinacao.Name = "CaixaDeTextoPrecoDaVacinacao";
+            CaixaDeTextoPrecoDaVacinacao.Size = new Size(142, 23);
+            CaixaDeTextoPrecoDaVacinacao.TabIndex = 8;
             // 
             // Cadastro
             // 
@@ -263,11 +234,9 @@
         private BindingSource animalSilvestreBindingSource;
         private BindingSource animalSilvestreBindingSource1;
         private ContextMenuStrip contextMenuStrip1;
-        private RadioButton OpcaoEmExtincaoSim;
-        private Label RotuloEmExtincao;
-        private RadioButton OpcaoEmExtincaoNao;
         private Label RotuloPrecoDaVacinacao;
-        private MaskedTextBox CaixaDeTextoMascaraPrecoDeVacinacao;
         private MaskedTextBox maskedTextBox1;
+        private CheckBox ChecaAnimalEmExtincao;
+        private TextBox CaixaDeTextoPrecoDaVacinacao;
     }
 }

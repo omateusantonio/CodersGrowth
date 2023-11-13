@@ -24,5 +24,10 @@
 
         public decimal CustoDeVacinacao {  get; set; }
 
+        public AnimalSilvestre Copiar()
+        {
+            return (AnimalSilvestre)this.MemberwiseClone();
+        }
+
     }
 }
