@@ -96,6 +96,8 @@ namespace projetocodersgrowth
                 MessageBox.Show("Primeiro selecione um item para depois removê-lo");
             }
 
+
+
         }
     }
 }

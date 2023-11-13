@@ -13,7 +13,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
     {
 
         public AnimalSilvestre animal = new AnimalSilvestre();
-        //List <Exception> validacoes = new List <Exception> ();
+        
         public ValidacaoDeDados(AnimalSilvestre novoAnimal)
         {
             animal = novoAnimal;
