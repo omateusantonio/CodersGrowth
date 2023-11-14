@@ -21,7 +21,7 @@ namespace ControleDeAnimaisSilvestres
         public AnimalSilvestre _animalSelecionado = new AnimalSilvestre();
         public AnimalSilvestre animalEditado = new AnimalSilvestre();
         public bool edicaoHabilitada;
-        static int id = 0;
+        //static int id = 0;
 
         public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem)
         {
@@ -34,6 +34,7 @@ namespace ControleDeAnimaisSilvestres
 
             if (edicaoHabilitada) // verifica se o botao de clicar foi acionado com pelo menos um item selecionado
             {
+                BotaoAdicionarAnimal.Text = "Atualizar";
                 _animalSelecionado = animalSilvestre;
                 PreencherCamposDoFormularioComItemSelecionado();
             }
@@ -89,7 +90,7 @@ namespace ControleDeAnimaisSilvestres
                 _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
                 _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
                 _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _novoAnimal.Id = id;
+                //_novoAnimal.Id = id;
                 _novoAnimal.EmExtincao = ChecaAnimalEmExtincao.Checked;
 
                 if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
@@ -107,7 +108,7 @@ namespace ControleDeAnimaisSilvestres
 
                     DialogResult = DialogResult.OK;
 
-                    id++;
+                    //id++;
 
                     Close();
                 }
@@ -123,7 +124,7 @@ namespace ControleDeAnimaisSilvestres
                 _animalSelecionado.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
                 _animalSelecionado.DataDoResgate = SelecaoDataDoResgate.Value;
                 _animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _animalSelecionado.Id = id;
+                //_animalSelecionado.Id = id;
                 _animalSelecionado.EmExtincao = ChecaAnimalEmExtincao.Checked;
 
                 if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
