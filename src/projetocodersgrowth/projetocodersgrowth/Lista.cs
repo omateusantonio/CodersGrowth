@@ -9,7 +9,7 @@ namespace projetocodersgrowth
     {
         //List<AnimalSilvestre> listaAnimal = new List<AnimalSilvestre>();
         //ListaSingleton listaAnimais = ListaSingleton.Instancia();
-        ListaSingleton listaAnimais = ListaSingleton.Instancia();
+        public ListaSingleton listaAnimais = ListaSingleton.Instancia();
 
         public Lista()
         {
