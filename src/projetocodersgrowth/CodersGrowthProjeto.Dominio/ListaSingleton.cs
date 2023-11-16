@@ -49,6 +49,11 @@ namespace ControleDeAnimaisSilvestres.Dominio
             id++;
         }
 
+        public void RemoverAnimal(AnimalSilvestre animalSelecionado)
+        {
+            _instance._animais.Remove(animalSelecionado);
+        }
+
 
 
 
