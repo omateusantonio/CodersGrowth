@@ -41,7 +41,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
             if (animalASerAtualizado != null)
             {
                 animalASerAtualizado.NomeDoAnimal = animalAtualizado.NomeDoAnimal;
-                animalASerAtualizado.NomeDaEspecie = animalAtualizado.NomeDoAnimal;
+                animalASerAtualizado.NomeDaEspecie = animalAtualizado.NomeDaEspecie;
                 animalASerAtualizado.DataDoResgate = animalAtualizado.DataDoResgate;
                 animalASerAtualizado.Classe = animalAtualizado.Classe;
                 animalASerAtualizado.CustoDeVacinacao = animalAtualizado.CustoDeVacinacao;
