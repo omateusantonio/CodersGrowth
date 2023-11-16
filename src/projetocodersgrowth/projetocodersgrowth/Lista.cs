@@ -7,12 +7,12 @@ namespace projetocodersgrowth
 {
     public partial class Lista : Form
     {
-        public ListaSingleton listaAnimais = ListaSingleton.Instancia();
         public Repositorio funcoesRepositorio = new Repositorio();
 
         public Lista()
         {
             InitializeComponent();
+            DataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
         private void BotaoAdicionar_Click(object sender, EventArgs e)
@@ -55,7 +55,7 @@ namespace projetocodersgrowth
                 }
 
                 DataGridView.DataSource = null;
-                DataGridView.DataSource = listaAnimal;
+                DataGridView.DataSource = funcoesRepositorio.ObterTodos();
 
             }
             else
@@ -81,7 +81,7 @@ namespace projetocodersgrowth
                 {
                     funcoesRepositorio.Remover(idSelecionada);
                     DataGridView.DataSource = null;
-                    DataGridView.DataSource = listaAnimal;
+                    DataGridView.DataSource = funcoesRepositorio.ObterTodos();
                 }
 
             } else
