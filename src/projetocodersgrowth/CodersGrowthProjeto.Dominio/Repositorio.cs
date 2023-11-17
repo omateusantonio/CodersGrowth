@@ -13,17 +13,17 @@ namespace ControleDeAnimaisSilvestres.Dominio
 
         public List<AnimalSilvestre> ObterTodos()
         {
-            return listaAnimais.TrazerAnimais();
+            return listaAnimais.ObterTodos();
         }
 
         public void Criar(AnimalSilvestre novoAnimal)
         {
-            listaAnimais.InserirNovoAnimal(novoAnimal);
+            listaAnimais.Inserir(novoAnimal);
         }
 
         public AnimalSilvestre ObterPorId(int id)
         {
-            var animalSelecionado = (listaAnimais.TrazerAnimais()).FirstOrDefault(x => x.Id.Equals(id));
+            var animalSelecionado = (listaAnimais.ObterTodos()).FirstOrDefault(x => x.Id.Equals(id));
 
             return animalSelecionado;
         }
@@ -31,7 +31,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Remover(int id)
         {
             var animalASerRemovido = ObterPorId(id);
-            listaAnimais.RemoverAnimal(animalASerRemovido);
+            listaAnimais.Remover(animalASerRemovido);
         }
 
         public void Atualizar (AnimalSilvestre animalAtualizado)

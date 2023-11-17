@@ -37,9 +37,6 @@ namespace ControleDeAnimaisSilvestres
                 _animalSelecionado = animalSilvestre;
                 PreencherCamposDoFormularioComItemSelecionado();
             }
-
-
-
         }
 
         private void InitializeComboBox()
@@ -56,31 +53,15 @@ namespace ControleDeAnimaisSilvestres
             ComboBoxClasseDeAnimal.SelectedIndex = Convert.ToInt32(_animalSelecionado.Classe);
             ChecaAnimalEmExtincao.Checked = _animalSelecionado.EmExtincao;
             CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animalSelecionado.CustoDeVacinacao);
-
         }
 
-        private void ComboBoxClasseDeAnimal_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void OpcaoEmExtincaoSim_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BotaoCancelar_Click(object sender, EventArgs e)
+        private void AoClicarEmCancelar(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
+        public void AoClicarEmAdicionar(object sender, EventArgs e)
         {
             if (!edicaoHabilitada)
             {
@@ -96,7 +77,6 @@ namespace ControleDeAnimaisSilvestres
                     CaixaDeTextoPrecoDaVacinacao.Text = "0";
                 }
                 _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
 
                 var validacao = new ValidacaoDeDados(_novoAnimal);
 
@@ -127,7 +107,6 @@ namespace ControleDeAnimaisSilvestres
                     CaixaDeTextoPrecoDaVacinacao.Text = "0";
                 }
                 _animalSelecionado.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
 
                 var validacao = new ValidacaoDeDados(_animalSelecionado);
 
