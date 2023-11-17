@@ -1,68 +1,61 @@
 using CodersGrowthProjeto.Dominio;
 using ControleDeAnimaisSilvestres;
+using ControleDeAnimaisSilvestres.Dominio;
 using System.Drawing.Text;
 
 namespace projetocodersgrowth
 {
     public partial class Lista : Form
     {
-        List<AnimalSilvestre> listaAnimal = new List<AnimalSilvestre>();
-
+        public Repositorio funcoesRepositorio = new Repositorio();
 
         public Lista()
         {
             InitializeComponent();
-
+            DataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
-        private void BotaoAdicionar_Click(object sender, EventArgs e)
+        private void AoClicarEmAdicionar(object sender, EventArgs e)
         {
-            bool edicaoDeItem = false;
-            AnimalSilvestre animalSilvestre = new AnimalSilvestre();
-            Cadastro formularioCadastro = new Cadastro(animalSilvestre, edicaoDeItem);
+            var edicaoDeItem = false;
+            var animalSilvestre = new AnimalSilvestre();
+            var formularioCadastro = new Cadastro(animalSilvestre, edicaoDeItem);
             var resultadoDoCadastro = formularioCadastro.ShowDialog();
 
 
             if (resultadoDoCadastro == DialogResult.OK)
             {
-                listaAnimal.Add(animalSilvestre);
+                funcoesRepositorio.Criar(animalSilvestre);
             }
 
 
             DataGridView.DataSource = null;
-            DataGridView.DataSource = listaAnimal;
+            DataGridView.DataSource = funcoesRepositorio.ObterTodos();
         }
 
-        private void BotaoEditar_Click(object sender, EventArgs e)
+        private void AoClicarEmEditar(object sender, EventArgs e)
         {
             if (DataGridView.SelectedRows.Count > 0)
             {
-                bool edicaoDeItem = true;
+                var listaAnimal = funcoesRepositorio.ObterTodos();
+                var edicaoDeItem = true;
 
-                AnimalSilvestre animalSelecionado = new AnimalSilvestre();
-                int idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
+                var animalSelecionado = new AnimalSilvestre();
+                var idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
 
-                animalSelecionado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada)).Copiar();
+                animalSelecionado = funcoesRepositorio.ObterPorId(idSelecionada).Copiar();
 
-                Cadastro formularioEdicao = new Cadastro(animalSelecionado.Copiar(), edicaoDeItem);
+                var formularioEdicao = new Cadastro(animalSelecionado.Copiar(), edicaoDeItem);
                 var resultadoDoCadastro = formularioEdicao.ShowDialog();
 
                 if (resultadoDoCadastro == DialogResult.OK)
                 {
-
-                    var animalEditado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada));
-
-                    animalEditado.NomeDoAnimal = formularioEdicao._animalSelecionado.NomeDoAnimal;
-                    animalEditado.NomeDaEspecie = formularioEdicao._animalSelecionado.NomeDaEspecie;
-                    animalEditado.DataDoResgate = formularioEdicao._animalSelecionado.DataDoResgate;
-                    animalEditado.Classe = formularioEdicao._animalSelecionado.Classe;
-                    animalEditado.EmExtincao = formularioEdicao._animalSelecionado.EmExtincao;
-                    animalEditado.CustoDeVacinacao = formularioEdicao._animalSelecionado.CustoDeVacinacao;
-
+                    var animalAtualizado = formularioEdicao._animalSelecionado;
+                    funcoesRepositorio.Atualizar(animalAtualizado);
                 }
 
                 DataGridView.DataSource = null;
-                DataGridView.DataSource = listaAnimal;
+                DataGridView.DataSource = funcoesRepositorio.ObterTodos();
 
             }
             else
@@ -71,24 +64,21 @@ namespace projetocodersgrowth
             }
         }
 
-        private void BotaoRemover_Click(object sender, EventArgs e)
+        private void AoClicarEmRemover(object sender, EventArgs e)
         {
             if (DataGridView.SelectedRows.Count > 0)
             {
-                AnimalSilvestre animalSelecionado = new AnimalSilvestre();
-                int idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
-                MessageBoxButtons botoes = MessageBoxButtons.YesNo;
-                animalSelecionado = listaAnimal.FirstOrDefault(x => x.Id.Equals(idSelecionada));
-                string nomeDoAnimalSelecionado = animalSelecionado.NomeDoAnimal;
+                var idSelecionada = Convert.ToInt32(DataGridView.CurrentRow.Cells["idDataGridViewTextBoxColumn1"].Value);
+                var botoes = MessageBoxButtons.YesNo;
+                var nomeDoAnimalSelecionado = funcoesRepositorio.ObterPorId(idSelecionada).NomeDoAnimal;
 
-                var resultadoConfirmacao = MessageBox.Show($"Tem certeza de que deseja remover {nomeDoAnimalSelecionado} da lista?", "Excluir item", botoes, MessageBoxIcon.Warning);
+                var resultadoConfirmacao = MessageBox.Show($"Tem certeza de que deseja remover \"{nomeDoAnimalSelecionado}\" da lista?", "Excluir item", botoes, MessageBoxIcon.Warning);
 
                 if (resultadoConfirmacao == DialogResult.Yes)
                 {
-                    listaAnimal.Remove(animalSelecionado);
+                    funcoesRepositorio.Remover(idSelecionada);
                     DataGridView.DataSource = null;
-                    DataGridView.DataSource = listaAnimal;
-
+                    DataGridView.DataSource = funcoesRepositorio.ObterTodos();
                 }
 
             } else

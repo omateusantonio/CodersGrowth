@@ -170,7 +170,7 @@
             BotaoAdicionar.TabIndex = 1;
             BotaoAdicionar.Text = "Adicionar";
             BotaoAdicionar.UseVisualStyleBackColor = true;
-            BotaoAdicionar.Click += BotaoAdicionar_Click;
+            BotaoAdicionar.Click += AoClicarEmAdicionar;
             // 
             // BotaoEditar
             // 
@@ -180,7 +180,7 @@
             BotaoEditar.TabIndex = 2;
             BotaoEditar.Text = "Editar";
             BotaoEditar.UseVisualStyleBackColor = true;
-            BotaoEditar.Click += BotaoEditar_Click;
+            BotaoEditar.Click += AoClicarEmEditar;
             // 
             // BotaoRemover
             // 
@@ -190,7 +190,7 @@
             BotaoRemover.TabIndex = 3;
             BotaoRemover.Text = "Remover";
             BotaoRemover.UseVisualStyleBackColor = true;
-            BotaoRemover.Click += BotaoRemover_Click;
+            BotaoRemover.Click += AoClicarEmRemover;
             // 
             // Lista
             // 

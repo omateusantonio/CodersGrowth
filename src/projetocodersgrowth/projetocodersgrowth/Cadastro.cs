@@ -21,7 +21,6 @@ namespace ControleDeAnimaisSilvestres
         public AnimalSilvestre _animalSelecionado = new AnimalSilvestre();
         public AnimalSilvestre animalEditado = new AnimalSilvestre();
         public bool edicaoHabilitada;
-        static int id = 0;
 
         public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem)
         {
@@ -34,12 +33,10 @@ namespace ControleDeAnimaisSilvestres
 
             if (edicaoHabilitada) // verifica se o botao de clicar foi acionado com pelo menos um item selecionado
             {
+                BotaoAdicionarAnimal.Text = "Atualizar";
                 _animalSelecionado = animalSilvestre;
                 PreencherCamposDoFormularioComItemSelecionado();
             }
-
-
-
         }
 
         private void InitializeComboBox()
@@ -56,31 +53,15 @@ namespace ControleDeAnimaisSilvestres
             ComboBoxClasseDeAnimal.SelectedIndex = Convert.ToInt32(_animalSelecionado.Classe);
             ChecaAnimalEmExtincao.Checked = _animalSelecionado.EmExtincao;
             CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animalSelecionado.CustoDeVacinacao);
-
         }
 
-        private void ComboBoxClasseDeAnimal_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void OpcaoEmExtincaoSim_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BotaoCancelar_Click(object sender, EventArgs e)
+        private void AoClicarEmCancelar(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        public void BotaoAdicionarAnimal_Click(object sender, EventArgs e)
+        public void AoClicarEmAdicionar(object sender, EventArgs e)
         {
             if (!edicaoHabilitada)
             {
@@ -89,7 +70,6 @@ namespace ControleDeAnimaisSilvestres
                 _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
                 _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
                 _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _novoAnimal.Id = id;
                 _novoAnimal.EmExtincao = ChecaAnimalEmExtincao.Checked;
 
                 if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
@@ -98,7 +78,6 @@ namespace ControleDeAnimaisSilvestres
                 }
                 _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
 
-
                 var validacao = new ValidacaoDeDados(_novoAnimal);
 
                 try
@@ -106,8 +85,6 @@ namespace ControleDeAnimaisSilvestres
                     validacao.CamposEstaoValidos();
 
                     DialogResult = DialogResult.OK;
-
-                    id++;
 
                     Close();
                 }
@@ -123,7 +100,6 @@ namespace ControleDeAnimaisSilvestres
                 _animalSelecionado.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
                 _animalSelecionado.DataDoResgate = SelecaoDataDoResgate.Value;
                 _animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _animalSelecionado.Id = id;
                 _animalSelecionado.EmExtincao = ChecaAnimalEmExtincao.Checked;
 
                 if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
@@ -131,7 +107,6 @@ namespace ControleDeAnimaisSilvestres
                     CaixaDeTextoPrecoDaVacinacao.Text = "0";
                 }
                 _animalSelecionado.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
 
                 var validacao = new ValidacaoDeDados(_animalSelecionado);
 
