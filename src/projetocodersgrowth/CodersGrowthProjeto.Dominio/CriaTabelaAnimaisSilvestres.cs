@@ -13,19 +13,19 @@ namespace ControleDeAnimaisSilvestres.Dominio
     {
         public override void Up()
         {
-            Create.Table("Controle de Animais Silvestres Resgatados")
+            Create.Table("AnimalSilvestre")
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("Nome do Animal").AsString()
-                .WithColumn("Nome da Especie").AsString()
-                .WithColumn("Classe de Animal").AsString()
-                .WithColumn("Data do Resgate").AsDate()
-                .WithColumn("Esta em Extincao").AsBoolean()
-                .WithColumn("Custo da Vacinacao").AsCurrency();
+                .WithColumn("NomeDoAnimal").AsString()
+                .WithColumn("NomeDaEspecie").AsString()
+                .WithColumn("ClasseDeAnimal").AsString()
+                .WithColumn("DataDoResgate").AsDate()
+                .WithColumn("EmExtincao").AsBoolean()
+                .WithColumn("CustoDeVacinacao").AsCurrency();
         }
 
         public override void Down()
         {
-            Delete.Table("Controle de Animais Silvestres Resgatados");
+            Delete.Table("AnimalSilvestre");
         }
     }
 }
