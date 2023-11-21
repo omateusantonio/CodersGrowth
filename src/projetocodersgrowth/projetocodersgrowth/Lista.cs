@@ -7,7 +7,8 @@ namespace projetocodersgrowth
 {
     public partial class Lista : Form
     {
-        public Repositorio funcoesRepositorio = new Repositorio();
+        //public Repositorio funcoesRepositorio = new Repositorio();
+        public RepositorioSql funcoesRepositorio = new RepositorioSql();
 
         public Lista()
         {
