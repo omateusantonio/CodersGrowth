@@ -35,7 +35,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
                     animal.Classe = (AnimalSilvestre.ClasseDeAnimal)System.Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
                     animal.DataDoResgate = Convert.ToDateTime(reader["DataDoResgate"]);
                     animal.EmExtincao = (bool)reader["EmExtincao"];
-                    animal.CustoDeVacinacao = (decimal)reader["CustoDeVacinacao"];
+                    animal.CustoDeVacinacao = ((decimal)reader["CustoDeVacinacao"])/100;
 
                     listaCompleta.Add(animal);
                 }
@@ -103,7 +103,12 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Atualizar(AnimalSilvestre animalAtualizado)
         {
             var idSelecionada = animalAtualizado.Id;
-            string commandText = $"UPDATE AnimalSilvestre SET NomeDoAnimal='{animalAtualizado.NomeDoAnimal}', NomeDaEspecie='{animalAtualizado.NomeDaEspecie}', ClasseDeAnimal='{animalAtualizado.Classe.ToString()}', DataDoResgate='{animalAtualizado.DataDoResgate}', EmExtincao='{animalAtualizado.EmExtincao}', CustoDeVacinacao='{Convert.ToDecimal(animalAtualizado.EmExtincao)}' WHERE Id='{idSelecionada}'";
+            string commandText = $"UPDATE AnimalSilvestre SET NomeDoAnimal='{animalAtualizado.NomeDoAnimal}', " +
+                $"NomeDaEspecie='{animalAtualizado.NomeDaEspecie}', " +
+                $"ClasseDeAnimal='{animalAtualizado.Classe.ToString()}', " +
+                $"DataDoResgate='{animalAtualizado.DataDoResgate}', " +
+                $"EmExtincao='{animalAtualizado.EmExtincao}', " +
+                $"CustoDeVacinacao='{animalAtualizado.CustoDeVacinacao}' WHERE Id='{idSelecionada}'";
 
             using(SqlConnection sqlConn = new SqlConnection(connectionString))
             {

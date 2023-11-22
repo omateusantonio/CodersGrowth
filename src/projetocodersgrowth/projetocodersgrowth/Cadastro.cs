@@ -52,7 +52,7 @@ namespace ControleDeAnimaisSilvestres
             SelecaoDataDoResgate.Value = _animalSelecionado.DataDoResgate;
             ComboBoxClasseDeAnimal.SelectedIndex = Convert.ToInt32(_animalSelecionado.Classe);
             ChecaAnimalEmExtincao.Checked = _animalSelecionado.EmExtincao;
-            CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animalSelecionado.CustoDeVacinacao);
+            CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animalSelecionado.CustoDeVacinacao/100);
         }
 
         private void AoClicarEmCancelar(object sender, EventArgs e)

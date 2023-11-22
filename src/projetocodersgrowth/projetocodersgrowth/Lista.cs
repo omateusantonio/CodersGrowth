@@ -14,6 +14,9 @@ namespace projetocodersgrowth
         {
             InitializeComponent();
             DataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DataGridView.DataSource = null;
+            DataGridView.DataSource = funcoesRepositorio.ObterTodos();
+            
         }
 
         private void AoClicarEmAdicionar(object sender, EventArgs e)
@@ -56,6 +59,7 @@ namespace projetocodersgrowth
                 }
 
                 DataGridView.DataSource = null;
+                var animateste = funcoesRepositorio.ObterTodos();
                 DataGridView.DataSource = funcoesRepositorio.ObterTodos();
 
             }
