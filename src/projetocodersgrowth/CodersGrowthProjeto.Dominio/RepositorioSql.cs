@@ -35,7 +35,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
                     animal.Classe = (AnimalSilvestre.ClasseDeAnimal)System.Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
                     animal.DataDoResgate = Convert.ToDateTime(reader["DataDoResgate"]);
                     animal.EmExtincao = (bool)reader["EmExtincao"];
-                    animal.CustoDeVacinacao = ((decimal)reader["CustoDeVacinacao"])/100;
+                    animal.CustoDeVacinacao = ((decimal)reader["CustoDeVacinacao"]);
 
                     listaCompleta.Add(animal);
                 }
@@ -103,19 +103,30 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Atualizar(AnimalSilvestre animalAtualizado)
         {
             var idSelecionada = animalAtualizado.Id;
-            string commandText = $"UPDATE AnimalSilvestre SET NomeDoAnimal='{animalAtualizado.NomeDoAnimal}', " +
-                $"NomeDaEspecie='{animalAtualizado.NomeDaEspecie}', " +
-                $"ClasseDeAnimal='{animalAtualizado.Classe.ToString()}', " +
-                $"DataDoResgate='{animalAtualizado.DataDoResgate}', " +
-                $"EmExtincao='{animalAtualizado.EmExtincao}', " +
-                $"CustoDeVacinacao='{animalAtualizado.CustoDeVacinacao}' WHERE Id='{idSelecionada}'";
+            //string commandText = $"UPDATE AnimalSilvestre SET NomeDoAnimal='{animalAtualizado.NomeDoAnimal}', " +
+            //    $"NomeDaEspecie='{animalAtualizado.NomeDaEspecie}', " +
+            //    $"ClasseDeAnimal='{animalAtualizado.Classe.ToString()}', " +
+            //    $"DataDoResgate='{animalAtualizado.DataDoResgate}', " +
+            //    $"EmExtincao='{animalAtualizado.EmExtincao}', " +
+            //    $"CustoDeVacinacao='{animalAtualizado.CustoDeVacinacao}' WHERE Id='{idSelecionada}'";
+
+            string commandText = "UPDATE AnimalSilvestre SET NomeDoAnimal=@NomeDoAnimal, NomeDaEspecie=@NomeDaEspecie, ClasseDeAnimal=@ClasseDeAnimal, DataDoResgate=@DataDoResgate, EmExtincao=@EmExtincao, CustoDeVacinacao=@CustoDeVacinacao WHERE Id=@Id";
 
             using(SqlConnection sqlConn = new SqlConnection(connectionString))
             {
                 sqlConn.Open();
                 SqlCommand command = new SqlCommand(commandText, sqlConn);
+                command.Parameters.AddWithValue("@Id", animalAtualizado.Id);
+                command.Parameters.AddWithValue("@NomeDoAnimal", animalAtualizado.NomeDoAnimal);
+                command.Parameters.AddWithValue("@NomeDaEspecie", animalAtualizado.NomeDaEspecie);
+                command.Parameters.AddWithValue("@ClasseDeAnimal", animalAtualizado.Classe);
+                command.Parameters.AddWithValue("@DataDoResgate", animalAtualizado.DataDoResgate);
+                command.Parameters.AddWithValue("@EmExtincao", animalAtualizado.EmExtincao);
+                command.Parameters.AddWithValue("@CustoDeVacinacao", animalAtualizado.CustoDeVacinacao);
                 command.ExecuteNonQuery();
             }
+
+            
         }
     }
 }

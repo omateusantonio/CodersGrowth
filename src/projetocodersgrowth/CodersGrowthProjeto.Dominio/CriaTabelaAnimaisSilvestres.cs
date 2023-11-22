@@ -8,9 +8,12 @@ using FluentMigrator;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    [Migration(20231117111300)]
+    [Migration(20231122102000)]
     public class CriaTabelaAnimaisSilvestres : Migration
     {
+        int maximoDigitosInteiro = 10;
+        int maximoCasasDecimais = 2;
+
         public override void Up()
         {
             Create.Table("AnimalSilvestre")
@@ -20,7 +23,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
                 .WithColumn("ClasseDeAnimal").AsString().NotNullable()
                 .WithColumn("DataDoResgate").AsDate().NotNullable()
                 .WithColumn("EmExtincao").AsBoolean()
-                .WithColumn("CustoDeVacinacao").AsCurrency().NotNullable();
+                .WithColumn("CustoDeVacinacao").AsDecimal(maximoDigitosInteiro, maximoCasasDecimais).NotNullable();
         }
 
         public override void Down()
