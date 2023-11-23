@@ -1,9 +1,4 @@
 ﻿using CodersGrowthProjeto.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
@@ -23,7 +18,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
 
         public AnimalSilvestre ObterPorId(int id)
         {
-            var animalSelecionado = (listaAnimais.ObterTodos()).FirstOrDefault(x => x.Id.Equals(id));
+            var animalSelecionado = listaAnimais.ObterTodos().FirstOrDefault(x => x.Id.Equals(id));
 
             return animalSelecionado;
         }

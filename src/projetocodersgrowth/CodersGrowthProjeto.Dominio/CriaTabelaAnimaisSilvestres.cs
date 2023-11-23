@@ -8,19 +8,22 @@ using FluentMigrator;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    [Migration(20231117111300)] //cada migração é pra uma determinada atualização do banco de dados?
+    [Migration(20231122102000)]
     public class CriaTabelaAnimaisSilvestres : Migration
     {
+        private const int maximoDigitosInteiro = 10;
+        private const int maximoCasasDecimais = 2;
+
         public override void Up()
         {
             Create.Table("AnimalSilvestre")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("NomeDoAnimal").AsString()
-                .WithColumn("NomeDaEspecie").AsString()
-                .WithColumn("ClasseDeAnimal").AsString()
-                .WithColumn("DataDoResgate").AsDate()
+                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("NomeDoAnimal").AsString().NotNullable()
+                .WithColumn("NomeDaEspecie").AsString().NotNullable()
+                .WithColumn("ClasseDeAnimal").AsString().NotNullable()
+                .WithColumn("DataDoResgate").AsDate().NotNullable()
                 .WithColumn("EmExtincao").AsBoolean()
-                .WithColumn("CustoDeVacinacao").AsCurrency();
+                .WithColumn("CustoDeVacinacao").AsDecimal(maximoDigitosInteiro, maximoCasasDecimais).NotNullable();
         }
 
         public override void Down()
