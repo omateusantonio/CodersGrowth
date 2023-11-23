@@ -1,30 +1,21 @@
 ﻿using CodersGrowthProjeto.Dominio;
-using System;
 using System.Configuration;
-using System.Configuration.Assemblies;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data;
 using Microsoft.Data.SqlClient;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    
     public class RepositorioSql : IRepositorio
     {
-        private static string connectionString = ConfigurationManager.ConnectionStrings["BancoDeDados"].ConnectionString;
-        //private static SqlConnection sqlConn = new SqlConnection(connectionString);
+        private static string stringDeConexao = ConfigurationManager.ConnectionStrings["BancoDeDados"].ConnectionString;
         public List<AnimalSilvestre> ObterTodos()
         {
-            string commandText = "SELECT * from AnimalSilvestre";
+            const string textoDeComando = "SELECT * from AnimalSilvestre";
             var listaCompleta = new List<AnimalSilvestre>();
-            using (SqlConnection sqlConn = new SqlConnection(connectionString))
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
-                sqlConn.Open();
-                SqlCommand command = new SqlCommand(commandText, sqlConn);
-                var reader = command.ExecuteReader();
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                var reader = comandoSql.ExecuteReader();
 
                 while(reader.Read())
                 {
@@ -35,57 +26,52 @@ namespace ControleDeAnimaisSilvestres.Dominio
                     animal.Classe = (AnimalSilvestre.ClasseDeAnimal)System.Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
                     animal.DataDoResgate = Convert.ToDateTime(reader["DataDoResgate"]);
                     animal.EmExtincao = (bool)reader["EmExtincao"];
-                    animal.CustoDeVacinacao = ((decimal)reader["CustoDeVacinacao"]);
-
+                    animal.CustoDeVacinacao = (decimal)reader["CustoDeVacinacao"];
                     listaCompleta.Add(animal);
                 }
-
                 return listaCompleta;
             }
         }
 
         public void Criar(AnimalSilvestre animalNovo)
         {
-            string commandText = "INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
-            using (SqlConnection sqlConn = new SqlConnection(connectionString))
+            const string textoDeComando = "INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
-                sqlConn.Open();
-                SqlCommand command = new SqlCommand(commandText, sqlConn);
-                command.Parameters.AddWithValue("@NomeDoAnimal", animalNovo.NomeDoAnimal);
-                command.Parameters.AddWithValue("@NomeDaEspecie", animalNovo.NomeDaEspecie);
-                command.Parameters.AddWithValue("@ClasseDeAnimal", animalNovo.Classe);
-                command.Parameters.AddWithValue("@DataDoResgate", animalNovo.DataDoResgate);
-                command.Parameters.AddWithValue("@EmExtincao", animalNovo.EmExtincao);
-                command.Parameters.AddWithValue("@CustoDeVacinacao", animalNovo.CustoDeVacinacao);
-                command.ExecuteNonQuery();
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                comandoSql.Parameters.AddWithValue("@NomeDoAnimal", animalNovo.NomeDoAnimal);
+                comandoSql.Parameters.AddWithValue("@NomeDaEspecie", animalNovo.NomeDaEspecie);
+                comandoSql.Parameters.AddWithValue("@ClasseDeAnimal", animalNovo.Classe);
+                comandoSql.Parameters.AddWithValue("@DataDoResgate", animalNovo.DataDoResgate);
+                comandoSql.Parameters.AddWithValue("@EmExtincao", animalNovo.EmExtincao);
+                comandoSql.Parameters.AddWithValue("@CustoDeVacinacao", animalNovo.CustoDeVacinacao);
+                comandoSql.ExecuteNonQuery();
             }
         }
 
-        public void Remover(int id)
+        public void Remover(int idSelecionada)
         {
-            var idSelecionada = id;
-            var commandText = "DELETE FROM AnimalSilvestre WHERE Id='" + idSelecionada + "'";
-
-            using (SqlConnection sqlConn = new SqlConnection(connectionString))
+            const string textoDeComando = "DELETE FROM AnimalSilvestre WHERE Id=@Id";
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
-                sqlConn.Open();
-                SqlCommand command = new SqlCommand(commandText, sqlConn);
-                command.ExecuteNonQuery();
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                comandoSql.Parameters.AddWithValue("@Id", idSelecionada);
+                comandoSql.ExecuteNonQuery();
             }
         }
 
-        public AnimalSilvestre ObterPorId(int id)
+        public AnimalSilvestre ObterPorId(int idSelecionada)
         {
-            var idSelecionada = id;
-            var commandText = "SELECT * FROM AnimalSilvestre WHERE Id='" + idSelecionada + "'";
+            const string textoDeComando = "SELECT * FROM AnimalSilvestre WHERE Id=@Id";
             var animalSelecionado = new AnimalSilvestre();
-
-            using (SqlConnection sqlConn = new SqlConnection(connectionString))
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
-                sqlConn.Open();
-                SqlCommand command = new SqlCommand(commandText, sqlConn);
-                var reader = command.ExecuteReader();
-
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                comandoSql.Parameters.AddWithValue("@Id", idSelecionada);
+                var reader = comandoSql.ExecuteReader();
                 while (reader.Read())
                 {
                     animalSelecionado.Id = Convert.ToInt32(reader["Id"]);
@@ -102,31 +88,20 @@ namespace ControleDeAnimaisSilvestres.Dominio
 
         public void Atualizar(AnimalSilvestre animalAtualizado)
         {
-            var idSelecionada = animalAtualizado.Id;
-            //string commandText = $"UPDATE AnimalSilvestre SET NomeDoAnimal='{animalAtualizado.NomeDoAnimal}', " +
-            //    $"NomeDaEspecie='{animalAtualizado.NomeDaEspecie}', " +
-            //    $"ClasseDeAnimal='{animalAtualizado.Classe.ToString()}', " +
-            //    $"DataDoResgate='{animalAtualizado.DataDoResgate}', " +
-            //    $"EmExtincao='{animalAtualizado.EmExtincao}', " +
-            //    $"CustoDeVacinacao='{animalAtualizado.CustoDeVacinacao}' WHERE Id='{idSelecionada}'";
-
-            string commandText = "UPDATE AnimalSilvestre SET NomeDoAnimal=@NomeDoAnimal, NomeDaEspecie=@NomeDaEspecie, ClasseDeAnimal=@ClasseDeAnimal, DataDoResgate=@DataDoResgate, EmExtincao=@EmExtincao, CustoDeVacinacao=@CustoDeVacinacao WHERE Id=@Id";
-
-            using(SqlConnection sqlConn = new SqlConnection(connectionString))
+            const string textoDeComando = "UPDATE AnimalSilvestre SET NomeDoAnimal=@NomeDoAnimal, NomeDaEspecie=@NomeDaEspecie, ClasseDeAnimal=@ClasseDeAnimal, DataDoResgate=@DataDoResgate, EmExtincao=@EmExtincao, CustoDeVacinacao=@CustoDeVacinacao WHERE Id=@Id";
+            using(SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
-                sqlConn.Open();
-                SqlCommand command = new SqlCommand(commandText, sqlConn);
-                command.Parameters.AddWithValue("@Id", animalAtualizado.Id);
-                command.Parameters.AddWithValue("@NomeDoAnimal", animalAtualizado.NomeDoAnimal);
-                command.Parameters.AddWithValue("@NomeDaEspecie", animalAtualizado.NomeDaEspecie);
-                command.Parameters.AddWithValue("@ClasseDeAnimal", animalAtualizado.Classe);
-                command.Parameters.AddWithValue("@DataDoResgate", animalAtualizado.DataDoResgate);
-                command.Parameters.AddWithValue("@EmExtincao", animalAtualizado.EmExtincao);
-                command.Parameters.AddWithValue("@CustoDeVacinacao", animalAtualizado.CustoDeVacinacao);
-                command.ExecuteNonQuery();
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                comandoSql.Parameters.AddWithValue("@Id", animalAtualizado.Id);
+                comandoSql.Parameters.AddWithValue("@NomeDoAnimal", animalAtualizado.NomeDoAnimal);
+                comandoSql.Parameters.AddWithValue("@NomeDaEspecie", animalAtualizado.NomeDaEspecie);
+                comandoSql.Parameters.AddWithValue("@ClasseDeAnimal", animalAtualizado.Classe);
+                comandoSql.Parameters.AddWithValue("@DataDoResgate", animalAtualizado.DataDoResgate);
+                comandoSql.Parameters.AddWithValue("@EmExtincao", animalAtualizado.EmExtincao);
+                comandoSql.Parameters.AddWithValue("@CustoDeVacinacao", animalAtualizado.CustoDeVacinacao);
+                comandoSql.ExecuteNonQuery();
             }
-
-            
         }
     }
 }

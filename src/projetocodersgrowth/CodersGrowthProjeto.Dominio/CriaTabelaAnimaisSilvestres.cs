@@ -11,8 +11,8 @@ namespace ControleDeAnimaisSilvestres.Dominio
     [Migration(20231122102000)]
     public class CriaTabelaAnimaisSilvestres : Migration
     {
-        int maximoDigitosInteiro = 10;
-        int maximoCasasDecimais = 2;
+        private const int maximoDigitosInteiro = 10;
+        private const int maximoCasasDecimais = 2;
 
         public override void Up()
         {
