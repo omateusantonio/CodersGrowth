@@ -2,7 +2,7 @@
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    public class Repositorio : IRepositorio
+    public class RepositorioSingleton : IRepositorio
     {
         protected ListaSingleton listaAnimais = ListaSingleton.Instancia();
 

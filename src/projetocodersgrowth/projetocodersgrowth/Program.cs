@@ -6,6 +6,7 @@ using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace projetocodersgrowth
 {
@@ -16,15 +17,28 @@ namespace projetocodersgrowth
         [STAThread]
         static void Main(string[] args)
         {
+            var builder = CriaHostBuilder();
+            var servicesProvider = builder.Build().Services;
+            var repositorio = servicesProvider.GetService<IRepositorio>();
+            var validacao = servicesProvider.GetService<ValidacaoDeDados>();
+
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
+
             ApplicationConfiguration.Initialize();
-            Application.Run(new Lista());
+            Application.Run(new Lista(repositorio, validacao));
         }
 
+        static IHostBuilder CriaHostBuilder()
+        {
+            return Host.CreateDefaultBuilder().ConfigureServices((context, services) => {
+                services.AddScoped<IRepositorio, RepositorioSql>();
+                services.AddScoped<ValidacaoDeDados>();
+            });
+        }
 
         private static ServiceProvider CreateServices()
         {
