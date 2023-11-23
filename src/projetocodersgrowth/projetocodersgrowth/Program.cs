@@ -20,7 +20,7 @@ namespace projetocodersgrowth
             var builder = CriaHostBuilder();
             var servicesProvider = builder.Build().Services;
             var repositorio = servicesProvider.GetService<IRepositorio>();
-            var validacao = servicesProvider.GetService<ValidacaoDeDados>();
+            var validacao = servicesProvider.GetService<ValidacaoDeDadosCondicional>();
 
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
@@ -36,7 +36,7 @@ namespace projetocodersgrowth
         {
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) => {
                 services.AddScoped<IRepositorio, RepositorioSql>();
-                services.AddScoped<ValidacaoDeDados>();
+                services.AddScoped<ValidacaoDeDadosCondicional>();
             });
         }
 

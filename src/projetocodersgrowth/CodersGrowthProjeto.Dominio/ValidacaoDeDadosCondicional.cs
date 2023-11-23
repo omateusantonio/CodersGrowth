@@ -9,7 +9,7 @@ using System.Threading.Channels;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    public class ValidacaoDeDados
+    public class ValidacaoDeDadosCondicional
     {
         public void CamposEstaoValidos(AnimalSilvestre animal)
         {

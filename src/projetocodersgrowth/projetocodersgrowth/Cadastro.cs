@@ -22,9 +22,9 @@ namespace ControleDeAnimaisSilvestres
         public AnimalSilvestre animalEditado = new AnimalSilvestre();
         public bool edicaoHabilitada;
 
-        private ValidacaoDeDados validar;
+        private ValidacaoDeDadosCondicional validar;
 
-        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeDados validacao)
+        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeDadosCondicional validacao)
         {
             this.validar = validacao;
             InitializeComponent();
