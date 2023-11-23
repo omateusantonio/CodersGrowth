@@ -37,26 +37,21 @@ namespace ControleDeAnimaisSilvestres.Dominio
             return _instance;
         }
 
-        public List<AnimalSilvestre> TrazerAnimais()
+        public List<AnimalSilvestre> ObterTodos()
         {
             return _instance._animais;
         }
 
-        public void InserirNovoAnimal(AnimalSilvestre animal)
+        public void Inserir(AnimalSilvestre animal)
         {
             animal.Id = id;
             _instance._animais.Add(animal);
             id++;
         }
 
-        public void RemoverAnimal(AnimalSilvestre animalSelecionado)
+        public void Remover(AnimalSilvestre animalSelecionado)
         {
             _instance._animais.Remove(animalSelecionado);
         }
-
-
-
-
-
     }
 }

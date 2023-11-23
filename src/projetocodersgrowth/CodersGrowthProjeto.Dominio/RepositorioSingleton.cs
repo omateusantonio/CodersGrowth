@@ -1,29 +1,24 @@
 ﻿using CodersGrowthProjeto.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ControleDeAnimaisSilvestres.Dominio
 {
-    public class Repositorio : IRepositorio
+    public class RepositorioSingleton : IRepositorio
     {
         protected ListaSingleton listaAnimais = ListaSingleton.Instancia();
 
         public List<AnimalSilvestre> ObterTodos()
         {
-            return listaAnimais.TrazerAnimais();
+            return listaAnimais.ObterTodos();
         }
 
         public void Criar(AnimalSilvestre novoAnimal)
         {
-            listaAnimais.InserirNovoAnimal(novoAnimal);
+            listaAnimais.Inserir(novoAnimal);
         }
 
         public AnimalSilvestre ObterPorId(int id)
         {
-            var animalSelecionado = (listaAnimais.TrazerAnimais()).FirstOrDefault(x => x.Id.Equals(id));
+            var animalSelecionado = listaAnimais.ObterTodos().FirstOrDefault(x => x.Id.Equals(id));
 
             return animalSelecionado;
         }
@@ -31,7 +26,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Remover(int id)
         {
             var animalASerRemovido = ObterPorId(id);
-            listaAnimais.RemoverAnimal(animalASerRemovido);
+            listaAnimais.Remover(animalASerRemovido);
         }
 
         public void Atualizar (AnimalSilvestre animalAtualizado)

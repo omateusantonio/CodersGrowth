@@ -14,6 +14,5 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Remover(int id);
         public AnimalSilvestre ObterPorId(int id);
         public void Atualizar(AnimalSilvestre animalSelecionado);
-        
     }
 }

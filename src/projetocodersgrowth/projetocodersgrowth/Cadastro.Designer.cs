@@ -59,7 +59,7 @@
             BotaoAdicionarAnimal.TabIndex = 7;
             BotaoAdicionarAnimal.Text = "Adicionar animal";
             BotaoAdicionarAnimal.UseVisualStyleBackColor = true;
-            BotaoAdicionarAnimal.Click += BotaoAdicionarAnimal_Click;
+            BotaoAdicionarAnimal.Click += AoClicarEmAdicionar;
             // 
             // BotaoCancelar
             // 
@@ -69,7 +69,7 @@
             BotaoCancelar.TabIndex = 8;
             BotaoCancelar.Text = "Cancelar";
             BotaoCancelar.UseVisualStyleBackColor = true;
-            BotaoCancelar.Click += BotaoCancelar_Click;
+            BotaoCancelar.Click += AoClicarEmCancelar;
             // 
             // GrupoCamposNovoAnimal
             // 
@@ -109,7 +109,6 @@
             RotuloPrecoDaVacinacao.Size = new Size(109, 15);
             RotuloPrecoDaVacinacao.TabIndex = 4;
             RotuloPrecoDaVacinacao.Text = "Preço da vacinação";
-            RotuloPrecoDaVacinacao.Click += label1_Click;
             // 
             // ComboBoxClasseDeAnimal
             // 
@@ -119,7 +118,6 @@
             ComboBoxClasseDeAnimal.Name = "ComboBoxClasseDeAnimal";
             ComboBoxClasseDeAnimal.Size = new Size(142, 23);
             ComboBoxClasseDeAnimal.TabIndex = 3;
-            ComboBoxClasseDeAnimal.SelectedIndexChanged += ComboBoxClasseDeAnimal_SelectedIndexChanged;
             // 
             // SelecaoDataDoResgate
             // 
