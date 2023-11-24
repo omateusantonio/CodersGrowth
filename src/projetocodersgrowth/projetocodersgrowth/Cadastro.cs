@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CodersGrowthProjeto.Dominio;
 using ControleDeAnimaisSilvestres.Dominio;
+using FluentValidation;
+using FluentValidation.Results;
 using projetocodersgrowth;
 
 namespace ControleDeAnimaisSilvestres
@@ -22,9 +24,9 @@ namespace ControleDeAnimaisSilvestres
         public AnimalSilvestre animalEditado = new AnimalSilvestre();
         public bool edicaoHabilitada;
 
-        private ValidacaoDeDadosCondicional validar;
+        private ValidacaoDeDadosFluentValidation validar;
 
-        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeDadosCondicional validacao)
+        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeDadosFluentValidation validacao)
         {
             this.validar = validacao;
             InitializeComponent();
@@ -83,13 +85,14 @@ namespace ControleDeAnimaisSilvestres
 
                 try
                 {
-                    validar.CamposEstaoValidos(_novoAnimal);
+                    var resultados = validar.Validate(_novoAnimal);
+                    validar.EnvioDeErros(resultados);
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Erro na adição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
 
             }
@@ -110,13 +113,14 @@ namespace ControleDeAnimaisSilvestres
 
                 try
                 {
-                    validar.CamposEstaoValidos(_novoAnimal);
+                    var resultados = validar.Validate(_novoAnimal);
+                    validar.EnvioDeErros(resultados);
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Erro na edição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
         }

@@ -7,9 +7,9 @@ namespace projetocodersgrowth
     public partial class Lista : Form
     {
         private readonly IRepositorio repositorio;
-        private ValidacaoDeDadosCondicional validacao;
+        private ValidacaoDeDadosFluentValidation validacao;
 
-        public Lista(IRepositorio repositorio, ValidacaoDeDadosCondicional validacao)
+        public Lista(IRepositorio repositorio, ValidacaoDeDadosFluentValidation validacao)
         {
             this.repositorio = repositorio;
             this.validacao = validacao;
