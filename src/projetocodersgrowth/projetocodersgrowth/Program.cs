@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using ControleDeAnimaisSilvestres.Dominio;
+using ControleDeAnimaisSilvestres.Dominio.Infraestrutura;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 

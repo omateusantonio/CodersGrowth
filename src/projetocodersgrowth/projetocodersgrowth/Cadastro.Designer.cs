@@ -1,4 +1,6 @@
-﻿namespace ControleDeAnimaisSilvestres
+﻿using ControleDeAnimaisSilvestres.Dominio;
+
+namespace ControleDeAnimaisSilvestres
 {
     partial class Cadastro
     {
@@ -188,11 +190,11 @@
             // 
             // animalSilvestreBindingSource
             // 
-            animalSilvestreBindingSource.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
+            animalSilvestreBindingSource.DataSource = typeof(AnimalSilvestre);
             // 
             // animalSilvestreBindingSource1
             // 
-            animalSilvestreBindingSource1.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
+            animalSilvestreBindingSource1.DataSource = typeof(AnimalSilvestre);
             // 
             // contextMenuStrip1
             // 

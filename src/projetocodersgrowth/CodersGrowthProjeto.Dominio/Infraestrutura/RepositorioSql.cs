@@ -1,8 +1,7 @@
-﻿using CodersGrowthProjeto.Dominio;
-using System.Configuration;
+﻿using System.Configuration;
 using Microsoft.Data.SqlClient;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Dominio.Infraestrutura
 {
     public class RepositorioSql : IRepositorio
     {
@@ -17,13 +16,13 @@ namespace ControleDeAnimaisSilvestres.Dominio
                 SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
                 var reader = comandoSql.ExecuteReader();
 
-                while(reader.Read())
+                while (reader.Read())
                 {
                     var animal = new AnimalSilvestre();
                     animal.Id = Convert.ToInt32(reader["Id"]);
                     animal.NomeDoAnimal = reader["NomeDoAnimal"].ToString();
                     animal.NomeDaEspecie = reader["NomeDaEspecie"].ToString();
-                    animal.Classe = (AnimalSilvestre.ClasseDeAnimal)System.Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
+                    animal.Classe = (AnimalSilvestre.ClasseDeAnimal)Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
                     animal.DataDoResgate = Convert.ToDateTime(reader["DataDoResgate"]);
                     animal.EmExtincao = (bool)reader["EmExtincao"];
                     animal.CustoDeVacinacao = (decimal)reader["CustoDeVacinacao"];
@@ -77,7 +76,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
                     animalSelecionado.Id = Convert.ToInt32(reader["Id"]);
                     animalSelecionado.NomeDoAnimal = reader["NomeDoAnimal"].ToString();
                     animalSelecionado.NomeDaEspecie = reader["NomeDaEspecie"].ToString();
-                    animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)System.Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
+                    animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
                     animalSelecionado.DataDoResgate = (DateTime)reader["DataDoResgate"];
                     animalSelecionado.EmExtincao = (bool)reader["EmExtincao"];
                     animalSelecionado.CustoDeVacinacao = (decimal)reader["CustoDeVacinacao"];
@@ -89,7 +88,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
         public void Atualizar(AnimalSilvestre animalAtualizado)
         {
             const string textoDeComando = "UPDATE AnimalSilvestre SET NomeDoAnimal=@NomeDoAnimal, NomeDaEspecie=@NomeDaEspecie, ClasseDeAnimal=@ClasseDeAnimal, DataDoResgate=@DataDoResgate, EmExtincao=@EmExtincao, CustoDeVacinacao=@CustoDeVacinacao WHERE Id=@Id";
-            using(SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
                 conexaoSql.Open();
                 SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);

@@ -1,11 +1,10 @@
-﻿using CodersGrowthProjeto.Dominio;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Dominio.Infraestrutura
 {
     public sealed class ListaSingleton
     {
@@ -28,7 +27,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
 
             lock (locker)
             {
-                if (_instance == null )
+                if (_instance == null)
                 {
                     _instance = new ListaSingleton();
                 }
