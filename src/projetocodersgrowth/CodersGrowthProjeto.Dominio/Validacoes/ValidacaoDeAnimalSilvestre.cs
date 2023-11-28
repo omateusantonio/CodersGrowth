@@ -1,18 +1,13 @@
 ﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
 {
-    public class ValidacaoDeDadosFluentValidation : AbstractValidator<AnimalSilvestre>
+    public class ValidacaoDeAnimalSilvestre : AbstractValidator<AnimalSilvestre>
     {
-        private const decimal precoMinimoDeVacinacao = 10;
-        public ValidacaoDeDadosFluentValidation()
+        private const decimal PrecoMinimoDeVacinacao = 10;
+        public ValidacaoDeAnimalSilvestre()
         {
             RuleFor(animal => animal.NomeDoAnimal)
                 .NotNull()
@@ -26,10 +21,11 @@ namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
 
             RuleFor(animal => animal.DataDoResgate)
                 .LessThanOrEqualTo(DateTime.UtcNow)
+                .Must(DataDiferenteDe00)
                 .WithMessage("A data de resgate não pode ser menor do que a data atual;");
 
             RuleFor(animal => animal.CustoDeVacinacao)
-                .GreaterThan(precoMinimoDeVacinacao)
+                .GreaterThan(PrecoMinimoDeVacinacao)
                 .WithMessage("O preço da vacinação deve ser maior do que R$ 10;");
 
             RuleFor(animal => animal.CustoDeVacinacao)
@@ -43,6 +39,11 @@ namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
             {
                 throw new Exception(resultados.ToString());
             }
+        }
+
+        private bool DataDiferenteDe00 (DateTime data)
+        {
+            return !data.Equals(default(DateTime));
         }
     }
 }

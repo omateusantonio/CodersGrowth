@@ -13,7 +13,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.Infra", "ControleDeAnimaisSilvestres.Infra\ControleDeAnimaisSilvestres.Infra.csproj", "{37B87599-9E46-498B-B79B-FB701F915BCA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7B6569BF-3951-46E2-A2D8-B76C2D25AB26} = {7B6569BF-3951-46E2-A2D8-B76C2D25AB26}
-		{7D43A9C6-4201-4F07-B278-C4C1344739C1} = {7D43A9C6-4201-4F07-B278-C4C1344739C1}
 	EndProjectSection
 EndProject
 Global

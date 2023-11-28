@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using Microsoft.Data.SqlClient;
+using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
 namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {

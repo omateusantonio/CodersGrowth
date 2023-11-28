@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodersGrowthProjeto.Dominio\ControleDeAnimaisSilvestres.Dominio.csproj" />
+    <ProjectReference Include="..\ControleDeAnimaisSilvestres.Infra\ControleDeAnimaisSilvestres.Infra.csproj" />
   </ItemGroup>
 
 </Project>
