@@ -1,8 +1,7 @@
 ﻿using System.Configuration;
-using ControleDeAnimaisSilvestres.Dominio.Objetos;
 using Microsoft.Data.SqlClient;
 
-namespace ControleDeAnimaisSilvestres.Dominio.Infraestrutura
+namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
     public class RepositorioSql : IRepositorio
     {

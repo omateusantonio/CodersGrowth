@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ControleDeAnimaisSilvestres.Dominio.Objetos;
+using ControleDeAnimaisSilvestres;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
     public interface IRepositorio
     {

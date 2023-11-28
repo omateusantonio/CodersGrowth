@@ -1,4 +1,4 @@
-﻿using ControleDeAnimaisSilvestres.Dominio;
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
 namespace projetocodersgrowth
 {

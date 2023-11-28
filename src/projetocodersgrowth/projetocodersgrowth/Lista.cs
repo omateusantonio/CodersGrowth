@@ -1,5 +1,6 @@
 using ControleDeAnimaisSilvestres;
 using ControleDeAnimaisSilvestres.Dominio;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 
 namespace projetocodersgrowth
 {

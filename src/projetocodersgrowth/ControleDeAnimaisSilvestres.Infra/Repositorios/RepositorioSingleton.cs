@@ -1,6 +1,4 @@
-﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
-
-namespace ControleDeAnimaisSilvestres.Dominio.Infraestrutura
+﻿namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
     public class RepositorioSingleton : IRepositorio
     {

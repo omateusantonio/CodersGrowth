@@ -9,7 +9,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ControleDeAnimaisSilvestres.Dominio;
+using ControleDeAnimaisSilvestres.Dominio.Objetos;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 using FluentValidation;
 using FluentValidation.Results;
 using projetocodersgrowth;
@@ -67,7 +68,7 @@ namespace ControleDeAnimaisSilvestres
 
         public void AoClicarEmAdicionar(object sender, EventArgs e)
         {
-            if (!edicaoHabilitada)
+            try
             {
                 _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
                 _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
@@ -79,49 +80,19 @@ namespace ControleDeAnimaisSilvestres
                 {
                     CaixaDeTextoPrecoDaVacinacao.Text = "0";
                 }
-                
+
                 _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
 
-                try
-                {
-                    var resultados = validar.Validate(_novoAnimal);
-                    validar.EnvioDeErros(resultados);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Erro na adição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
-
+                var resultados = validar.Validate(_novoAnimal);
+                validar.EnvioDeErros(resultados);
+                DialogResult = DialogResult.OK;
+                Close();
             }
-            else
+            catch (Exception ex)
             {
-                _animalSelecionado.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-                _animalSelecionado.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-                _animalSelecionado.DataDoResgate = SelecaoDataDoResgate.Value;
-                _animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _animalSelecionado.EmExtincao = ChecaAnimalEmExtincao.Checked;
-
-                if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
-                {
-                    CaixaDeTextoPrecoDaVacinacao.Text = "0";
-                }
-                
-                _animalSelecionado.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
-                try
-                {
-                    var resultados = validar.Validate(_novoAnimal);
-                    validar.EnvioDeErros(resultados);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Erro na edição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
+                MessageBox.Show(ex.Message, "Erro na edição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+
         }
 
         private void RetornaMascara(object sender, EventArgs e)

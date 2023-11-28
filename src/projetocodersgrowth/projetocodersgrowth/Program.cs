@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Linq;
 using ControleDeAnimaisSilvestres.Dominio;
 using ControleDeAnimaisSilvestres.Dominio.Infraestrutura;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 

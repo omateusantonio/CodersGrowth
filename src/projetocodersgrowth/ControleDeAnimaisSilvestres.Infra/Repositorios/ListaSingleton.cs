@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
-namespace ControleDeAnimaisSilvestres.Dominio.Infraestrutura
+namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
     public sealed class ListaSingleton
     {

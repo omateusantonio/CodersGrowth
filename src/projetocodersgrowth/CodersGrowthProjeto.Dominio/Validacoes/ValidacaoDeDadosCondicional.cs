@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Threading.Channels;
+using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
 {
     public class ValidacaoDeDadosCondicional
     {

@@ -1,4 +1,4 @@
-﻿namespace ControleDeAnimaisSilvestres.Dominio
+﻿namespace ControleDeAnimaisSilvestres.Dominio.Objetos
 {
     public class AnimalSilvestre
     {
