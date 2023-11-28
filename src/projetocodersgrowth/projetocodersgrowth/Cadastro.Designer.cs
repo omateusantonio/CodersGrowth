@@ -1,4 +1,6 @@
-﻿namespace ControleDeAnimaisSilvestres
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
+
+namespace ControleDeAnimaisSilvestres
 {
     partial class Cadastro
     {
@@ -32,6 +34,7 @@
             BotaoAdicionarAnimal = new Button();
             BotaoCancelar = new Button();
             GrupoCamposNovoAnimal = new GroupBox();
+            CaixaDeTextoPrecoDaVacinacao = new TextBox();
             ChecaAnimalEmExtincao = new CheckBox();
             RotuloPrecoDaVacinacao = new Label();
             ComboBoxClasseDeAnimal = new ComboBox();
@@ -45,7 +48,6 @@
             animalSilvestreBindingSource = new BindingSource(components);
             animalSilvestreBindingSource1 = new BindingSource(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
-            CaixaDeTextoPrecoDaVacinacao = new TextBox();
             GrupoCamposNovoAnimal.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)animalSilvestreBindingSource1).BeginInit();
@@ -56,7 +58,7 @@
             BotaoAdicionarAnimal.Location = new Point(32, 361);
             BotaoAdicionarAnimal.Name = "BotaoAdicionarAnimal";
             BotaoAdicionarAnimal.Size = new Size(100, 23);
-            BotaoAdicionarAnimal.TabIndex = 7;
+            BotaoAdicionarAnimal.TabIndex = 9;
             BotaoAdicionarAnimal.Text = "Adicionar animal";
             BotaoAdicionarAnimal.UseVisualStyleBackColor = true;
             BotaoAdicionarAnimal.Click += AoClicarEmAdicionar;
@@ -66,7 +68,7 @@
             BotaoCancelar.Location = new Point(197, 361);
             BotaoCancelar.Name = "BotaoCancelar";
             BotaoCancelar.Size = new Size(113, 23);
-            BotaoCancelar.TabIndex = 8;
+            BotaoCancelar.TabIndex = 10;
             BotaoCancelar.Text = "Cancelar";
             BotaoCancelar.UseVisualStyleBackColor = true;
             BotaoCancelar.Click += AoClicarEmCancelar;
@@ -90,6 +92,13 @@
             GrupoCamposNovoAnimal.TabIndex = 1;
             GrupoCamposNovoAnimal.TabStop = false;
             GrupoCamposNovoAnimal.Text = "Novo Animal";
+            // 
+            // CaixaDeTextoPrecoDaVacinacao
+            // 
+            CaixaDeTextoPrecoDaVacinacao.Location = new Point(156, 220);
+            CaixaDeTextoPrecoDaVacinacao.Name = "CaixaDeTextoPrecoDaVacinacao";
+            CaixaDeTextoPrecoDaVacinacao.Size = new Size(142, 23);
+            CaixaDeTextoPrecoDaVacinacao.TabIndex = 8;
             // 
             // ChecaAnimalEmExtincao
             // 
@@ -181,23 +190,16 @@
             // 
             // animalSilvestreBindingSource
             // 
-            animalSilvestreBindingSource.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
+            animalSilvestreBindingSource.DataSource = typeof(AnimalSilvestre);
             // 
             // animalSilvestreBindingSource1
             // 
-            animalSilvestreBindingSource1.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
+            animalSilvestreBindingSource1.DataSource = typeof(AnimalSilvestre);
             // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
-            // 
-            // CaixaDeTextoPrecoDaVacinacao
-            // 
-            CaixaDeTextoPrecoDaVacinacao.Location = new Point(156, 220);
-            CaixaDeTextoPrecoDaVacinacao.Name = "CaixaDeTextoPrecoDaVacinacao";
-            CaixaDeTextoPrecoDaVacinacao.Size = new Size(142, 23);
-            CaixaDeTextoPrecoDaVacinacao.TabIndex = 8;
             // 
             // Cadastro
             // 

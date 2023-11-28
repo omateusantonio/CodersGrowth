@@ -1,6 +1,7 @@
-﻿using CodersGrowthProjeto.Dominio;
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Infra.Repositorios
+
 {
     public class RepositorioSingleton : IRepositorio
     {
@@ -29,7 +30,7 @@ namespace ControleDeAnimaisSilvestres.Dominio
             listaAnimais.Remover(animalASerRemovido);
         }
 
-        public void Atualizar (AnimalSilvestre animalAtualizado)
+        public void Atualizar(AnimalSilvestre animalAtualizado)
         {
             var animalASerAtualizado = ObterPorId(animalAtualizado.Id);
 

@@ -1,11 +1,6 @@
-﻿using CodersGrowthProjeto.Dominio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
     public interface IRepositorio
     {

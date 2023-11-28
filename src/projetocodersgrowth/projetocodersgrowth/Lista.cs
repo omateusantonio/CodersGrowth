@@ -1,15 +1,16 @@
-using CodersGrowthProjeto.Dominio;
 using ControleDeAnimaisSilvestres;
-using ControleDeAnimaisSilvestres.Dominio;
+using ControleDeAnimaisSilvestres.Dominio.Objetos;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
+using ControleDeAnimaisSilvestres.Infra.Repositorios;
 
 namespace projetocodersgrowth
 {
     public partial class Lista : Form
     {
         private readonly IRepositorio repositorio;
-        private ValidacaoDeDados validacao;
+        private ValidacaoDeAnimalSilvestre validacao;
 
-        public Lista(IRepositorio repositorio, ValidacaoDeDados validacao)
+        public Lista(IRepositorio repositorio, ValidacaoDeAnimalSilvestre validacao)
         {
             this.repositorio = repositorio;
             this.validacao = validacao;
@@ -47,7 +48,7 @@ namespace projetocodersgrowth
                 
                 if (resultadoDoCadastro == DialogResult.OK)
                 {
-                    var animalAtualizado = formularioEdicao._animalSelecionado;
+                    var animalAtualizado = formularioEdicao._animal;
                     repositorio.Atualizar(animalAtualizado);
                 }
 

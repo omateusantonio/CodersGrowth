@@ -1,7 +1,10 @@
 using System;
 using System.Configuration;
 using System.Linq;
-using ControleDeAnimaisSilvestres.Dominio;
+using ControleDeAnimaisSilvestres.Dominio.Objetos;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
+using ControleDeAnimaisSilvestres.Infra.Migracoes;
+using ControleDeAnimaisSilvestres.Infra.Repositorios;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 
@@ -20,7 +23,7 @@ namespace projetocodersgrowth
             var builder = CriaHostBuilder();
             var servicesProvider = builder.Build().Services;
             var repositorio = servicesProvider.GetService<IRepositorio>();
-            var validacao = servicesProvider.GetService<ValidacaoDeDados>();
+            var validacao = servicesProvider.GetService<ValidacaoDeAnimalSilvestre>();
 
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
@@ -36,7 +39,7 @@ namespace projetocodersgrowth
         {
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) => {
                 services.AddScoped<IRepositorio, RepositorioSql>();
-                services.AddScoped<ValidacaoDeDados>();
+                services.AddScoped<ValidacaoDeAnimalSilvestre>();
             });
         }
 
@@ -47,7 +50,7 @@ namespace projetocodersgrowth
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
                     .WithGlobalConnectionString(stringDeConexao)
-                    .ScanIn(typeof(CriaTabelaAnimaisSilvestres).Assembly).For.Migrations())
+                    .ScanIn(typeof(_20231122102000_CriaTabelaAnimaisSilvestres).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }

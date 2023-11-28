@@ -1,4 +1,6 @@
-﻿namespace projetocodersgrowth
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
+
+namespace projetocodersgrowth
 {
     partial class Lista
     {
@@ -118,7 +120,7 @@
             // 
             // animalSilvestreBindingSource1
             // 
-            animalSilvestreBindingSource1.DataSource = typeof(CodersGrowthProjeto.Dominio.AnimalSilvestre);
+            animalSilvestreBindingSource1.DataSource = typeof(AnimalSilvestre);
             // 
             // nomeDoAnimalDataGridViewTextBoxColumn
             // 

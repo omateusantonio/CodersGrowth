@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodersGrowthProjeto.Dominio;
-using FluentMigrator;
+﻿using FluentMigrator;
 
-namespace ControleDeAnimaisSilvestres.Dominio
+namespace ControleDeAnimaisSilvestres.Infra.Migracoes
 {
     [Migration(20231122102000)]
-    public class CriaTabelaAnimaisSilvestres : Migration
+    public class _20231122102000_CriaTabelaAnimaisSilvestres : Migration
     {
         private const int maximoDigitosInteiro = 10;
         private const int maximoCasasDecimais = 2;

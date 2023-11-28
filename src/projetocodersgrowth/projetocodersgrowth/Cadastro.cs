@@ -1,62 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Text;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CodersGrowthProjeto.Dominio;
-using ControleDeAnimaisSilvestres.Dominio;
-using projetocodersgrowth;
+﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
+using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 
 namespace ControleDeAnimaisSilvestres
 {
     public partial class Cadastro : Form
     {
-        public AnimalSilvestre _novoAnimal = new AnimalSilvestre();
-        public AnimalSilvestre _animalSelecionado = new AnimalSilvestre();
-        public AnimalSilvestre animalEditado = new AnimalSilvestre();
+        private const string ZeroString = "0";
+        public AnimalSilvestre _animal = new AnimalSilvestre();
         public bool edicaoHabilitada;
 
-        private ValidacaoDeDados validar;
+        private ValidacaoDeAnimalSilvestre validar;
 
-        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeDados validacao)
+        public Cadastro(AnimalSilvestre animalSilvestre, bool edicaoDeItem, ValidacaoDeAnimalSilvestre validacao)
         {
             this.validar = validacao;
             InitializeComponent();
-            InitializeComboBox(); // preencher a combobox com os itens que estao dentro do enum
+            IniciarComboBox();
             AplicarMascaraFinal(CaixaDeTextoPrecoDaVacinacao);
 
-            _novoAnimal = animalSilvestre;
+            _animal = animalSilvestre;
             edicaoHabilitada = edicaoDeItem;
 
             if (edicaoHabilitada)
             {
                 BotaoAdicionarAnimal.Text = "Atualizar";
-                _animalSelecionado = animalSilvestre;
+                _animal = animalSilvestre;
                 PreencherCamposDoFormularioComItemSelecionado();
             }
         }
 
-        private void InitializeComboBox()
+        private void IniciarComboBox()
         {
             ComboBoxClasseDeAnimal.Items.AddRange(Enum.GetNames(typeof(AnimalSilvestre.ClasseDeAnimal)));
-            ComboBoxClasseDeAnimal.SelectedIndex = 0; //deixa o campo setado como o primeiro item do enum
+            ComboBoxClasseDeAnimal.SelectedIndex = (int)decimal.Zero;
         }
 
-        private void PreencherCamposDoFormularioComItemSelecionado()
-        {
-            CaixaDeTextoNomeDoAnimal.Text = _animalSelecionado.NomeDoAnimal;
-            CaixaDeTextoEspecieDoAnimal.Text = _animalSelecionado.NomeDaEspecie;
-            SelecaoDataDoResgate.Value = _animalSelecionado.DataDoResgate;
-            ComboBoxClasseDeAnimal.SelectedIndex = Convert.ToInt32(_animalSelecionado.Classe);
-            ChecaAnimalEmExtincao.Checked = _animalSelecionado.EmExtincao;
-            CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animalSelecionado.CustoDeVacinacao/*/100*/);
-        }
 
         private void AoClicarEmCancelar(object sender, EventArgs e)
         {
@@ -66,59 +44,19 @@ namespace ControleDeAnimaisSilvestres
 
         public void AoClicarEmAdicionar(object sender, EventArgs e)
         {
-            if (!edicaoHabilitada)
+            try
             {
-                _novoAnimal.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-                _novoAnimal.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-                _novoAnimal.DataDoResgate = SelecaoDataDoResgate.Value;
-                _novoAnimal.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _novoAnimal.EmExtincao = ChecaAnimalEmExtincao.Checked;
-
-                if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
-                {
-                    CaixaDeTextoPrecoDaVacinacao.Text = "0";
-                }
-                
-                _novoAnimal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
-                try
-                {
-                    validar.CamposEstaoValidos(_novoAnimal);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
+                var objetoAnimalPreenchido = PreencherCamposDoObjeto(_animal);
+                var resultados = validar.Validate(objetoAnimalPreenchido);
+                validar.EnvioDeErros(resultados);
+                DialogResult = DialogResult.OK;
+                Close();
             }
-            else
+            catch (Exception ex)
             {
-                _animalSelecionado.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
-                _animalSelecionado.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
-                _animalSelecionado.DataDoResgate = SelecaoDataDoResgate.Value;
-                _animalSelecionado.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
-                _animalSelecionado.EmExtincao = ChecaAnimalEmExtincao.Checked;
-
-                if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
-                {
-                    CaixaDeTextoPrecoDaVacinacao.Text = "0";
-                }
-                
-                _animalSelecionado.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
-
-                try
-                {
-                    validar.CamposEstaoValidos(_novoAnimal);
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                MessageBox.Show(ex.Message, "Erro na edição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
+
         }
 
         private void RetornaMascara(object sender, EventArgs e)
@@ -155,5 +93,35 @@ namespace ControleDeAnimaisSilvestres
             txt.Leave += RetornaMascara;
             txt.KeyPress += PermitirApenasNumeros;
         }
+
+        private AnimalSilvestre PreencherCamposDoObjeto(AnimalSilvestre animalRecebido)
+        {
+            var animal = animalRecebido;
+
+            animalRecebido.NomeDoAnimal = CaixaDeTextoNomeDoAnimal.Text;
+            animalRecebido.NomeDaEspecie = CaixaDeTextoEspecieDoAnimal.Text;
+            animalRecebido.DataDoResgate = SelecaoDataDoResgate.Value;
+            animalRecebido.Classe = (AnimalSilvestre.ClasseDeAnimal)ComboBoxClasseDeAnimal.SelectedIndex;
+            animalRecebido.EmExtincao = ChecaAnimalEmExtincao.Checked;
+
+            if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
+            {
+                CaixaDeTextoPrecoDaVacinacao.Text = ZeroString;
+            }
+
+            _animal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());
+
+            return animal;
+        }
+        private void PreencherCamposDoFormularioComItemSelecionado()
+        {
+            CaixaDeTextoNomeDoAnimal.Text = _animal.NomeDoAnimal;
+            CaixaDeTextoEspecieDoAnimal.Text = _animal.NomeDaEspecie;
+            SelecaoDataDoResgate.Value = _animal.DataDoResgate;
+            ComboBoxClasseDeAnimal.SelectedIndex = Convert.ToInt32(_animal.Classe);
+            ChecaAnimalEmExtincao.Checked = _animal.EmExtincao;
+            CaixaDeTextoPrecoDaVacinacao.Text = Convert.ToString(_animal.CustoDeVacinacao);
+        }
+
     }
 }
