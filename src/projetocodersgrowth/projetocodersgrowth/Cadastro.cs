@@ -5,6 +5,7 @@ namespace ControleDeAnimaisSilvestres
 {
     public partial class Cadastro : Form
     {
+        private const string ZeroString = "0";
         public AnimalSilvestre _animal = new AnimalSilvestre();
         public bool edicaoHabilitada;
 
@@ -31,7 +32,7 @@ namespace ControleDeAnimaisSilvestres
         private void IniciarComboBox()
         {
             ComboBoxClasseDeAnimal.Items.AddRange(Enum.GetNames(typeof(AnimalSilvestre.ClasseDeAnimal)));
-            ComboBoxClasseDeAnimal.SelectedIndex = 0;
+            ComboBoxClasseDeAnimal.SelectedIndex = (int)decimal.Zero;
         }
 
 
@@ -105,7 +106,7 @@ namespace ControleDeAnimaisSilvestres
 
             if (string.IsNullOrEmpty(CaixaDeTextoPrecoDaVacinacao.Text))
             {
-                CaixaDeTextoPrecoDaVacinacao.Text = "0";
+                CaixaDeTextoPrecoDaVacinacao.Text = ZeroString;
             }
 
             _animal.CustoDeVacinacao = Convert.ToDecimal((CaixaDeTextoPrecoDaVacinacao.Text).Replace("R$", "").Trim());

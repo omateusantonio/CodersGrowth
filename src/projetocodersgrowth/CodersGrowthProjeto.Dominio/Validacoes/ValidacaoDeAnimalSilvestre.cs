@@ -21,8 +21,11 @@ namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
 
             RuleFor(animal => animal.DataDoResgate)
                 .LessThanOrEqualTo(DateTime.UtcNow)
-                .Must(DataDiferenteDe00)
                 .WithMessage("A data de resgate não pode ser menor do que a data atual;");
+
+            RuleFor(animal => animal.DataDoResgate)
+                .Must(DataEhValida)
+                .WithMessage("A data deve ser válida;");
 
             RuleFor(animal => animal.CustoDeVacinacao)
                 .GreaterThan(PrecoMinimoDeVacinacao)
@@ -41,7 +44,7 @@ namespace ControleDeAnimaisSilvestres.Dominio.Validacoes
             }
         }
 
-        private bool DataDiferenteDe00 (DateTime data)
+        private bool DataEhValida (DateTime data)
         {
             return !data.Equals(default(DateTime));
         }
