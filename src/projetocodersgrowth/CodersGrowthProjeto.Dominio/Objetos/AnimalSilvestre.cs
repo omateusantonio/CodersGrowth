@@ -1,4 +1,5 @@
 ﻿using LinqToDB.Mapping;
+using System.ComponentModel.DataAnnotations;
 
 namespace ControleDeAnimaisSilvestres.Dominio.Objetos
 {
@@ -16,9 +17,9 @@ namespace ControleDeAnimaisSilvestres.Dominio.Objetos
         [NotNull]
         public DateTime DataDoResgate { get; set; }
 
-        [NotNull]
+        [Column("ClasseDeAnimal"), NotNull]
         public ClasseDeAnimal Classe { get; set; }
-
+        
         public enum ClasseDeAnimal
         {
             Anfibio,
@@ -34,6 +35,7 @@ namespace ControleDeAnimaisSilvestres.Dominio.Objetos
         [NotNull]
         public decimal CustoDeVacinacao { get; set; }
 
+        
         public AnimalSilvestre Copiar()
         {
             return (AnimalSilvestre)MemberwiseClone();

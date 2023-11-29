@@ -38,7 +38,7 @@ namespace projetocodersgrowth
         static IHostBuilder CriaHostBuilder()
         {
             return Host.CreateDefaultBuilder().ConfigureServices((context, services) => {
-                services.AddScoped<IRepositorio, RepositorioSql>();
+                services.AddScoped<IRepositorio, RepositorioLinqToDb>();
                 services.AddScoped<ValidacaoDeAnimalSilvestre>();
             });
         }
