@@ -15,72 +15,60 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public List<AnimalSilvestre> ObterTodos()
         {
-            using var bancoDeDados = new DataContext(
-                new DataOptions()
-                .UseSqlServer(stringDeConexao));
-
-            var consulta = from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
-                        select colunas;
-
-            return consulta.ToList();
+            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            {
+                var consulta = from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
+                               select colunas;
+                return consulta.ToList();
+            }
         }
+
         public void Criar(AnimalSilvestre animalNovo)
         {
-
-            using var bancoDeDados = new DataContext(
-                new DataOptions()
-                .UseSqlServer(stringDeConexao));
-
-            bancoDeDados.Insert(animalNovo);
-            
+            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            {
+                bancoDeDados.Insert(animalNovo);
+            }
         }
+
         public void Remover(int id)
         {
-            using var bancoDeDados = new DataContext(
-                new DataOptions()
-                .UseSqlServer(stringDeConexao));
-
-            bancoDeDados
+            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            {
+                bancoDeDados
                 .GetTable<AnimalSilvestre>()
                 .Where(colunas => colunas.Id == id)
                 .Delete();
-                           
+            }
         }
+
         public AnimalSilvestre ObterPorId(int id)
         {
-            using var bancoDeDados = new DataContext(
-                new DataOptions()
-                .UseSqlServer(stringDeConexao));
-
-            var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
+            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            {
+                var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                            where colunas.Id == id
                            select colunas).ToList();
-
-            return TransformaConsultaEmObjeto(consulta, id);
+            return consulta.FirstOrDefault(x => x.Id.Equals(id));
+            }
         }
+
         public void Atualizar(AnimalSilvestre animalSelecionado)
         {
-            using var bancoDeDados = new DataContext(
+            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            {
                 new DataOptions()
-                .UseSqlServer(stringDeConexao));
-
+                .UseSqlServer(stringDeConexao);
             bancoDeDados.Update(animalSelecionado);              
+            }
         }
 
         private DataContext AbreConexaoComBancoDeDados ()
         {
-            using var conexao = new DataContext(
+            var conexao = new DataContext(
                 new DataOptions()
                 .UseSqlServer(stringDeConexao));
-
             return conexao;
-        }
-
-        private AnimalSilvestre TransformaConsultaEmObjeto (List<AnimalSilvestre> consulta, int idAnimal)
-        {
-            var listaConvertida = consulta.FirstOrDefault(x => x.Id.Equals(idAnimal));
-
-            return listaConvertida;
         }
     }
 }
