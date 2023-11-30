@@ -1,11 +1,6 @@
 ﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 using LinqToDB;
-using LinqToDB.Data;
-using LinqToDB.Common;
 using System.Configuration;
-using System.Net.Http.Headers;
-using LinqToDB.DataProvider.MySql;
-using System.Security.Cryptography;
 
 namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 {
@@ -15,7 +10,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public List<AnimalSilvestre> ObterTodos()
         {
-            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            using (var bancoDeDados = ObterConexao())
             {
                 var consulta = from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                                select colunas;
@@ -25,7 +20,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public void Criar(AnimalSilvestre animalNovo)
         {
-            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            using (var bancoDeDados = ObterConexao())
             {
                 bancoDeDados.Insert(animalNovo);
             }
@@ -33,7 +28,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public void Remover(int id)
         {
-            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            using (var bancoDeDados = ObterConexao())
             {
                 bancoDeDados
                 .GetTable<AnimalSilvestre>()
@@ -44,7 +39,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public AnimalSilvestre ObterPorId(int id)
         {
-            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            using (var bancoDeDados = ObterConexao())
             {
                 var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                            where colunas.Id == id
@@ -55,7 +50,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public void Atualizar(AnimalSilvestre animalSelecionado)
         {
-            using (var bancoDeDados = AbreConexaoComBancoDeDados())
+            using (var bancoDeDados = ObterConexao())
             {
                 new DataOptions()
                 .UseSqlServer(stringDeConexao);
@@ -63,7 +58,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             }
         }
 
-        private DataContext AbreConexaoComBancoDeDados ()
+        private DataContext ObterConexao ()
         {
             var conexao = new DataContext(
                 new DataOptions()
