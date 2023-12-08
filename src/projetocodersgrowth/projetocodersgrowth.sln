@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres
 		{7B6569BF-3951-46E2-A2D8-B76C2D25AB26} = {7B6569BF-3951-46E2-A2D8-B76C2D25AB26}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleDeAnimaisSilvestres.WebApp", "ControleDeAnimaisSilvestres.WebApp\ControleDeAnimaisSilvestres.WebApp.csproj", "{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
