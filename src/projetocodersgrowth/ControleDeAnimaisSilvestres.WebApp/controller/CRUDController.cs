@@ -9,7 +9,7 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
 
     public class CRUDController : ControllerBase
     {
-        private readonly RepositorioSql servico;
+        private readonly RepositorioLinqToDb servico;
 
         [Route("~/api/ObterTodosAnimais")]
         [HttpGet]
