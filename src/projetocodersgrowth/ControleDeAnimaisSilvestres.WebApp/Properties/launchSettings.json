@@ -24,7 +24,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings:UserDatabase": "Data Source=DESKTOP-K902K2B\\MSSQLSERVER01;Initial Catalog=BancoListaDeAnimais;User ID=sa;Password=sap@123"
       }
     }
   }
