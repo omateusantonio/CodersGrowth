@@ -2,6 +2,10 @@ using ControleDeAnimaisSilvestres.Infra.Repositorios;
 using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 using ControleDeAnimaisSilvestres.Infra.Migracoes;
 using FluentMigrator.Runner;
+using LinqToDB;
+using LinqToDB.AspNet;
+using LinqToDB.AspNet.Logging;
+
 
 namespace ControleDeAnimaisSilvestres.WebApp
 {
@@ -12,14 +16,19 @@ namespace ControleDeAnimaisSilvestres.WebApp
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
 
+            var stringDeConexao = builder.Configuration.GetConnectionString("_BancoDeDados");
+
+            builder.Services.AddLinqToDB((provider, options) => options
+            .UseSqlServer(stringDeConexao)
+            .UseDefaultLogging(provider));
+
+            builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();
+            builder.Services.AddScoped<ValidacaoDeAnimalSilvestre>();
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            builder.Services.AddScoped<IRepositorio, RepositorioLinqToDb>();
-            builder.Services.AddControllers();
-
 
             var app = builder.Build();
 
