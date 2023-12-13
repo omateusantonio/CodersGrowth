@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="controller\CRUDController.cs" />
+    <Content Include="controller\AnimalSilvestreController.cs" />
     <Content Include="i18n\i18n.properties" />
   </ItemGroup>
 

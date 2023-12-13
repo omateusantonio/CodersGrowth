@@ -6,40 +6,46 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleDeAnimaisSilvestres.WebApp.controller
 {
-    [Produces("application/json")]
-    [Route("api/animais")]
     [ApiController]
-    public class CRUDController : ControllerBase
+    [Route("api/animais")]
+    public class AnimalSilvestreController : ControllerBase
     {
         private readonly IRepositorio servico;
         private ValidacaoDeAnimalSilvestre _validacao;
 
-        public CRUDController(IRepositorio repositorio, ValidacaoDeAnimalSilvestre validacao)
+        public AnimalSilvestreController(IRepositorio repositorio, ValidacaoDeAnimalSilvestre validacao)
         {
             servico = repositorio;
             _validacao = validacao;
         }
 
-
-        [Route("ObterTodosAnimais")]
         [HttpGet]
         public ActionResult<List<AnimalSilvestre>> ObterTodos()
         {
-                var modelo = servico.ObterTodos();
-
+            var modelo = servico.ObterTodos();
+            try
+            {
                 return Ok(modelo);
-
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public ActionResult ObterPorId(int id)
         {
             var modelo = servico.ObterPorId(id);
-            if (modelo == null)
+
+            try
             {
-                return NotFound();
+                return Ok(modelo);
             }
-            return Ok(modelo);
+            catch (Exception ex)
+            {
+               return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -66,9 +72,15 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         [HttpDelete("id")]
         public ActionResult Remover(int id)
         {
+            try
+            {
             servico.Remover(id);
-
             return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
