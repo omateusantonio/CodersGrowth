@@ -54,7 +54,13 @@ namespace ControleDeAnimaisSilvestres
             }
             catch (Exception ex)
             {
+                if (edicaoHabilitada)
+                {
                 MessageBox.Show(ex.Message, "Erro na edição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                } else
+                {
+                    MessageBox.Show(ex.Message, "Erro na adição", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
             }
 
         }

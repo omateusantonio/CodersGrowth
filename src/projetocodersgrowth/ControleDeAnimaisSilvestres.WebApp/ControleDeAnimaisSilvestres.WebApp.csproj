@@ -1,26 +1,47 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="model\**" />
+    <Content Remove="model\**" />
+    <EmbeddedResource Remove="model\**" />
+    <None Remove="model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="App.config" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="i18n\i18n.properties" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="controller\AnimalSilvestreController.cs" />
     <Content Include="i18n\i18n.properties" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="linq2db.AspNet" Version="5.3.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="model\" />
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodersGrowthProjeto.Dominio\ControleDeAnimaisSilvestres.Dominio.csproj" />
+    <ProjectReference Include="..\ControleDeAnimaisSilvestres.Infra\ControleDeAnimaisSilvestres.Infra.csproj" />
   </ItemGroup>
 
 </Project>
