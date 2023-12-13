@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ControleDeAnimaisSilvestres.WebApp.controller
 {
     [ApiController]
-    [Route("api/animais")]
+    [Route("api/[controller]")]
     public class AnimalSilvestreController : ControllerBase
     {
         private readonly IRepositorio servico;
@@ -22,9 +22,9 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         [HttpGet]
         public ActionResult<List<AnimalSilvestre>> ObterTodos()
         {
-            var modelo = servico.ObterTodos();
             try
             {
+                var modelo = servico.ObterTodos();
                 return Ok(modelo);
             }
             catch (Exception ex)
@@ -36,15 +36,14 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         [HttpGet("{id}")]
         public ActionResult ObterPorId(int id)
         {
-            var modelo = servico.ObterPorId(id);
-
             try
             {
+                var modelo = servico.ObterPorId(id);
                 return Ok(modelo);
             }
             catch (Exception ex)
             {
-               return NotFound(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -74,8 +73,14 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         {
             try
             {
-            servico.Remover(id);
-            return NoContent();
+                if(!(servico.ObterPorId(id) == null))
+                {
+                   servico.Remover(id);
+                   return NoContent();
+                } else
+                {
+                    return NotFound("O animal selecionado não existe no registro");
+                }
             }
             catch (Exception ex)
             {
