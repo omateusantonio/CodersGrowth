@@ -2,25 +2,34 @@
     controllerName="ui5.controledeanimaissilvestres.controller.ListaAnimaisSilvestres"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
-
+    <Page 
+        showHeader="true"
+        title="{i18n>listaDeAnimais}">
     <Table
         id="listaDeAnimais"
-        headerText="{i18n>listaDeAnimais}"
-        class="sapUiResponsiveMargin"
         width="auto"
-        items="{invoice>/Invoices}">
+        headerText="{i18n>listaDeAnimais}"
+        items="{animais>/}">
         <headerToolbar>
             <Toolbar>
-                <Title text="{i18n>listaDeAnimais}"/>
-                <ToolbarSpacer/>
-                <SearchField
-                    width="25%"
-                    search=".aoFiltrarAnimais"/>
-                    <ToolbarSeparator/>
                 <Button 
                     text="{i18n>botaoDeAdicionarNovoAnimal}"
                     iconFirst="true"
                     icon="sap-icon://add"/>
+                <ToolbarSeparator/>
+                <Button 
+                    text="{i18n>botaoDeExcluirAnimal}"
+                    iconFirst="true"
+                    icon="sap-icon://delete"/>
+                <ToolbarSeparator/>
+                <Button 
+                    text="{i18n>botaoDeEditarCadastro}"
+                    iconFirst="true"
+                    icon="sap-icon://edit"/>
+                <ToolbarSpacer/>
+                <SearchField
+                    width="25%"
+                    search=".aoFiltrarAnimais"/>
             </Toolbar>
         </headerToolbar>
 
@@ -70,16 +79,24 @@
             press=".aoClicarNaLinha">
             <cells>
             <ObjectNumber 
-                number="{invoice>id}"
+                number="{animais>id}"
                 emphasized="true"/>
-            <ObjectIdentifier text="{invoice>nomeDoAnimal}"/>
-            <ObjectIdentifier text="{invoice>nomeDaEspecie}"/>
-            <ObjectIdentifier text="{invoice>classe}"/>
-            <ObjectIdentifier text="{invoice>emExtincao}"/>
+            <ObjectIdentifier text="{animais>nomeDoAnimal}"/>
+            <ObjectIdentifier text="{animais>nomeDaEspecie}"/>
+            <Text
+                text="{ 
+                    path: 'animais>classe',
+                    formatter: '.formatterClasseDeAnimal.nomeDaClasse'
+                 }"/>
+            <Text
+                text="{ 
+                    path: 'animais>emExtincao',
+                    formatter: '.formatter.statusExtincao'
+                 }"/>
             <ObjectNumber
 				number="{
 						parts: [
-								'invoice>custoDeVacinacao',
+								'animais>custoDeVacinacao',
 								'view>/currency'
 								],
 								type: 'sap.ui.model.type.Currency',
@@ -90,7 +107,7 @@
 						unit="{view>/currency}"/>
             <ObjectAttribute 
                 text="{
-                    path: 'invoice>dataDoResgate',
+                    path: 'animais>dataDoResgate',
                     type: 'sap.ui.model.type.Date',
                     formatOptions: {
                         style: 'short',
@@ -103,4 +120,5 @@
             </ColumnListItem>
         </items>
     </Table>
+    </Page>
 </mvc:View>

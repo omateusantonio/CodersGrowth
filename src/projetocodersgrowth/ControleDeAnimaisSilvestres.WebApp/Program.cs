@@ -5,6 +5,7 @@ using FluentMigrator.Runner;
 using LinqToDB;
 using LinqToDB.AspNet;
 using LinqToDB.AspNet.Logging;
+using Microsoft.AspNetCore.StaticFiles;
 
 
 namespace ControleDeAnimaisSilvestres.WebApp
@@ -38,6 +39,19 @@ namespace ControleDeAnimaisSilvestres.WebApp
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                RedirectToAppendTrailingSlash = true,
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings = { [".properties"] = "application/x-msdownload" }
+                }
+            });
+
+            app.UseDefaultFiles();
+
+            app.UseFileServer();
 
             app.UseHttpsRedirection();
 
