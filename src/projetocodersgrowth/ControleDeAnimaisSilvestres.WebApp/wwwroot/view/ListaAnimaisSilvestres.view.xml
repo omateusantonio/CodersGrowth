@@ -16,16 +16,6 @@
                     text="{i18n>botaoDeAdicionarNovoAnimal}"
                     iconFirst="true"
                     icon="sap-icon://add"/>
-                <ToolbarSeparator/>
-                <Button 
-                    text="{i18n>botaoDeExcluirAnimal}"
-                    iconFirst="true"
-                    icon="sap-icon://delete"/>
-                <ToolbarSeparator/>
-                <Button 
-                    text="{i18n>botaoDeEditarCadastro}"
-                    iconFirst="true"
-                    icon="sap-icon://edit"/>
                 <ToolbarSpacer/>
                 <SearchField
                     width="25%"
@@ -76,7 +66,7 @@
         <items>
             <ColumnListItem 
             type="Navigation"
-            press=".aoClicarNaLinha">
+            press=".onPress">
             <cells>
             <ObjectNumber 
                 number="{animais>id}"

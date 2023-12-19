@@ -17,7 +17,6 @@ sap.ui.define([
 				currency: "BRL"
 			});
 			this.getView().setModel(oViewModel, "view");
-
             this.obterTodos();
 		},
 
@@ -38,8 +37,17 @@ sap.ui.define([
         obterTodos() {
             fetch('/api/AnimalSilvestre')
             .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animais"))
-            .catch(e => console.log(e.error));
-        }
+            .then(response => this.getView().setModel(new JSONModel(response), "animais", console.log(response)))
+            .catch(e => console.error(e));
+        },
+
+        onPress(oEvent) {
+            const oItem = oEvent.getSource();
+			const oRouter = this.getOwnerComponent().getRouter();
+			oRouter.navTo("paginaDeDetalhesDoAnimal", {
+                nomeDoAnimalDetalhado: window.encodeURIComponent(oItem.getBindingContext("animais").getProperty("nomeDoAnimal")),
+                idDoAnimalDetalhado: window.encodeURIComponent(oItem.getBindingContext("animais").getProperty("id"))
+            });
+		}
 	});
 });

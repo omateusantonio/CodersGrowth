@@ -1,7 +1,6 @@
 ﻿using ControleDeAnimaisSilvestres.Dominio.Objetos;
 using ControleDeAnimaisSilvestres.Dominio.Validacoes;
 using ControleDeAnimaisSilvestres.Infra.Repositorios;
-using LinqToDB;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleDeAnimaisSilvestres.WebApp.controller

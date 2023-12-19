@@ -57,12 +57,21 @@
 					"pattern": "",
 					"name": "listaAnimaisSilvestres",
 					"target": "listaAnimaisSilvestres"
+				},
+				{
+					"pattern": "{nomeDoAnimalDetalhado}/{idDoAnimalDetalhado}",
+					"name": "paginaDeDetalhesDoAnimal",
+					"target": "paginaDeDetalhesDoAnimal"
 				}
 			],
 			"targets": {
 				"listaAnimaisSilvestres": {
 					"id": "listaAnimaisSilvestres",
 					"name": "ListaAnimaisSilvestres"
+				},
+				"paginaDeDetalhesDoAnimal": {
+					"id": "paginaDeDetalhesDoAnimal",
+					"name": "PaginaDeDetalhesDoAnimal"
 				}
 			}
 		},
