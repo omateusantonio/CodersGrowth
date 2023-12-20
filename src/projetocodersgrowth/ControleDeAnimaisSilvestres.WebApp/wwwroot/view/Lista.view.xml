@@ -1,0 +1,114 @@
+<mvc:View
+    controllerName="ui5.controledeanimaissilvestres.controller.Lista"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Page 
+        showHeader="true"
+        title="{i18n>listaDeAnimais}">
+    <Table
+        id="listaDeAnimais"
+        width="auto"
+        headerText="{i18n>listaDeAnimais}"
+        items="{animais>/}">
+        <headerToolbar>
+            <Toolbar>
+                <Button 
+                    text="{i18n>botaoDeAdicionarNovoAnimal}"
+                    iconFirst="true"
+                    icon="sap-icon://add"/>
+                <ToolbarSpacer/>
+                <SearchField
+                    width="25%"
+                    search=".aoFiltrarAnimais"/>
+            </Toolbar>
+        </headerToolbar>
+
+        <columns>
+                <Column 
+                    hAlign="Begin"
+                    minScreenWidth="Small"
+                    demandPopin="true"
+                    width="5em">
+                    <Text text="{i18n>idDoAnimal}"/>
+                </Column>
+                <Column
+                    minScreenWidth="Small"
+                    demandPopin="true"> 
+                    <Text text="{i18n>nomeDoAnimal}"/>
+                </Column>
+                <Column 
+                    minScreenWidth="Small"
+                    demandPopin="true">
+                    <Text text="{i18n>nomeDaEspecie}"/>
+                </Column>
+                <Column 
+                    minScreenWidth="Tablet"
+                    demandPopin="false">
+                    <Text text="{i18n>classe}"/>
+                </Column>
+                <Column 
+                    minScreenWidth="Small"
+                    demandPopin="true">
+                    <Text text="{i18n>emExtincao}"/>
+                </Column>
+                <Column 
+                    minScreenWidth="Small"
+                    demandPopin="true">
+                    <Text text="{i18n>custoDeVacinacao}"/>
+                </Column>
+                <Column 
+                    hAlign="End"
+                    minScreenWidth="Tablet"
+                    demandPopin="false">
+                    <Text text="{i18n>dataDoResgate}"/>
+                </Column>
+        </columns>
+        <items>
+            <ColumnListItem 
+            type="Navigation"
+            press=".aoClicarNoItemDaLista">
+            <cells>
+            <ObjectNumber 
+                number="{animais>id}"
+                emphasized="true"/>
+            <ObjectIdentifier text="{animais>nomeDoAnimal}"/>
+            <ObjectIdentifier text="{animais>nomeDaEspecie}"/>
+            <Text
+                text="{ 
+                    path: 'animais>classe',
+                    formatter: '.formatterAnimal.obterNomeDaClasse'
+                 }"/>
+            <Text
+                text="{ 
+                    path: 'animais>emExtincao',
+                    formatter: '.formatterAnimal.obterTraducaoSeEstaEmExtincao'
+                 }"/>
+            <ObjectNumber
+				number="{
+						parts: [
+								'animais>custoDeVacinacao',
+								'view>/currency'
+								],
+								type: 'sap.ui.model.type.Currency',
+								formatOptions: {
+									showMeasure: false
+								}
+							}"
+						unit="{view>/currency}"/>
+            <ObjectAttribute 
+                text="{
+                    path: 'animais>dataDoResgate',
+                    type: 'sap.ui.model.type.Date',
+                    formatOptions: {
+                        style: 'short',
+                        source: {
+                            pattern: 'yyyy-MM-ddTHH:mm:ss'
+                        }
+                    }
+                }"/>
+            </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+    </Page>
+</mvc:View>
