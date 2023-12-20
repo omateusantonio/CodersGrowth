@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="ui5.controledeanimaissilvestres.controller.ListaAnimaisSilvestres"
+    controllerName="ui5.controledeanimaissilvestres.controller.Lista"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
     <Page 
@@ -66,7 +66,7 @@
         <items>
             <ColumnListItem 
             type="Navigation"
-            press=".onPress">
+            press=".aoClicarNoItemDaLista">
             <cells>
             <ObjectNumber 
                 number="{animais>id}"
@@ -76,12 +76,12 @@
             <Text
                 text="{ 
                     path: 'animais>classe',
-                    formatter: '.formatterClasseDeAnimal.nomeDaClasse'
+                    formatter: '.formatterAnimal.obterNomeDaClasse'
                  }"/>
             <Text
                 text="{ 
                     path: 'animais>emExtincao',
-                    formatter: '.formatter.statusExtincao'
+                    formatter: '.formatterAnimal.obterTraducaoSeEstaEmExtincao'
                  }"/>
             <ObjectNumber
 				number="{

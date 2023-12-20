@@ -4,21 +4,21 @@ sap.ui.define([
 ], (Controller, JSONModel) => {
     "use strict";
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.PaginaDeDetalhesDoAnimal", {
+    return Controller.extend("ui5.controledeanimaissilvestres.controller.DetalhesDoAnimal", {
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute("paginaDeDetalhesDoAnimal").attachPatternMatched(this.aoCoincidirRota, this);
+            oRouter.getRoute("detalhesDoAnimal").attachPatternMatched(this.aoCoincidirRota, this);
         },
 
         aoCoincidirRota(oEvent)  {
             const id = oEvent.getParameter("arguments").idDoAnimalDetalhado;
-            this.obterPorId(id);
+            this.definirAnimalPeloId(id);
         },
 
-        obterPorId(id) {
+        definirAnimalPeloId(id) {
             fetch(`/api/AnimalSilvestre/${id}`)
             .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animais"))
+            .then(response => this.getView().setModel(new JSONModel(response), "animal"))
             .catch(e => console.error(e));
         }
     });

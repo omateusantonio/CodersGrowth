@@ -55,23 +55,23 @@
 			"routes": [
 				{
 					"pattern": "",
-					"name": "listaAnimaisSilvestres",
-					"target": "listaAnimaisSilvestres"
+					"name": "lista",
+					"target": "lista"
 				},
 				{
-					"pattern": "{nomeDoAnimalDetalhado}/{idDoAnimalDetalhado}",
-					"name": "paginaDeDetalhesDoAnimal",
-					"target": "paginaDeDetalhesDoAnimal"
+					"pattern": "Detalhes/{idDoAnimalDetalhado}",
+					"name": "detalhesDoAnimal",
+					"target": "detalhesDoAnimal"
 				}
 			],
 			"targets": {
-				"listaAnimaisSilvestres": {
-					"id": "listaAnimaisSilvestres",
-					"name": "ListaAnimaisSilvestres"
+				"lista": {
+					"id": "lista",
+					"name": "Lista"
 				},
-				"paginaDeDetalhesDoAnimal": {
-					"id": "paginaDeDetalhesDoAnimal",
-					"name": "PaginaDeDetalhesDoAnimal"
+				"detalhesDoAnimal": {
+					"id": "detalhesDoAnimal",
+					"name": "DetalhesDoAnimal"
 				}
 			}
 		},

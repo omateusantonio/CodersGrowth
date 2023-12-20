@@ -3,22 +3,25 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "../model/FormatterClasseDeAnimal",
-    "../model/FormatterEmExtincao"
-], (Controller, JSONModel, Filter, FilterOperator, FormatterClasseDeAnimal, FormatterEmExtincao) => {
+    "../model/FormatterAnimal"
+], (Controller, JSONModel, Filter, FilterOperator, FormatterAnimal) => {
 	"use strict";
 
-	return Controller.extend("ui5.controledeanimaissilvestres.controller.ListaAnimaisSilvestres", {
-        formatterClasseDeAnimal: FormatterClasseDeAnimal,
-        formatter: FormatterEmExtincao,
+	return Controller.extend("ui5.controledeanimaissilvestres.controller.Lista", {
+        formatterAnimal: FormatterAnimal,
 
 		onInit() {
-			const oViewModel = new JSONModel({
-				currency: "BRL"
-			});
-			this.getView().setModel(oViewModel, "view");
-            this.obterTodos();
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this);
 		},
+        
+        aoCoincidirRota() {
+            const oViewModel = new JSONModel({
+                currency: "BRL"
+            });
+            this.getView().setModel(oViewModel, "view");
+            this.obterTodos();
+        },
 
         aoFiltrarAnimais(oEvent) {
             // cria o array do filtro
@@ -37,16 +40,15 @@ sap.ui.define([
         obterTodos() {
             fetch('/api/AnimalSilvestre')
             .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animais", console.log(response)))
+            .then(response => this.getView().setModel(new JSONModel(response), "animais"))
             .catch(e => console.error(e));
         },
 
-        onPress(oEvent) {
+        aoClicarNoItemDaLista(oEvent) {
             const oItem = oEvent.getSource();
 			const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.navTo("paginaDeDetalhesDoAnimal", {
-                nomeDoAnimalDetalhado: window.encodeURIComponent(oItem.getBindingContext("animais").getProperty("nomeDoAnimal")),
-                idDoAnimalDetalhado: window.encodeURIComponent(oItem.getBindingContext("animais").getProperty("id"))
+			oRouter.navTo("detalhesDoAnimal", {
+                idDoAnimalDetalhado: oItem.getBindingContext("animais").getProperty("id")
             });
 		}
 	});
