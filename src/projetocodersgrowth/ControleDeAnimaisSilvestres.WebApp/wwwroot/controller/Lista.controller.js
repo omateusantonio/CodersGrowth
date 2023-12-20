@@ -13,6 +13,7 @@ sap.ui.define([
 		onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this);
+            console.log(oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this));
 		},
         
         aoCoincidirRota() {
@@ -47,7 +48,7 @@ sap.ui.define([
         aoClicarNoItemDaLista(oEvent) {
             const oItem = oEvent.getSource();
 			const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.navTo("detalhesDoAnimal", {
+			oRouter.navTo("detalhes", {
                 idDoAnimalDetalhado: oItem.getBindingContext("animais").getProperty("id")
             });
 		}

@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="ui5.controledeanimaissilvestres.controller.DetalhesDoAnimal"
+    controllerName="ui5.controledeanimaissilvestres.controller.Detalhes"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
     <Page

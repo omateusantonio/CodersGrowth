@@ -4,10 +4,10 @@ sap.ui.define([
 ], (Controller, JSONModel) => {
     "use strict";
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.DetalhesDoAnimal", {
+    return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute("detalhesDoAnimal").attachPatternMatched(this.aoCoincidirRota, this);
+            oRouter.getRoute("detalhes").attachPatternMatched(this.aoCoincidirRota, this);
         },
 
         aoCoincidirRota(oEvent)  {

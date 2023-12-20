@@ -60,8 +60,8 @@
 				},
 				{
 					"pattern": "Detalhes/{idDoAnimalDetalhado}",
-					"name": "detalhesDoAnimal",
-					"target": "detalhesDoAnimal"
+					"name": "detalhes",
+					"target": "detalhes"
 				}
 			],
 			"targets": {
@@ -69,9 +69,9 @@
 					"id": "lista",
 					"name": "Lista"
 				},
-				"detalhesDoAnimal": {
-					"id": "detalhesDoAnimal",
-					"name": "DetalhesDoAnimal"
+				"detalhes": {
+					"id": "detalhes",
+					"name": "Detalhes"
 				}
 			}
 		},
