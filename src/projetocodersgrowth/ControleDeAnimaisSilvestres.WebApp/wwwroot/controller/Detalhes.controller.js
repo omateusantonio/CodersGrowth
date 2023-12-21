@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], (Controller, JSONModel) => {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/routing/History"
+], (Controller, JSONModel, History) => {
     "use strict";
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
@@ -20,6 +21,18 @@ sap.ui.define([
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animal"))
             .catch(e => console.error(e));
+        },
+
+        aoClicarEmVoltar() {
+            const oHistory = History.getInstance();
+            const sPreviousHash = oHistory.getPreviousHash();
+
+            if (sPreviousHash !== undefined) {
+                window.history.go(-1);
+            } else {
+                const oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("lista", {}, true);
+            }
         }
     });
 });

@@ -13,7 +13,6 @@ sap.ui.define([
 		onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this);
-            console.log(oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this));
 		},
         
         aoCoincidirRota() {

@@ -1,11 +1,27 @@
 <mvc:View
     controllerName="ui5.controledeanimaissilvestres.controller.Detalhes"
     xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
-    <Page
-        title="{i18n>tituloPaginaDeDetalhe}">
-        <ObjectHeader 
-            intro="{animal>/nomeDoAnimal}"
-            title="{animal>/nomeDaEspecie}"/>
-    </Page>
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <Shell>
+        <Page
+            showHeader="true"
+            title="{i18n>tituloPaginaDeDetalhe}{animal>/nomeDoAnimal}"
+            showNavButton="true"
+            navButtonTooltip="Retornar"
+            navButtonPress=".aoClicarEmVoltar">
+            <headerContent>
+                <Button
+                    text="{i18n>botaoDeEditarAnimal}"
+                    iconFirst="true"
+                    icon="sap-icon://edit"/>
+                <Button
+                    text="{i18n>botaoDeRemoverAnimal}"
+                    iconFirst="true"
+                    icon="sap-icon://delete"/>
+            </headerContent>
+            <ObjectHeader 
+                title="teste"/>
+        </Page>
+    </Shell>
 </mvc:View>
