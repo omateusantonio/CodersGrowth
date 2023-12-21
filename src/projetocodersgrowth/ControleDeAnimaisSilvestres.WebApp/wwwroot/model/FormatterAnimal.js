@@ -2,9 +2,9 @@ sap.ui.define([], () => {
     "use strict";
 
     return {
-        obterNomeDaClasse(sStatus) {
+        obterNomeDaClasse(sClasse) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            switch (sStatus) {
+            switch (sClasse) {
                 case 0:
                     return oResourceBundle.getText("Classe0");
                 case 1:
@@ -16,19 +16,25 @@ sap.ui.define([], () => {
                 case 4:
                     return oResourceBundle.getText("Classe4");
                 default:
-                    return sStatus;
+                    return sClasse;
             }
         },
-        obterTraducaoSeEstaEmExtincao(sStatus) {
+        
+        obterTraducaoSeEstaEmExtincao(sStatusExtincao) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            switch (sStatus) {
+            switch (sStatusExtincao) {
                 case true:
                     return oResourceBundle.getText("simEmExtincao");
                 case false:
                     return oResourceBundle.getText("naoEmExtincao");
                 default:
-                    return sStatus;
+                    return sStatusExtincao;
             }
+        },
+
+        inserirTextoERCifrao(sPreco) {
+            const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            return oResourceBundle.getText("textoPadraoPreco") + sPreco;
         }
     }
 })

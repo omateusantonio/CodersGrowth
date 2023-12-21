@@ -1,11 +1,14 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History"
-], (Controller, JSONModel, History) => {
+    "sap/ui/core/routing/History",
+    "../model/FormatterAnimal"
+], (Controller, JSONModel, History, FormatterAnimal) => {
     "use strict";
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
+        formatterAnimal: FormatterAnimal,
+        
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute("detalhes").attachPatternMatched(this.aoCoincidirRota, this);
