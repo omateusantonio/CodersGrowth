@@ -62,6 +62,11 @@
 					"pattern": "Detalhes/{idDoAnimalDetalhado}",
 					"name": "detalhes",
 					"target": "detalhes"
+				},
+				{
+					"pattern": "Cadastro",
+					"name": "cadastro",
+					"target": "cadastro"
 				}
 			],
 			"targets": {
@@ -72,6 +77,10 @@
 				"detalhes": {
 					"id": "detalhes",
 					"name": "Detalhes"
+				},
+				"cadastro": {
+					"id": "cadastro",
+					"name": "Cadastro"
 				}
 			}
 		},

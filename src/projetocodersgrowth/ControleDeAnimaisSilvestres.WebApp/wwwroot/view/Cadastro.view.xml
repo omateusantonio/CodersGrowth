@@ -1,0 +1,100 @@
+<mvc:View xmlns:core="sap.ui.core"
+    controllerName="ui5.controledeanimaissilvestres.controller.Cadastro"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout">
+
+    <Shell>
+        <Page
+            showHeader="true"
+            title="{i18n>tituloPaginaDeCadastro}"
+            showNavButton="true"
+            navButtonTooltip="Retornar"
+            navButtonPress=".aoClicarEmVoltar">
+            <headerContent>
+                <Button
+                    text="{i18n>botaoDeSalvarNovoAnimal}"
+                    iconFirst="true"
+                    icon="sap-icon://save"
+                />
+                <Button
+                    text="{i18n>botaoDeCancelar}"
+                    iconFirst="true"
+                    icon="sap-icon://cancel"
+                    press=".aoClicarEmCancelarCadastro"
+                />
+            </headerContent>
+            <l:VerticalLayout 
+                class="sapUiContentPadding"
+                width="100%"
+                >
+                
+                <Label 
+                    text="Nome do animal:"
+                    labelFor="inputNomeDoAnimal"
+                    design="Bold"/>
+                
+                <Input 
+                    id="inputNomeDoAnimal" 
+                    required="true"
+                    width="33%"
+                    maxLength="255"/>
+
+                <Label 
+                    text="Nome da espécie:"
+                    labelFor="inputNomeDaEspecie"
+                    design="Bold"/>
+                
+                <Input 
+                    id="inputNomeDaEspecie" 
+                    required="true"
+                    width="33%"
+                    maxLength="255"/>
+
+                <Label 
+                    text="Classe de animal:"
+                    labelFor="inputClasseDeAnimal"
+                    design="Bold"/>
+
+                <ComboBox id="inputClasseDeAnimal" width="33%" items="{path: '/listaDeClasses'}" required="true">
+                    <core:Item text="{Classe}"/>
+                </ComboBox>
+                
+                <Label 
+                    text="Está em extinção?"
+                    labelFor="inputEmExtincao"
+                    design="Bold"
+                    required="true"/>
+                
+                <RadioButtonGroup columns="2" id="inputEmExtincao">
+                    <RadioButton 
+                        id="opcaoSimEmExtincao"
+                        text="Sim"/>
+                    <RadioButton 
+                        id="opcaoNaoEmExtincao"
+                        text="Não"/>
+                </RadioButtonGroup>
+
+                <Label 
+                    text="Preço da vacinação:"
+                    labelFor="inputPrecoDaVacinacao"
+                    design="Bold"/>
+                
+                <Input 
+                    id="inputPrecoDaVacinacao" 
+                    required="true"
+                    width="33%"/>
+                
+                <Label 
+                    text="Data do resgate:"
+                    labelFor="inputDataDoResgate"
+                    design="Bold"/>
+                
+                <DatePicker 
+                    displayFormat="dd/MM/yyyy"
+                    width="33%"/>
+            </l:VerticalLayout>
+        </Page>
+    </Shell>
+
+</mvc:View>

@@ -50,6 +50,11 @@ sap.ui.define([
 			oRouter.navTo("detalhes", {
                 idDoAnimalDetalhado: oItem.getBindingContext("animais").getProperty("id")
             });
-		}
+		},
+
+        aoClicarEmCadastrar() {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("cadastro", {}, true);
+        }
 	});
 });

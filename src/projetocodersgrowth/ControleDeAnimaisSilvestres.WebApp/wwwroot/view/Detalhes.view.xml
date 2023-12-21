@@ -1,8 +1,7 @@
 <mvc:View
     controllerName="ui5.controledeanimaissilvestres.controller.Detalhes"
     xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    >
+    xmlns:mvc="sap.ui.core.mvc">
     <Shell>
         <Page
             showHeader="true"
