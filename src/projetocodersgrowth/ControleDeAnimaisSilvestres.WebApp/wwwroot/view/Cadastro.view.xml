@@ -1,8 +1,9 @@
-<mvc:View xmlns:core="sap.ui.core"
+<mvc:View
     controllerName="ui5.controledeanimaissilvestres.controller.Cadastro"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:l="sap.ui.layout">
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout">
 
     <Shell>
         <Page
@@ -13,24 +14,97 @@
             navButtonPress=".aoClicarEmVoltar">
             <headerContent>
                 <Button
-                    text="{i18n>botaoDeSalvarNovoAnimal}"
-                    iconFirst="true"
-                    icon="sap-icon://save"
-                />
-                <Button
-                    text="{i18n>botaoDeCancelar}"
+                    text="Cancelar"
                     iconFirst="true"
                     icon="sap-icon://cancel"
-                    press=".aoClicarEmCancelarCadastro"
+                    press=".aoClicarEmCancelar"
+                    type="Transparent"
+                    width="7rem"
+                />
+                <Button
+                    text="Salvar"
+                    iconFirst="true"
+                    icon="sap-icon://save"
+                    type="Transparent"
+                    width="7rem"
+                    press=".aoClicarEmSalvar"
                 />
             </headerContent>
-            <l:VerticalLayout 
+
+            <layout:VerticalLayout 
                 class="sapUiContentPadding"
                 width="100%"
                 >
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%">
+                        <Label 
+                            showColon="true"
+                            text="Nome do animal"
+                            labelFor="inputNomeDoAnimal"
+                            design="Bold"/>
+                        <Input 
+                            id="inputNomeDoAnimal"
+                            required="true"/>
+                    </VBox>
+                    <VBox width="40%">
+                        <Label 
+                            text="Nome da espécie"
+                            labelFor="inputNomeDaEspecie"
+                            design="Bold"
+                            showColon="true"/>
+                        <Input 
+                            id="inputNomeDaEspecie"
+                            required="true"/>
+                    </VBox>
+                </HBox>
+
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%">
+                        <Label 
+                            showColon="true"
+                            text="Classe de animal"
+                            labelFor="inputClasseDeAnimal"
+                            design="Bold"/>
+                        <ComboBox 
+                            id="inputClasseDeAnimal" 
+                            items="{path: '/listaDeClasses'}" 
+                            required="true"
+                            width="100%">
+                                <core:Item text="{Classe}"/>
+                        </ComboBox>
+                    </VBox>
+                    <VBox width="40%">
+                        <Label 
+                            showColon="true"
+                            text="Preço da vacinação"
+                            labelFor="inputPrecoDaVacinacao"
+                            design="Bold"/>
+                        <Input
+                            id="inputPrecoDaVacinacao" 
+                            required="true"/>
+                    </VBox>
+                </HBox>
+
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%">
+                        <Label 
+                            showColon="true"
+                            text="Data do resgate"
+                            labelFor="inputDataDoResgate"
+                            design="Bold"/>
+                        <DatePicker 
+                            id="inputDataDoResgate"
+                            displayFormat="dd/MM/yyyy"
+                            required="true"/>
+                    </VBox>
+                    <VBox width="40%">
+                        <CheckBox text="Em extinção?" id="inputEmExtincao" class="sapUiSmallMarginTop"/>
+                    </VBox>
+                </HBox>
                 
-                <Label 
-                    text="Nome do animal:"
+                <!-- <Label 
+                    showColon="true"
+                    text="Nome do animal"
                     labelFor="inputNomeDoAnimal"
                     design="Bold"/>
                 
@@ -41,7 +115,7 @@
                     maxLength="255"/>
 
                 <Label 
-                    text="Nome da espécie:"
+                    text="Nome da espécie"
                     labelFor="inputNomeDaEspecie"
                     design="Bold"/>
                 
@@ -52,7 +126,7 @@
                     maxLength="255"/>
 
                 <Label 
-                    text="Classe de animal:"
+                    text="Classe de animal"
                     labelFor="inputClasseDeAnimal"
                     design="Bold"/>
 
@@ -76,7 +150,7 @@
                 </RadioButtonGroup>
 
                 <Label 
-                    text="Preço da vacinação:"
+                    text="Preço da vacinação"
                     labelFor="inputPrecoDaVacinacao"
                     design="Bold"/>
                 
@@ -86,14 +160,16 @@
                     width="33%"/>
                 
                 <Label 
-                    text="Data do resgate:"
+                    text="Data do resgate"
                     labelFor="inputDataDoResgate"
                     design="Bold"/>
                 
                 <DatePicker 
                     displayFormat="dd/MM/yyyy"
-                    width="33%"/>
-            </l:VerticalLayout>
+                    width="33%"/> -->
+
+
+            </layout:VerticalLayout>
         </Page>
     </Shell>
 
