@@ -32,6 +32,7 @@
             </headerContent>
 
             <layout:VerticalLayout 
+                id="formularioDeCadastro"
                 class="sapUiContentPadding"
                 width="100%"
                 >
@@ -44,7 +45,8 @@
                             design="Bold"/>
                         <Input 
                             id="inputNomeDoAnimal"
-                            required="true"/>
+                            required="true"
+                            value="{cadastro>/nomeDoAnimal}"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -54,7 +56,8 @@
                             showColon="true"/>
                         <Input 
                             id="inputNomeDaEspecie"
-                            required="true"/>
+                            required="true"
+                            value="{cadastro>/nomeDaEspecie}"/>
                     </VBox>
                 </HBox>
 
@@ -69,8 +72,9 @@
                             id="inputClasseDeAnimal" 
                             items="{path: '/listaDeClasses'}" 
                             required="true"
-                            width="100%">
-                                <core:Item text="{Classe}"/>
+                            width="100%"
+                            value="{cadastro>/classe}">
+                                <core:Item text="{Classe}" key="{Chave}"/>
                         </ComboBox>
                     </VBox>
                     <VBox width="40%">
@@ -81,7 +85,8 @@
                             design="Bold"/>
                         <Input
                             id="inputPrecoDaVacinacao" 
-                            required="true"/>
+                            required="true"
+                            value="{cadastro>/custoDeVacinacao}"/>
                     </VBox>
                 </HBox>
 
@@ -95,80 +100,13 @@
                         <DatePicker 
                             id="inputDataDoResgate"
                             displayFormat="dd/MM/yyyy"
-                            required="true"/>
+                            required="true"
+                            value="{cadastro>/dataDoResgate}"/>
                     </VBox>
                     <VBox width="40%">
-                        <CheckBox text="Em extinção?" id="inputEmExtincao" class="sapUiSmallMarginTop"/>
+                        <CheckBox text="Em extinção?" id="inputEmExtincao" class="sapUiSmallMarginTop" selected="{cadastro>/emExtincao}"/>
                     </VBox>
                 </HBox>
-                
-                <!-- <Label 
-                    showColon="true"
-                    text="Nome do animal"
-                    labelFor="inputNomeDoAnimal"
-                    design="Bold"/>
-                
-                <Input 
-                    id="inputNomeDoAnimal" 
-                    required="true"
-                    width="33%"
-                    maxLength="255"/>
-
-                <Label 
-                    text="Nome da espécie"
-                    labelFor="inputNomeDaEspecie"
-                    design="Bold"/>
-                
-                <Input 
-                    id="inputNomeDaEspecie" 
-                    required="true"
-                    width="33%"
-                    maxLength="255"/>
-
-                <Label 
-                    text="Classe de animal"
-                    labelFor="inputClasseDeAnimal"
-                    design="Bold"/>
-
-                <ComboBox id="inputClasseDeAnimal" width="33%" items="{path: '/listaDeClasses'}" required="true">
-                    <core:Item text="{Classe}"/>
-                </ComboBox>
-                
-                <Label 
-                    text="Está em extinção?"
-                    labelFor="inputEmExtincao"
-                    design="Bold"
-                    required="true"/>
-                
-                <RadioButtonGroup columns="2" id="inputEmExtincao">
-                    <RadioButton 
-                        id="opcaoSimEmExtincao"
-                        text="Sim"/>
-                    <RadioButton 
-                        id="opcaoNaoEmExtincao"
-                        text="Não"/>
-                </RadioButtonGroup>
-
-                <Label 
-                    text="Preço da vacinação"
-                    labelFor="inputPrecoDaVacinacao"
-                    design="Bold"/>
-                
-                <Input 
-                    id="inputPrecoDaVacinacao" 
-                    required="true"
-                    width="33%"/>
-                
-                <Label 
-                    text="Data do resgate"
-                    labelFor="inputDataDoResgate"
-                    design="Bold"/>
-                
-                <DatePicker 
-                    displayFormat="dd/MM/yyyy"
-                    width="33%"/> -->
-
-
             </layout:VerticalLayout>
         </Page>
     </Shell>

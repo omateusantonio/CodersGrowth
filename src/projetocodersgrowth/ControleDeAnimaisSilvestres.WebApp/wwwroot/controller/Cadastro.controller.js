@@ -14,6 +14,7 @@ sap.ui.define([
         },
 
         aoCoincidirRota() {
+            this.definirModeloDeDados();
             this.definirItensDaCombobox();
         },
 
@@ -34,60 +35,70 @@ sap.ui.define([
             oRouter.navTo("lista", {}, true);
         },
 
+        obterItensPreenchidos() {
+            const oCadastro = this.getView().getModel("cadastro").getData();
+
+            return oCadastro;
+        },
+
         aoClicarEmSalvar() {
-            const oView = this.getView();
-            const nomeDoAnimal = oView.byId("inputNomeDoAnimal").getValue();
-            const nomeDaEspecie = oView.byId("inputNomeDaEspecie").getValue();
-            const classeDeAnimal = oView.byId("inputClasseDeAnimal").getValue();
-            const precoDaVacinacao = oView.byId("inputPrecoDaVacinacao").getValue();
-            // const dataDoResgate = oView.byId("inputDataDoResgate").getValue();
-            const dataDoResgate = this.converterDataParaFormatoDeBanco();
-            const emExtincao = oView.byId("inputEmExtincao").getProperty("selected");
-
-            console.log(nomeDoAnimal);
-            console.log(nomeDaEspecie);
-            console.log(classeDeAnimal);
-            console.log(precoDaVacinacao);
-            console.log(dataDoResgate);
-            console.log(emExtincao);
-
-            const sItems = [{nomeDoAnimal : nomeDoAnimal, 
-                            nomeDaEspecie : nomeDaEspecie,
-                            dataDoResgate : dataDoResgate,
-                            classe : classeDeAnimal,
-                            emExtincao : emExtincao,
-                            custoDeVacinacao : precoDaVacinacao}]
-
-            const oModelJson = new JSONModel(sItems);
-            const oDados = oModelJson.getData();
-
-            console.log(oDados);
-
-            this.cadastrarNovoAnimal(oDados);
+            var oCadastro = this.obterItensPreenchidos();
+            this.converterDataParaFormatoDeBanco(oCadastro);
+            this.converterNomeParaIndiceDoEnum(oCadastro);
+            this.cadastrarNovoAnimal(oCadastro);
         },
 
         definirItensDaCombobox() {
-            const sheetNames = {listaDeClasses : [{ Classe : "Anfíbio"}, {Classe : "Ave"}, {Classe : "Mamífero"}, {Classe : "Peixe"}, {Classe : "Réptil"}] };
+            const sheetNames = {listaDeClasses : 
+                                [{ Classe : "Anfíbio", Chave : 0}, 
+                                {Classe : "Ave", Chave : 1}, 
+                                {Classe : "Mamífero", Chave : 2}, 
+                                {Classe : "Peixe", Chave : 3}, 
+                                {Classe : "Réptil", Chave : 4}] };
             const sheets = new JSONModel(sheetNames);
             const comboBox = this.getView().byId("inputClasseDeAnimal");
 
             comboBox.setModel(sheets);
         },
 
-        converterDataParaFormatoDeBanco() {
-            const oView = this.getView();
-            const dataDoResgate = oView.byId("inputDataDoResgate").getValue();
+        converterDataParaFormatoDeBanco(oCadastro) {
+            var sDataDoResgate = oCadastro.dataDoResgate;
             
-            if (dataDoResgate) {
+            if (sDataDoResgate) {
                 var oDateFormat = DateFormat.getDateInstance({
                     pattern: "yyyy-MM-ddTHH:mm:ss"
                 });
 
-                var oDate = new Date(dataDoResgate);
+                var oDate = new Date(sDataDoResgate);
 
-                return oDateFormat.format(oDate);
+                oCadastro.dataDoResgate = oDateFormat.format(oDate);
+                return oCadastro;
             }
             
+        },
+
+        converterNomeParaIndiceDoEnum(oCadastro) {
+            var sEnum = oCadastro.classe;
+
+            switch (sEnum) {
+                case "Anfíbio":
+                    oCadastro.classe = 0;
+                    return oCadastro;
+                case "Ave":
+                    oCadastro.classe = 1;
+                    return oCadastro;
+                case "Mamífero":
+                    oCadastro.classe = 2;
+                    return oCadastro;
+                case "Peixe":
+                    oCadastro.classe = 3;
+                    return oCadastro;
+                case "Réptil":
+                    oCadastro.classe = 4;
+                    return oCadastro;
+                default:
+                    return console.error("Item inválido");
+            }
         },
 
         cadastrarNovoAnimal(dados) {
@@ -99,6 +110,20 @@ sap.ui.define([
             .then(response => response.json())
             .then(json => console.log(json))
             .catch(erro => console.error(erro));
+        },
+
+        definirModeloDeDados() {
+            const bValorDefault = false;
+            var oModel = new JSONModel();
+            oModel.setData({
+                nomeDoAnimal : "",
+                nomeDaEspecie: "",
+                dataDoResgate : "",
+                classe : "",
+                emExtincao : bValorDefault,
+                custoDeVacinacao: ""
+            });
+            this.getView().setModel(oModel, "cadastro");
         }
     });
 });
