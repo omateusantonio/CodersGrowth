@@ -40,7 +40,7 @@
                     <VBox width="40%">
                         <Label 
                             showColon="true"
-                            text="Nome do animal"
+                            text="{i18n>nomeDoAnimal}"
                             labelFor="inputNomeDoAnimal"
                             design="Bold"/>
                         <Input 
@@ -50,7 +50,7 @@
                     </VBox>
                     <VBox width="40%">
                         <Label 
-                            text="Nome da espécie"
+                            text="{i18n>nomeDaEspecie}"
                             labelFor="inputNomeDaEspecie"
                             design="Bold"
                             showColon="true"/>
@@ -65,7 +65,7 @@
                     <VBox width="40%">
                         <Label 
                             showColon="true"
-                            text="Classe de animal"
+                            text="{i18n>classe}"
                             labelFor="inputClasseDeAnimal"
                             design="Bold"/>
                         <ComboBox 
@@ -74,13 +74,13 @@
                             required="true"
                             width="100%"
                             value="{cadastro>/classe}">
-                                <core:Item text="{Classe}" key="{Chave}"/>
+                                <core:Item text="{Classe}"/>
                         </ComboBox>
                     </VBox>
                     <VBox width="40%">
                         <Label 
                             showColon="true"
-                            text="Preço da vacinação"
+                            text="{i18n>custoDeVacinacao}"
                             labelFor="inputPrecoDaVacinacao"
                             design="Bold"/>
                         <Input
@@ -94,7 +94,7 @@
                     <VBox width="40%">
                         <Label 
                             showColon="true"
-                            text="Data do resgate"
+                            text="{i18n>dataDoResgate}"
                             labelFor="inputDataDoResgate"
                             design="Bold"/>
                         <DatePicker 
@@ -104,7 +104,7 @@
                             value="{cadastro>/dataDoResgate}"/>
                     </VBox>
                     <VBox width="40%">
-                        <CheckBox text="Em extinção?" id="inputEmExtincao" class="sapUiSmallMarginTop" selected="{cadastro>/emExtincao}"/>
+                        <CheckBox text="{i18n>emExtincao}" id="inputEmExtincao" class="sapUiSmallMarginTop" selected="{cadastro>/emExtincao}"/>
                     </VBox>
                 </HBox>
             </layout:VerticalLayout>

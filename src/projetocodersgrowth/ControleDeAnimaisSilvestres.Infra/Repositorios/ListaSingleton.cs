@@ -37,11 +37,13 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             return _instance._animais;
         }
 
-        public void Inserir(AnimalSilvestre animal)
+        public int Inserir(AnimalSilvestre animal)
         {
             animal.Id = id;
             _instance._animais.Add(animal);
             id++;
+
+            return id;
         }
 
         public void Remover(AnimalSilvestre animalSelecionado)

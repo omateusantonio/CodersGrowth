@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/format/DateFormat"
-], (Controller, History, JSONModel, DateFormat) => {
+    "sap/ui/core/format/DateFormat",
+    "sap/ui/core/date/UI5Date"
+], (Controller, History, JSONModel, DateFormat, UI5Date) => {
     "use strict";
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
@@ -49,29 +50,29 @@ sap.ui.define([
         },
 
         definirItensDaCombobox() {
-            const sheetNames = {listaDeClasses : 
+            const oItems = {listaDeClasses : 
                                 [{ Classe : "Anfíbio", Chave : 0}, 
                                 {Classe : "Ave", Chave : 1}, 
                                 {Classe : "Mamífero", Chave : 2}, 
                                 {Classe : "Peixe", Chave : 3}, 
                                 {Classe : "Réptil", Chave : 4}] };
-            const sheets = new JSONModel(sheetNames);
-            const comboBox = this.getView().byId("inputClasseDeAnimal");
+            const oLista = new JSONModel(oItems);
+            const oCombobox = this.getView().byId("inputClasseDeAnimal");
 
-            comboBox.setModel(sheets);
+            oCombobox.setModel(oLista);
         },
 
         converterDataParaFormatoDeBanco(oCadastro) {
-            var sDataDoResgate = oCadastro.dataDoResgate;
+            var sDataDoResgate = UI5Date.getInstance().toISOString(oCadastro.dataDoResgate);
             
             if (sDataDoResgate) {
-                var oDateFormat = DateFormat.getDateInstance({
+                var oFormatoDeData = DateFormat.getDateInstance({
                     pattern: "yyyy-MM-ddTHH:mm:ss"
                 });
 
-                var oDate = new Date(sDataDoResgate);
+                var oData = new Date(sDataDoResgate);
 
-                oCadastro.dataDoResgate = oDateFormat.format(oDate);
+                oCadastro.dataDoResgate = oFormatoDeData.format(oData);
                 return oCadastro;
             }
             
@@ -108,22 +109,20 @@ sap.ui.define([
                 headers: {"Content-type": "application/json; charset=UTF-8"}
             })
             .then(response => response.json())
-            .then(json => console.log(json))
+            .then(json => this.redirecionarParaAnimalCriado(Number(json.id)))
             .catch(erro => console.error(erro));
         },
 
         definirModeloDeDados() {
-            const bValorDefault = false;
-            var oModel = new JSONModel();
-            oModel.setData({
-                nomeDoAnimal : "",
-                nomeDaEspecie: "",
-                dataDoResgate : "",
-                classe : "",
-                emExtincao : bValorDefault,
-                custoDeVacinacao: ""
+            var oModelo = new JSONModel({});
+            this.getView().setModel(oModelo, "cadastro");
+        },
+
+        redirecionarParaAnimalCriado(id) {
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("detalhes", {
+                idDoAnimalDetalhado : id
             });
-            this.getView().setModel(oModel, "cadastro");
         }
     });
 });

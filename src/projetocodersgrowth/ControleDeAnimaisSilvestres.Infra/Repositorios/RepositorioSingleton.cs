@@ -12,9 +12,10 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             return listaAnimais.ObterTodos();
         }
 
-        public void Criar(AnimalSilvestre novoAnimal)
+        public int Criar(AnimalSilvestre novoAnimal)
         {
             listaAnimais.Inserir(novoAnimal);
+            return novoAnimal.Id;
         }
 
         public AnimalSilvestre ObterPorId(int id)
