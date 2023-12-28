@@ -9,6 +9,7 @@ sap.ui.define([
 
     const NOME_ROTA_CADASTRO = "cadastro";
     const NOME_ROTA_LISTA = "lista";
+    const NOME_ALIAS_MODELO = "animalSilvestre"
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
         
@@ -40,8 +41,10 @@ sap.ui.define([
         },
 
         _obterItensPreenchidos() {
-            const oCadastro = this.getView().getModel(NOME_ROTA_CADASTRO).getData();
-
+            var oCadastro = this.getView().getModel(NOME_ALIAS_MODELO).getData();
+            oCadastro.emExtincao = oCadastro.emExtincao == undefined ? false : true;
+            oCadastro.classe = Number(oCadastro.classe);
+            
             return oCadastro;
         },
 
@@ -52,6 +55,8 @@ sap.ui.define([
         },
 
         _definirItensDaCombobox() {
+            const nomeAliasLista = "classes";
+
             const enumClasseAnfibio = 0;
             const enumClasseAve = 1;
             const enumClasseMamifero = 2;
@@ -64,16 +69,15 @@ sap.ui.define([
             const enumClassePeixeNome = "Peixe";
             const enumClasseReptilNome = "Réptil";
 
-            const oItems = {listaDeClasses : 
-                                [{ Classe : enumClasseAnfibioNome, Chave : enumClasseAnfibio}, 
-                                {Classe : enumClasseAveNome, Chave : enumClasseAve}, 
-                                {Classe : enumClasseMamiferoNome, Chave : enumClasseMamifero}, 
-                                {Classe : enumClassePeixeNome, Chave : enumClassePeixe}, 
-                                {Classe : enumClasseReptilNome, Chave : enumClasseReptil}] };
+            const oItems = [{ Classe : enumClasseAnfibioNome, Chave : enumClasseAnfibio}, 
+                            {Classe : enumClasseAveNome, Chave : enumClasseAve}, 
+                            {Classe : enumClasseMamiferoNome, Chave : enumClasseMamifero}, 
+                            {Classe : enumClassePeixeNome, Chave : enumClassePeixe}, 
+                            {Classe : enumClasseReptilNome, Chave : enumClasseReptil}];
             const oLista = new JSONModel(oItems);
-            const oCombobox = this.getView();
+            const oView = this.getView();
 
-            oCombobox.setModel(oLista);
+            oView.setModel(oLista, nomeAliasLista);
         },
 
         _converterDataParaFormatoDeBanco(oCadastro) {
@@ -105,12 +109,13 @@ sap.ui.define([
 
         _definirModeloDeDados() {
             var oModelo = new JSONModel({});
-            this.getView().setModel(oModelo, "cadastro");
+            this.getView().setModel(oModelo, NOME_ALIAS_MODELO);
         },
 
         _redirecionarParaAnimalCriado(id) {
+            const nomeRotaDetalhes = "detalhes"
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("detalhes", {
+            oRouter.navTo(nomeRotaDetalhes, {
                 id : id
             });
         }
