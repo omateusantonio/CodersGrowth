@@ -13,6 +13,7 @@
         <headerToolbar>
             <Toolbar>
                 <Button 
+                    type="Default"
                     text="{i18n>botaoDeAdicionarNovoAnimal}"
                     iconFirst="true"
                     icon="sap-icon://add"

@@ -69,11 +69,11 @@ sap.ui.define([
             const enumClassePeixeNome = "Peixe";
             const enumClasseReptilNome = "Réptil";
 
-            const oItems = [{ Classe : enumClasseAnfibioNome, Chave : enumClasseAnfibio}, 
-                            {Classe : enumClasseAveNome, Chave : enumClasseAve}, 
-                            {Classe : enumClasseMamiferoNome, Chave : enumClasseMamifero}, 
-                            {Classe : enumClassePeixeNome, Chave : enumClassePeixe}, 
-                            {Classe : enumClasseReptilNome, Chave : enumClasseReptil}];
+            const oItems = [{ Nome : enumClasseAnfibioNome, Chave : enumClasseAnfibio}, 
+                            {Nome : enumClasseAveNome, Chave : enumClasseAve}, 
+                            {Nome : enumClasseMamiferoNome, Chave : enumClasseMamifero}, 
+                            {Nome : enumClassePeixeNome, Chave : enumClassePeixe}, 
+                            {Nome : enumClasseReptilNome, Chave : enumClasseReptil}];
             const oLista = new JSONModel(oItems);
             const oView = this.getView();
 

@@ -74,7 +74,7 @@
                             required="true"
                             width="100%"
                             selectedKey="{animalSilvestre>/classe}">
-                                <core:Item text="{classes>Classe}" key="{classes>Chave}"/>
+                                <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
                         </ComboBox>
                     </VBox>
                     <VBox width="40%">
