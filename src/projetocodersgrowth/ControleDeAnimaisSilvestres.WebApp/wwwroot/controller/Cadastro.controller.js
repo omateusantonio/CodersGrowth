@@ -31,13 +31,13 @@ sap.ui.define([
                 window.history.go(-1);
             } else {
                 const oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo(NOME_ROTA_LISTA, {}, true);
+                oRouter.navTo(NOME_ROTA_LISTA, {});
             }
         },
 
         aoClicarEmCancelar() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(NOME_ROTA_LISTA, {}, true);
+            oRouter.navTo(NOME_ROTA_LISTA, {});
         },
 
         _obterItensPreenchidos() {
@@ -97,13 +97,16 @@ sap.ui.define([
         },
 
         _cadastrarNovoAnimal(dados) {
-            fetch('/api/AnimalSilvestre', {
-                method: "POST",
+            const url = '/api/AnimalSilvestre';
+            const metodoDoFetch = "POST";
+
+            fetch(url, {
+                method: metodoDoFetch,
                 body: JSON.stringify(dados),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
             })
             .then(response => response.json())
-            .then(json => this._redirecionarParaAnimalCriado(Number(json.id)))
+            .then(json => this._redirecionarParaAnimalCriado(json.id))
             .catch(erro => console.error(erro));
         },
 
@@ -114,6 +117,7 @@ sap.ui.define([
 
         _redirecionarParaAnimalCriado(id) {
             const nomeRotaDetalhes = "detalhes"
+
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo(nomeRotaDetalhes, {
                 id : id
