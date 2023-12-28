@@ -7,16 +7,19 @@ sap.ui.define([
 ], (Controller, History, JSONModel, DateFormat, UI5Date) => {
     "use strict";
 
+    const NOME_ROTA_CADASTRO = "cadastro";
+    const NOME_ROTA_LISTA = "lista";
+
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
         
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute("cadastro").attachPatternMatched(this.aoCoincidirRota, this);
+            oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this.aoCoincidirRota, this);
         },
 
         aoCoincidirRota() {
-            this.definirModeloDeDados();
-            this.definirItensDaCombobox();
+            this._definirModeloDeDados();
+            this._definirItensDaCombobox();
         },
 
         aoClicarEmVoltar() {
@@ -27,42 +30,53 @@ sap.ui.define([
                 window.history.go(-1);
             } else {
                 const oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("lista", {}, true);
+                oRouter.navTo(NOME_ROTA_LISTA, {}, true);
             }
         },
 
         aoClicarEmCancelar() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("lista", {}, true);
+            oRouter.navTo(NOME_ROTA_LISTA, {}, true);
         },
 
-        obterItensPreenchidos() {
-            const oCadastro = this.getView().getModel("cadastro").getData();
+        _obterItensPreenchidos() {
+            const oCadastro = this.getView().getModel(NOME_ROTA_CADASTRO).getData();
 
             return oCadastro;
         },
 
         aoClicarEmSalvar() {
-            var oCadastro = this.obterItensPreenchidos();
-            this.converterDataParaFormatoDeBanco(oCadastro);
-            this.converterNomeParaIndiceDoEnum(oCadastro);
-            this.cadastrarNovoAnimal(oCadastro);
+            var oCadastro = this._obterItensPreenchidos();
+            this._converterDataParaFormatoDeBanco(oCadastro);
+            this._cadastrarNovoAnimal(oCadastro);
         },
 
-        definirItensDaCombobox() {
+        _definirItensDaCombobox() {
+            const enumClasseAnfibio = 0;
+            const enumClasseAve = 1;
+            const enumClasseMamifero = 2;
+            const enumClassePeixe = 3;
+            const enumClasseReptil = 4;
+
+            const enumClasseAnfibioNome = "Anfíbio";
+            const enumClasseAveNome = "Ave";
+            const enumClasseMamiferoNome = "Mamífero";
+            const enumClassePeixeNome = "Peixe";
+            const enumClasseReptilNome = "Réptil";
+
             const oItems = {listaDeClasses : 
-                                [{ Classe : "Anfíbio", Chave : 0}, 
-                                {Classe : "Ave", Chave : 1}, 
-                                {Classe : "Mamífero", Chave : 2}, 
-                                {Classe : "Peixe", Chave : 3}, 
-                                {Classe : "Réptil", Chave : 4}] };
+                                [{ Classe : enumClasseAnfibioNome, Chave : enumClasseAnfibio}, 
+                                {Classe : enumClasseAveNome, Chave : enumClasseAve}, 
+                                {Classe : enumClasseMamiferoNome, Chave : enumClasseMamifero}, 
+                                {Classe : enumClassePeixeNome, Chave : enumClassePeixe}, 
+                                {Classe : enumClasseReptilNome, Chave : enumClasseReptil}] };
             const oLista = new JSONModel(oItems);
-            const oCombobox = this.getView().byId("inputClasseDeAnimal");
+            const oCombobox = this.getView();
 
             oCombobox.setModel(oLista);
         },
 
-        converterDataParaFormatoDeBanco(oCadastro) {
+        _converterDataParaFormatoDeBanco(oCadastro) {
             var sDataDoResgate = UI5Date.getInstance().toISOString(oCadastro.dataDoResgate);
             
             if (sDataDoResgate) {
@@ -78,26 +92,26 @@ sap.ui.define([
             
         },
 
-        cadastrarNovoAnimal(dados) {
+        _cadastrarNovoAnimal(dados) {
             fetch('/api/AnimalSilvestre', {
                 method: "POST",
                 body: JSON.stringify(dados),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
             })
             .then(response => response.json())
-            .then(json => this.redirecionarParaAnimalCriado(Number(json.id)))
+            .then(json => this._redirecionarParaAnimalCriado(Number(json.id)))
             .catch(erro => console.error(erro));
         },
 
-        definirModeloDeDados() {
+        _definirModeloDeDados() {
             var oModelo = new JSONModel({});
             this.getView().setModel(oModelo, "cadastro");
         },
 
-        redirecionarParaAnimalCriado(id) {
+        _redirecionarParaAnimalCriado(id) {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("detalhes", {
-                idDoAnimalDetalhado : id
+                id : id
             });
         }
     });

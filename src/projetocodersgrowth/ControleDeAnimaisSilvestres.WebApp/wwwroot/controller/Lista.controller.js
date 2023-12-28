@@ -48,7 +48,7 @@ sap.ui.define([
             const oItem = oEvent.getSource();
 			const oRouter = this.getOwnerComponent().getRouter();
 			oRouter.navTo("detalhes", {
-                idDoAnimalDetalhado: oItem.getBindingContext("animais").getProperty("id")
+                id: oItem.getBindingContext("animais").getProperty("id")
             });
 		},
 
