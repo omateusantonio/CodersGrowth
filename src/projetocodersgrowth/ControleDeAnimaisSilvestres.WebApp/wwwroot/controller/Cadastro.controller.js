@@ -78,30 +78,6 @@ sap.ui.define([
             
         },
 
-        converterNomeParaIndiceDoEnum(oCadastro) {
-            var sEnum = oCadastro.classe;
-
-            switch (sEnum) {
-                case "Anfíbio":
-                    oCadastro.classe = 0;
-                    return oCadastro;
-                case "Ave":
-                    oCadastro.classe = 1;
-                    return oCadastro;
-                case "Mamífero":
-                    oCadastro.classe = 2;
-                    return oCadastro;
-                case "Peixe":
-                    oCadastro.classe = 3;
-                    return oCadastro;
-                case "Réptil":
-                    oCadastro.classe = 4;
-                    return oCadastro;
-                default:
-                    return console.error("Item inválido");
-            }
-        },
-
         cadastrarNovoAnimal(dados) {
             fetch('/api/AnimalSilvestre', {
                 method: "POST",

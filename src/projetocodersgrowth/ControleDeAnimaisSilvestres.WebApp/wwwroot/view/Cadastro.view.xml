@@ -73,8 +73,8 @@
                             items="{path: '/listaDeClasses'}" 
                             required="true"
                             width="100%"
-                            value="{cadastro>/classe}">
-                                <core:Item text="{Classe}"/>
+                            selectedKey="{cadastro>/classe}">
+                                <core:Item text="{Classe}" key="{Chave}"/>
                         </ComboBox>
                     </VBox>
                     <VBox width="40%">

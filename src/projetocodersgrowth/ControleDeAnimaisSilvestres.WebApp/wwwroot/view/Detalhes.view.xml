@@ -14,11 +14,15 @@
                     text="{i18n>botaoDeEditarAnimal}"
                     iconFirst="true"
                     icon="sap-icon://edit"
+                    type="Transparent"
+                    width="7rem"
                 />
                 <Button
                     text="{i18n>botaoDeRemoverAnimal}"
                     iconFirst="true"
                     icon="sap-icon://delete"
+                    type="Transparent"
+                    width="7rem"
                 />
             </headerContent>
             <content>
