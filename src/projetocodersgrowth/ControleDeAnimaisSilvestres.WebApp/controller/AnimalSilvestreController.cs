@@ -68,7 +68,7 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
             }
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public ActionResult Remover(int id)
         {
             try

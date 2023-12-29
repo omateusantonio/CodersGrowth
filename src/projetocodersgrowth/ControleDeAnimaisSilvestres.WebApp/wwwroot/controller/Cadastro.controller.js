@@ -3,8 +3,9 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/format/DateFormat",
-    "sap/ui/core/date/UI5Date"
-], (Controller, History, JSONModel, DateFormat, UI5Date) => {
+    "sap/ui/core/date/UI5Date",
+    "../validation/ValidadorDeAnimalSilvestre"
+], (Controller, History, JSONModel, DateFormat, UI5Date, ValidadorDeAnimalSilvestre) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
@@ -50,6 +51,10 @@ sap.ui.define([
 
         aoClicarEmSalvar() {
             var oCadastro = this._obterItensPreenchidos();
+            var that = this;
+            var oView = that.getView();
+            const oValidador = new ValidadorDeAnimalSilvestre();
+            oValidador.validacaoCampoEstaPreenchido(oCadastro, oView);
             this._converterDataParaFormatoDeBanco(oCadastro);
             this._cadastrarNovoAnimal(oCadastro);
         },

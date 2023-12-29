@@ -7,6 +7,7 @@
 
     <Shell>
         <Page
+            id="paginaDeCadastro"
             showHeader="true"
             title="{i18n>tituloPaginaDeCadastro}"
             showNavButton="true"
@@ -37,7 +38,7 @@
                 width="100%"
                 >
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
-                    <VBox width="40%">
+                    <VBox width="40%" id="teste">
                         <Label 
                             showColon="true"
                             text="{i18n>nomeDoAnimal}"
@@ -46,7 +47,8 @@
                         <Input 
                             id="inputNomeDoAnimal"
                             required="true"
-                            value="{animalSilvestre>/nomeDoAnimal}"/>
+                            value="{animalSilvestre>/nomeDoAnimal}"
+                            change=".validacaoDoCampoNome"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -86,7 +88,10 @@
                         <Input
                             id="inputPrecoDaVacinacao" 
                             required="true"
-                            value="{animalSilvestre>/custoDeVacinacao}"/>
+                            value="{
+                                path: 'animalSilvestre>/custoDeVacinacao',
+                                type: 'sap.ui.model.type.Currency'
+                                }"/>
                     </VBox>
                 </HBox>
 
