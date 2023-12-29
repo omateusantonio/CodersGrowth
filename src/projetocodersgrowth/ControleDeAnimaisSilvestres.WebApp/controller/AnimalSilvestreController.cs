@@ -58,8 +58,9 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
             {
                 var resultados = _validacao.Validate(animalNovo);
                 _validacao.EnvioDeErros(resultados);
-                servico.Criar(animalNovo);
-                return Created($"animal/{animalNovo.Id}", animalNovo);
+                var idCriada = servico.Criar(animalNovo);
+                animalNovo.Id = idCriada;
+                return Created($"{animalNovo.Id}", animalNovo);
             }
             catch (Exception ex)
             {

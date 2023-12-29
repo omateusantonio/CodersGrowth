@@ -18,11 +18,13 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             }
         }
 
-        public void Criar(AnimalSilvestre animalNovo)
+        public int Criar(AnimalSilvestre animalNovo)
         {
             using (var bancoDeDados = ObterConexao())
             {
-                bancoDeDados.Insert(animalNovo);
+                //bancoDeDados.Insert(animalNovo);
+                var idCriada = bancoDeDados.InsertWithInt32Identity(animalNovo);
+                return idCriada;
             }
         }
 

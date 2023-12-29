@@ -15,7 +15,7 @@ sap.ui.define([
         },
 
         aoCoincidirRota(oEvent)  {
-            const id = oEvent.getParameter("arguments").idDoAnimalDetalhado;
+            const id = oEvent.getParameter("arguments").id;
             this.definirAnimalPeloId(id);
         },
 

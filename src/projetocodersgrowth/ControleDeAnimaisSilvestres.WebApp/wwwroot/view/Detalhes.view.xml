@@ -1,8 +1,7 @@
 <mvc:View
     controllerName="ui5.controledeanimaissilvestres.controller.Detalhes"
     xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    >
+    xmlns:mvc="sap.ui.core.mvc">
     <Shell>
         <Page
             showHeader="true"
@@ -15,11 +14,15 @@
                     text="{i18n>botaoDeEditarAnimal}"
                     iconFirst="true"
                     icon="sap-icon://edit"
+                    type="Transparent"
+                    width="7rem"
                 />
                 <Button
                     text="{i18n>botaoDeRemoverAnimal}"
                     iconFirst="true"
                     icon="sap-icon://delete"
+                    type="Transparent"
+                    width="7rem"
                 />
             </headerContent>
             <content>
