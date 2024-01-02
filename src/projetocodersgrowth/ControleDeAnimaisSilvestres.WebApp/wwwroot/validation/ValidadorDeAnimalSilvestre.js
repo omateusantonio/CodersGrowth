@@ -1,18 +1,36 @@
 sap.ui.define([
-    "sap/ui/core/message/Message",
-    "sap/ui/core/MessageType",
     "sap/ui/core/ValueState",
     "sap/ui/base/Object"
- ], (Message, MessageType, ValueState, BaseObject) => {
+ ], (ValueState, BaseObject) => {
     "use strict";
  
     return BaseObject.extend("ui5.controledeanimaissilvestres.ValidadorDeAnimalSilvestre", {
+
         validacaoCampoEstaPreenchido(oCadastro, oView) {
-            console.log(oCadastro);
+
+
             if (!oCadastro.nomeDoAnimal) {
                 oView.byId("inputNomeDoAnimal").setValueState(ValueState.Error);
+                oView.byId("inputNomeDoAnimal").setValueStateText("TESTE");
+            }
+        },
+
+        validacaoPrecoDeVacinacao (oCadastro, oView) {
+            if (oCadastro.custoDeVacinacao < 10) {
+                oView.byId("inputPrecoDaVacinacao").setValueState(ValueState.Error);
+            }
+        },
+
+        validacaoDataDeResgate(oEvento, oView) {
+            const sInputData = oEvento.getSource().getProperty("dateValue");
+            const sDataAtual = new Date();
+
+            if (sInputData > sDataAtual) {
+                oView.byId("inputDataDoResgate").setValueState(ValueState.Error);
             }
         }
+
+        
     });
  });
  

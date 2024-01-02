@@ -45,6 +45,7 @@ sap.ui.define([
             var oCadastro = this.getView().getModel(NOME_ALIAS_MODELO).getData();
             oCadastro.emExtincao = oCadastro.emExtincao == undefined ? false : true;
             oCadastro.classe = Number(oCadastro.classe);
+            oCadastro.custoDeVacinacao = oCadastro.custoDeVacinacao[0];
             
             return oCadastro;
         },
@@ -55,7 +56,6 @@ sap.ui.define([
             var oView = that.getView();
             const oValidador = new ValidadorDeAnimalSilvestre();
             oValidador.validacaoCampoEstaPreenchido(oCadastro, oView);
-            this._converterDataParaFormatoDeBanco(oCadastro);
             this._cadastrarNovoAnimal(oCadastro);
         },
 
@@ -127,6 +127,14 @@ sap.ui.define([
             oRouter.navTo(nomeRotaDetalhes, {
                 id : id
             });
+        },
+
+        aoAlterarCampoData(oEvento) {
+            var oView = this.getView();
+            var teste = oEvento;
+            var _validador = new ValidadorDeAnimalSilvestre();
+            _validador.validacaoDataDeResgate(teste, oView);
         }
+
     });
 });
