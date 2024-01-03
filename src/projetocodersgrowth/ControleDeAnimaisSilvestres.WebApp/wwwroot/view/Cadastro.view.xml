@@ -49,7 +49,8 @@
                             required="true"
                             value="{animalSilvestre>/nomeDoAnimal}"
                             showValueStateMessage="true"
-                            change=".aoAlterarCampoData"/>
+                            change=".aoAlterarCampoData"
+                            fieldGroupIds="teste"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -60,7 +61,8 @@
                         <Input 
                             id="inputNomeDaEspecie"
                             required="true"
-                            value="{animalSilvestre>/nomeDaEspecie}"/>
+                            value="{animalSilvestre>/nomeDaEspecie}"
+                            fieldGroupIds="teste"/>
                     </VBox>
                 </HBox>
 
@@ -76,7 +78,8 @@
                             items="{classes>/}" 
                             required="true"
                             width="100%"
-                            selectedKey="{animalSilvestre>/classe}">
+                            selectedKey="{animalSilvestre>/classe}"
+                            fieldGroupIds="teste">
                                 <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
                         </ComboBox>
                     </VBox>
@@ -93,7 +96,8 @@
                                 path: 'animalSilvestre>/custoDeVacinacao',
                                 type: 'sap.ui.model.type.Currency'
                                 }"
-                            change=".validacaoPrecoDeVacinacao"/>
+                            change=".aoAlterarCampoPreco"
+                            fieldGroupIds="teste"/>
                     </VBox>
                 </HBox>
 
@@ -103,8 +107,10 @@
                             showColon="true"
                             text="{i18n>dataDoResgate}"
                             labelFor="inputDataDoResgate"
+                            required="true"
                             design="Bold"/>
                         <DatePicker 
+                            id="inputDataDoResgate"
                             valueFormat="yyyy-MM-ddTHH:mm"
                             displayFormat="dd-MM-yyyy"
                             value="{ 
@@ -117,10 +123,16 @@
                                     }
                                 }
                             }"
-                            change=".aoAlterarCampoData"/>
+                            change=".aoAlterarCampoData"
+                            fieldGroupIds="teste"/>
                     </VBox>
                     <VBox width="40%">
-                        <CheckBox text="{i18n>emExtincao}" id="inputEmExtincao" class="sapUiSmallMarginTop" selected="{animalSilvestre>/emExtincao}"/>
+                        <CheckBox 
+                            text="{i18n>emExtincao}" 
+                            id="inputEmExtincao" 
+                            class="sapUiSmallMarginTop" 
+                            selected="{animalSilvestre>/emExtincao}"
+                            fieldGroupIds="teste"/>
                     </VBox>
                 </HBox>
             </layout:VerticalLayout>

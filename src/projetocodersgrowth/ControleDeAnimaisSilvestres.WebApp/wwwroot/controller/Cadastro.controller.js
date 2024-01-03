@@ -2,18 +2,17 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/format/DateFormat",
-    "sap/ui/core/date/UI5Date",
     "../validation/ValidadorDeAnimalSilvestre"
-], (Controller, History, JSONModel, DateFormat, UI5Date, ValidadorDeAnimalSilvestre) => {
+], (Controller, History, JSONModel, ValidadorDeAnimalSilvestre) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
     const NOME_ROTA_LISTA = "lista";
     const NOME_ALIAS_MODELO = "animalSilvestre"
+    let _validador = new ValidadorDeAnimalSilvestre();
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
-        
+
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this.aoCoincidirRota, this);
@@ -22,6 +21,7 @@ sap.ui.define([
         aoCoincidirRota() {
             this._definirModeloDeDados();
             this._definirItensDaCombobox();
+            this._resetarEstadoDeValidacaoDosCampos();
         },
 
         aoClicarEmVoltar() {
@@ -42,20 +42,19 @@ sap.ui.define([
         },
 
         _obterItensPreenchidos() {
-            var oCadastro = this.getView().getModel(NOME_ALIAS_MODELO).getData();
+            const intZero = 0;
+            let oCadastro = this.getView().getModel(NOME_ALIAS_MODELO).getData();
             oCadastro.emExtincao = oCadastro.emExtincao == undefined ? false : true;
             oCadastro.classe = Number(oCadastro.classe);
-            oCadastro.custoDeVacinacao = oCadastro.custoDeVacinacao[0];
+            oCadastro.custoDeVacinacao = oCadastro.custoDeVacinacao == undefined ? intZero : (oCadastro.custoDeVacinacao)[0];
             
             return oCadastro;
         },
 
         aoClicarEmSalvar() {
-            var oCadastro = this._obterItensPreenchidos();
-            var that = this;
-            var oView = that.getView();
-            const oValidador = new ValidadorDeAnimalSilvestre();
-            oValidador.validacaoCampoEstaPreenchido(oCadastro, oView);
+            let oCadastro = this._obterItensPreenchidos();
+            let oView = this.getView();
+            _validador.validacaoCampoEstaPreenchido(oCadastro, oView);
             this._cadastrarNovoAnimal(oCadastro);
         },
 
@@ -85,22 +84,6 @@ sap.ui.define([
             oView.setModel(oLista, nomeAliasLista);
         },
 
-        _converterDataParaFormatoDeBanco(oCadastro) {
-            var sDataDoResgate = UI5Date.getInstance().toISOString(oCadastro.dataDoResgate);
-            
-            if (sDataDoResgate) {
-                var oFormatoDeData = DateFormat.getDateInstance({
-                    pattern: "yyyy-MM-ddTHH:mm:ss"
-                });
-
-                var oData = new Date(sDataDoResgate);
-
-                oCadastro.dataDoResgate = oFormatoDeData.format(oData);
-                return oCadastro;
-            }
-            
-        },
-
         _cadastrarNovoAnimal(dados) {
             const url = '/api/AnimalSilvestre';
             const metodoDoFetch = "POST";
@@ -116,7 +99,7 @@ sap.ui.define([
         },
 
         _definirModeloDeDados() {
-            var oModelo = new JSONModel({});
+            let oModelo = new JSONModel({});
             this.getView().setModel(oModelo, NOME_ALIAS_MODELO);
         },
 
@@ -130,10 +113,42 @@ sap.ui.define([
         },
 
         aoAlterarCampoData(oEvento) {
-            var oView = this.getView();
-            var teste = oEvento;
-            var _validador = new ValidadorDeAnimalSilvestre();
-            _validador.validacaoDataDeResgate(teste, oView);
+            let oView = this.getView();
+            _validador.validacaoDataDeResgate(oEvento, oView);
+        },
+
+        aoAlterarCampoPreco(oEvento) {
+            let oView = this.getView();
+            _validador.validacaoPrecoDeVacinacao(oEvento, oView);
+        },
+
+        _resetarEstadoDeValidacaoDosCampos() {
+            const stringEstadoDoCampo = "valueState";
+            const stringTextoDeEstadoDoCampo = "valueStateText";
+            const stringCampoNomeDoAnimal = "inputNomeDoAnimal";
+            const stringCampoNomeDaEspecie = "inputNomeDaEspecie";
+            const stringCampoPrecoDaVacinacao = "inputPrecoDaVacinacao";
+            const stringCampoClasseDeAnimal = "inputClasseDeAnimal";
+            const stringCampoDataDoResgate = "inputDataDoResgate";
+            
+            const oView = this.getView();
+
+            oView.byId(stringCampoNomeDoAnimal).resetProperty(stringEstadoDoCampo);
+            oView.byId(stringCampoNomeDoAnimal).resetProperty(stringTextoDeEstadoDoCampo);
+
+            oView.byId(stringCampoNomeDaEspecie).resetProperty(stringEstadoDoCampo);
+            oView.byId(stringCampoNomeDaEspecie).resetProperty(stringTextoDeEstadoDoCampo);
+
+            oView.byId(stringCampoPrecoDaVacinacao).resetProperty(stringEstadoDoCampo);
+            oView.byId(stringCampoPrecoDaVacinacao).resetProperty(stringTextoDeEstadoDoCampo);
+
+            oView.byId(stringCampoClasseDeAnimal).resetProperty(stringEstadoDoCampo);
+            oView.byId(stringCampoClasseDeAnimal).resetProperty(stringTextoDeEstadoDoCampo);
+
+            oView.byId(stringCampoDataDoResgate).resetProperty(stringEstadoDoCampo);
+            oView.byId(stringCampoDataDoResgate).resetProperty(stringTextoDeEstadoDoCampo);
+
+            
         }
 
     });
