@@ -46,11 +46,12 @@
                             design="Bold"/>
                         <Input
                             id="inputNomeDoAnimal"
+                            type="Text"
                             required="true"
                             value="{animalSilvestre>/nomeDoAnimal}"
                             showValueStateMessage="true"
-                            change=".aoAlterarCampoData"
-                            fieldGroupIds="teste"/>
+                            change=".aoAlterarCampoNomeDoAnimal"
+                            maxLength="50"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -62,7 +63,8 @@
                             id="inputNomeDaEspecie"
                             required="true"
                             value="{animalSilvestre>/nomeDaEspecie}"
-                            fieldGroupIds="teste"/>
+                            change=".aoAlterarCampoNomeDaEspecie"
+                            maxLength="50"/>
                     </VBox>
                 </HBox>
 
@@ -72,16 +74,16 @@
                             showColon="true"
                             text="{i18n>classe}"
                             labelFor="inputClasseDeAnimal"
-                            design="Bold"/>
-                        <ComboBox 
+                            design="Bold"
+                            required="true"/>
+                        <Select 
                             id="inputClasseDeAnimal" 
                             items="{classes>/}" 
-                            required="true"
                             width="100%"
                             selectedKey="{animalSilvestre>/classe}"
                             fieldGroupIds="teste">
                                 <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
-                        </ComboBox>
+                        </Select>
                     </VBox>
                     <VBox width="40%">
                         <Label 

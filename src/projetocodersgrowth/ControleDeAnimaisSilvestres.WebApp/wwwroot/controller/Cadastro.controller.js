@@ -54,7 +54,8 @@ sap.ui.define([
         aoClicarEmSalvar() {
             let oCadastro = this._obterItensPreenchidos();
             let oView = this.getView();
-            _validador.validacaoCampoEstaPreenchido(oCadastro, oView);
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador._validacaoCampoEstaPreenchido(oCadastro, oView, oResourceBundle);
             this._cadastrarNovoAnimal(oCadastro);
         },
 
@@ -114,12 +115,26 @@ sap.ui.define([
 
         aoAlterarCampoData(oEvento) {
             let oView = this.getView();
-            _validador.validacaoDataDeResgate(oEvento, oView);
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador._validacaoDataDeResgate(oEvento, oView, oResourceBundle);
         },
 
         aoAlterarCampoPreco(oEvento) {
             let oView = this.getView();
-            _validador.validacaoPrecoDeVacinacao(oEvento, oView);
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador._validacaoPrecoDeVacinacao(oEvento, oView, oResourceBundle);
+        },
+
+        aoAlterarCampoNomeDoAnimal(oEvento) {
+            let oView = this.getView();
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador._validacaoNomeDoAnimal(oEvento, oView, oResourceBundle);
+        },
+
+        aoAlterarCampoNomeDaEspecie(oEvento) {
+            let oView = this.getView();
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador._validacaoNomeDaEspecie(oEvento, oView, oResourceBundle);
         },
 
         _resetarEstadoDeValidacaoDosCampos() {
