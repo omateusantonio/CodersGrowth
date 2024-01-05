@@ -2,14 +2,15 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     "sap/ui/model/json/JSONModel",
-    "../validation/ValidadorDeAnimalSilvestre"
-], (Controller, History, JSONModel, ValidadorDeAnimalSilvestre) => {
+    "../validation/ValidadorDeAnimalSilvestre",
+    "sap/m/MessageBox"
+], (Controller, History, JSONModel, ValidadorDeAnimalSilvestre, MessageBox) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
     const NOME_ROTA_LISTA = "lista";
     const NOME_ALIAS_MODELO = "animalSilvestre"
-    let _validador = new ValidadorDeAnimalSilvestre();
+    let _validador = null;
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
 
@@ -19,6 +20,9 @@ sap.ui.define([
         },
 
         aoCoincidirRota() {
+            let oView = this.getView();
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            _validador = new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
             this._definirModeloDeDados();
             this._definirItensDaCombobox();
             this._resetarEstadoDeValidacaoDosCampos();
@@ -52,11 +56,12 @@ sap.ui.define([
         },
 
         aoClicarEmSalvar() {
-            let oCadastro = this._obterItensPreenchidos();
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            _validador._validacaoCampoEstaPreenchido(oCadastro, oView, oResourceBundle);
-            this._cadastrarNovoAnimal(oCadastro);
+            // let oCadastro = this._obterItensPreenchidos();
+            // let oView = this.getView();
+            // let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            // _validador._validarSeCamposEstaoPreenchidos(oCadastro, oView, oResourceBundle);
+            // this._cadastrarNovoAnimal(oCadastro);
+            this._tentarSalvarOCadastro();
         },
 
         _definirItensDaCombobox() {
@@ -113,54 +118,60 @@ sap.ui.define([
         },
 
         aoAlterarCampoData(oEvento) {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            _validador._validacaoDataDeResgate(oEvento, oView, oResourceBundle);
+            _validador.validarDataDeResgatePelaView(oEvento);
         },
 
         aoAlterarCampoPreco(oEvento) {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            _validador._validacaoPrecoDeVacinacao(oEvento, oView, oResourceBundle);
+            _validador.validarPrecoDeVacinacaoPelaView(oEvento);
         },
 
         aoAlterarCampoNomeDoAnimal(oEvento) {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            _validador._validacaoNomeDoAnimal(oEvento, oView, oResourceBundle);
+            _validador.validarNomeDoAnimalPelaView(oEvento);
         },
 
         aoAlterarCampoNomeDaEspecie(oEvento) {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            _validador._validacaoNomeDaEspecie(oEvento, oView, oResourceBundle);
+            _validador.validarNomeDaEspeciePelaView(oEvento);
         },
 
         _resetarEstadoDeValidacaoDosCampos() {
-            const stringEstadoDoCampo = "valueState";
-            const stringTextoDeEstadoDoCampo = "valueStateText";
             const stringCampoNomeDoAnimal = "inputNomeDoAnimal";
             const stringCampoNomeDaEspecie = "inputNomeDaEspecie";
             const stringCampoPrecoDaVacinacao = "inputPrecoDaVacinacao";
             const stringCampoClasseDeAnimal = "inputClasseDeAnimal";
             const stringCampoDataDoResgate = "inputDataDoResgate";
-            
+
+            this._redefinirPropriedadesDoStatus(stringCampoNomeDoAnimal);
+            this._redefinirPropriedadesDoStatus(stringCampoNomeDaEspecie);
+            this._redefinirPropriedadesDoStatus(stringCampoPrecoDaVacinacao);
+            this._redefinirPropriedadesDoStatus(stringCampoClasseDeAnimal);
+            this._redefinirPropriedadesDoStatus(stringCampoDataDoResgate);
+        },
+
+        _redefinirPropriedadesDoStatus(id) {
+            const stringEstadoDoCampo = "valueState";
+            const stringTextoDeEstadoDoCampo = "valueStateText";
             const oView = this.getView();
 
-            oView.byId(stringCampoNomeDoAnimal).resetProperty(stringEstadoDoCampo);
-            oView.byId(stringCampoNomeDoAnimal).resetProperty(stringTextoDeEstadoDoCampo);
+            oView.byId(id).resetProperty(stringEstadoDoCampo);
+            oView.byId(id).resetProperty(stringTextoDeEstadoDoCampo);
+        },
 
-            oView.byId(stringCampoNomeDaEspecie).resetProperty(stringEstadoDoCampo);
-            oView.byId(stringCampoNomeDaEspecie).resetProperty(stringTextoDeEstadoDoCampo);
-
-            oView.byId(stringCampoPrecoDaVacinacao).resetProperty(stringEstadoDoCampo);
-            oView.byId(stringCampoPrecoDaVacinacao).resetProperty(stringTextoDeEstadoDoCampo);
-
-            oView.byId(stringCampoClasseDeAnimal).resetProperty(stringEstadoDoCampo);
-            oView.byId(stringCampoClasseDeAnimal).resetProperty(stringTextoDeEstadoDoCampo);
-
-            oView.byId(stringCampoDataDoResgate).resetProperty(stringEstadoDoCampo);
-            oView.byId(stringCampoDataDoResgate).resetProperty(stringTextoDeEstadoDoCampo);
+        _tentarSalvarOCadastro() {
+            let oCadastro = this._obterItensPreenchidos();
+            let oView = this.getView();
+            let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            try {
+                _validador._validarSeCamposEstaoPreenchidos(oCadastro, oView, oResourceBundle);
+                this._cadastrarNovoAnimal(oCadastro);
+            }
+            catch (erro) {
+                MessageBox.error(erro, {
+                    title: "Erro",
+                    id: "messageBoxId2",
+                    details: "<p><strong>TESTE</p></strong>",
+                    contentWidth: "2rem"
+                });
+            }
         }
     });
 });

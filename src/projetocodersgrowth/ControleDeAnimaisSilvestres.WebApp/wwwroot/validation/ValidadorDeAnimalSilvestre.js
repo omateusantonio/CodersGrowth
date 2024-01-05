@@ -10,129 +10,145 @@ sap.ui.define([
     const NOME_CAMPO_DATA_RESGATE = "inputDataDoResgate";
 
     return BaseObject.extend("ui5.controledeanimaissilvestres.ValidadorDeAnimalSilvestre", {
+        constructor: function(oView, oResourceBundle) {
+            this._oView = oView;
+            this._oResourceBundle = oResourceBundle;
+        },
 
-        _validacaoCampoEstaPreenchido(oCadastro, oView, oResourceBundle) {
+        _validarSeCamposEstaoPreenchidos(oCadastro) {
             const stringAtributoNomeDoAnimal = "nomeDoAnimal";
             const stringAtributoNomeDaEspecie = "nomeDaEspecie";
             const stringAtributoCustoDaVacinacao = "custoDeVacinacao";
             const stringAtributoDataDoResgate = "dataDoResgate";
 
-            const stringErroCampoNomeDoAnimalVazio = oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const stringErroCampoNomeDaEspecieVazio = oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const stringErroCampoPrecoDaVacinacaoVazio = oResourceBundle.getText("erroCampoPrecoDaVacinacaoVazio");
-            const stringErroCampoDataDoResgateVazio = oResourceBundle.getText("erroCampoDataDoResgateVazio");
+            const stringErroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
+            const stringErroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
+            const stringErroCampoPrecoDaVacinacaoVazio = this._oResourceBundle.getText("erroCampoPrecoDaVacinacaoVazio");
+            const stringErroCampoDataDoResgateVazio = this._oResourceBundle.getText("erroCampoDataDoResgateVazio");
 
             if (!oCadastro[stringAtributoNomeDoAnimal]) {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroCampoNomeDoAnimalVazio);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroCampoNomeDoAnimalVazio);
+
             } else {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_NOME_ANIMAL);
             }
 
             if (!oCadastro[stringAtributoNomeDaEspecie]) {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroCampoNomeDaEspecieVazio);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroCampoNomeDaEspecieVazio);
             } else {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_NOME_ESPECIE);
             }
 
             if (!oCadastro[stringAtributoCustoDaVacinacao]) {
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroCampoPrecoDaVacinacaoVazio);
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroCampoPrecoDaVacinacaoVazio);
             } else {
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_PRECO_VACINACAO);
             }
 
             if (!oCadastro[stringAtributoDataDoResgate]) {
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueStateText(stringErroCampoDataDoResgateVazio);
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroCampoDataDoResgateVazio)
             } else {
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_DATA_RESGATE);
             }
 
         },
 
-        _validacaoNomeDoAnimal (oEvento, oView, oResourceBundle) {
-            const oRegex = new RegExp("[^a-zA-Z]");
-            const stringInputNomeDoAnimal = oEvento.getSource().getValue();
-            const booleanoContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDoAnimal);
-            const stringErroInputNomeDoAnimalInvalido = oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
-            const stringErroCampoNomeDoAnimalVazio = oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const stringErroInputNomeDoAnimalTamanhoMinimo = oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
+        _definirStatusDeErro(id, mensagem){
+            this._oView.byId(id).setValueState(ValueState.Error);
+            this._oView.byId(id).setValueStateText(mensagem);
+            throw mensagem;
+        },
 
+        _definirStatusDeSucesso(id) {
+            this._oView.byId(id).setValueState(ValueState.Success);
+        },
+
+        validarNomeDoAnimalPelaView(oEvento){
+            const stringInputNomeDoAnimal = oEvento.getSource().getValue();
+            this._validacaoNomeDoAnimal(stringInputNomeDoAnimal);
+        },
+
+        _validacaoNomeDoAnimal (stringInputNomeDoAnimal) {
+            const oRegex = new RegExp("[^a-zA-Z]");
+            const booleanoContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDoAnimal);
+            const stringErroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
+            const stringErroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
+            const stringErroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
 
             if (booleanoContemNumeroOuCaracterEspecialNoInput) {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroInputNomeDoAnimalInvalido);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroInputNomeDoAnimalInvalido);
             } else if (stringInputNomeDoAnimal.length < 2) {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroInputNomeDoAnimalTamanhoMinimo);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroInputNomeDoAnimalTamanhoMinimo);
             } else if (!stringInputNomeDoAnimal) {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroCampoNomeDoAnimalVazio);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroCampoNomeDoAnimalVazio);
             }
             else {
-                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_NOME_ANIMAL);
             }
         },
 
-        _validacaoNomeDaEspecie (oEvento, oView, oResourceBundle) {
-            const oRegex = new RegExp("[^a-zA-Z]");
+        validarNomeDaEspeciePelaView (oEvento) {
             const stringInputNomeDaEspecie = oEvento.getSource().getValue();
+            this._validacaoNomeDaEspecie(stringInputNomeDaEspecie);
+        },
+
+        _validacaoNomeDaEspecie (stringInputNomeDaEspecie) {
+            const oRegex = new RegExp("[^a-zA-Z]");
             const booleanoContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDaEspecie);
-            const stringErroInputNomeDaEspecieInvalido = oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
-            const stringErroCampoNomeDaEspecieVazio = oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const stringErroInputNomeDaEspecieTamanhoMinimo = oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
+            const stringErroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
+            const stringErroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
+            const stringErroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
             
             if (booleanoContemNumeroOuCaracterEspecialNoInput) {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroInputNomeDaEspecieInvalido);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroInputNomeDaEspecieInvalido);
             } else if (stringInputNomeDaEspecie.length < 5) {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroInputNomeDaEspecieTamanhoMinimo);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroInputNomeDaEspecieTamanhoMinimo);
             } else if (!stringInputNomeDaEspecie) {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroCampoNomeDaEspecieVazio);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroCampoNomeDaEspecieVazio);
             }
             else {
-                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_NOME_ESPECIE);
             }
         },
 
-        _validacaoPrecoDeVacinacao (oEvento, oView, oResourceBundle) {
-            const floatPrecoMinimo = 10.00;
+        validarPrecoDeVacinacaoPelaView(oEvento) {
             const stringInputPreco = oEvento.getSource().getProperty("value");
+            this._validacaoPrecoDeVacinacao(stringInputPreco)
+        },
+
+        _validacaoPrecoDeVacinacao (stringInputPreco) {
+            const floatPrecoMinimo = 10.00;
             const stringInputPrecoFormatado = this._formatarPreco(stringInputPreco);
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
             const booleanoPrecoDigitadoEhValido = oRegex.test(stringInputPrecoFormatado);
-            const stringErroInputPrecoDaVacinacaoInvalido = oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
-            const stringErroInputPrecoDaVacinacaoPrecoMinimo = oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
+            const stringErroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
+            const stringErroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
 
             if (stringInputPrecoFormatado < floatPrecoMinimo) {
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroInputPrecoDaVacinacaoPrecoMinimo);
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!booleanoPrecoDigitadoEhValido) {
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroInputPrecoDaVacinacaoInvalido);
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroInputPrecoDaVacinacaoInvalido);
             } else {
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_PRECO_VACINACAO);
             }
         },
 
-        _validacaoDataDeResgate(oEvento, oView, oResourceBundle) {
-            const sInputData = oEvento.getSource().getProperty("dateValue");
-            const sDataAtual = new Date();
-            const stringErroInputDataDoResgateInvalido = oResourceBundle.getText("erroInputDataDoResgateInvalido");
-            const stringErroInputDataDeResgateNaoDeveSerFuturo = oResourceBundle.getText("erroInputDataDeResgateNaoDeveSerFuturo");
+        validarDataDeResgatePelaView(oEvento) {
+            const stringInputData = oEvento.getSource().getProperty("dateValue");
+            this._validacaoDataDeResgate(stringInputData)
+        },
 
-            if (sInputData > sDataAtual) {
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueStateText(stringErroInputDataDeResgateNaoDeveSerFuturo);
-            } else if (!sInputData) {
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueStateText(stringErroInputDataDoResgateInvalido);
+        _validacaoDataDeResgate(stringInputData) {
+            const stringDataAtual = new Date();
+            const stringErroInputDataDoResgateInvalido = this._oResourceBundle.getText("erroInputDataDoResgateInvalido");
+            const stringErroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("erroInputDataDeResgateNaoDeveSerFuturo");
+
+            if (stringInputData > stringDataAtual) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroInputDataDeResgateNaoDeveSerFuturo);
+            } else if (!stringInputData) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroInputDataDoResgateInvalido);
             } else {
-                oView.byId(NOME_CAMPO_DATA_RESGATE).setValueState(ValueState.Success);
+                this._definirStatusDeSucesso(NOME_CAMPO_DATA_RESGATE);
             }
         },
 
@@ -145,6 +161,11 @@ sap.ui.define([
             const stringPrecoCasaDecimalComPonto = stringPrecoSemPonto.replace(charVirgula, charPonto);
 
             return stringPrecoCasaDecimalComPonto;
+        },
+
+        _qlqrcoisa() {
+            _validacaoDataDeResgate();
+            
         }
     });
  });
