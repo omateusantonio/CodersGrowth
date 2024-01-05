@@ -58,10 +58,15 @@ sap.ui.define([
             const booleanoContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDoAnimal);
             const stringErroInputNomeDoAnimalInvalido = oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
             const stringErroCampoNomeDoAnimalVazio = oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
+            const stringErroInputNomeDoAnimalTamanhoMinimo = oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
+
 
             if (booleanoContemNumeroOuCaracterEspecialNoInput) {
                 oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
                 oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroInputNomeDoAnimalInvalido);
+            } else if (stringInputNomeDoAnimal.length < 2) {
+                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
+                oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroInputNomeDoAnimalTamanhoMinimo);
             } else if (!stringInputNomeDoAnimal) {
                 oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueState(ValueState.Error);
                 oView.byId(NOME_CAMPO_NOME_ANIMAL).setValueStateText(stringErroCampoNomeDoAnimalVazio);
@@ -77,10 +82,14 @@ sap.ui.define([
             const booleanoContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDaEspecie);
             const stringErroInputNomeDaEspecieInvalido = oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
             const stringErroCampoNomeDaEspecieVazio = oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-           
+            const stringErroInputNomeDaEspecieTamanhoMinimo = oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
+            
             if (booleanoContemNumeroOuCaracterEspecialNoInput) {
                 oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
                 oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroInputNomeDaEspecieInvalido);
+            } else if (stringInputNomeDaEspecie.length < 5) {
+                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
+                oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroInputNomeDaEspecieTamanhoMinimo);
             } else if (!stringInputNomeDaEspecie) {
                 oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueState(ValueState.Error);
                 oView.byId(NOME_CAMPO_NOME_ESPECIE).setValueStateText(stringErroCampoNomeDaEspecieVazio);
@@ -97,11 +106,11 @@ sap.ui.define([
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
             const booleanoPrecoDigitadoEhValido = oRegex.test(stringInputPrecoFormatado);
             const stringErroInputPrecoDaVacinacaoInvalido = oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
-            const stringErroInputPrecoDaVacinacaoMenorQue10 = oResourceBundle.getText("erroInputPrecoDaVacinacaoMenorQue10");
+            const stringErroInputPrecoDaVacinacaoPrecoMinimo = oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
 
             if (stringInputPrecoFormatado < floatPrecoMinimo) {
                 oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Error);
-                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroInputPrecoDaVacinacaoMenorQue10);
+                oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!booleanoPrecoDigitadoEhValido) {
                 oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueState(ValueState.Error);
                 oView.byId(NOME_CAMPO_PRECO_VACINACAO).setValueStateText(stringErroInputPrecoDaVacinacaoInvalido);
@@ -137,8 +146,6 @@ sap.ui.define([
 
             return stringPrecoCasaDecimalComPonto;
         }
-
-        
     });
  });
  

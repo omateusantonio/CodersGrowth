@@ -40,6 +40,7 @@
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
                     <VBox width="40%" id="teste">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>nomeDoAnimal}"
                             labelFor="inputNomeDoAnimal"
@@ -47,7 +48,6 @@
                         <Input
                             id="inputNomeDoAnimal"
                             type="Text"
-                            required="true"
                             value="{animalSilvestre>/nomeDoAnimal}"
                             showValueStateMessage="true"
                             change=".aoAlterarCampoNomeDoAnimal"
@@ -55,13 +55,13 @@
                     </VBox>
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             text="{i18n>nomeDaEspecie}"
                             labelFor="inputNomeDaEspecie"
                             design="Bold"
                             showColon="true"/>
                         <Input 
                             id="inputNomeDaEspecie"
-                            required="true"
                             value="{animalSilvestre>/nomeDaEspecie}"
                             change=".aoAlterarCampoNomeDaEspecie"
                             maxLength="50"/>
@@ -71,45 +71,43 @@
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>classe}"
                             labelFor="inputClasseDeAnimal"
-                            design="Bold"
-                            required="true"/>
+                            design="Bold"/>
                         <Select 
                             id="inputClasseDeAnimal" 
                             items="{classes>/}" 
                             width="100%"
-                            selectedKey="{animalSilvestre>/classe}"
-                            fieldGroupIds="teste">
+                            selectedKey="{animalSilvestre>/classe}">
                                 <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
                         </Select>
                     </VBox>
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>custoDeVacinacao}"
                             labelFor="inputPrecoDaVacinacao"
                             design="Bold"/>
                         <Input
                             id="inputPrecoDaVacinacao" 
-                            required="true"
                             value="{
                                 path: 'animalSilvestre>/custoDeVacinacao',
                                 type: 'sap.ui.model.type.Currency'
                                 }"
-                            change=".aoAlterarCampoPreco"
-                            fieldGroupIds="teste"/>
+                            change=".aoAlterarCampoPreco"/>
                     </VBox>
                 </HBox>
 
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>dataDoResgate}"
                             labelFor="inputDataDoResgate"
-                            required="true"
                             design="Bold"/>
                         <DatePicker 
                             id="inputDataDoResgate"
@@ -125,16 +123,14 @@
                                     }
                                 }
                             }"
-                            change=".aoAlterarCampoData"
-                            fieldGroupIds="teste"/>
+                            change=".aoAlterarCampoData"/>
                     </VBox>
                     <VBox width="40%">
                         <CheckBox 
                             text="{i18n>emExtincao}" 
                             id="inputEmExtincao" 
                             class="sapUiSmallMarginTop" 
-                            selected="{animalSilvestre>/emExtincao}"
-                            fieldGroupIds="teste"/>
+                            selected="{animalSilvestre>/emExtincao}"/>
                     </VBox>
                 </HBox>
             </layout:VerticalLayout>

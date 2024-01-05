@@ -106,7 +106,6 @@ sap.ui.define([
 
         _redirecionarParaAnimalCriado(id) {
             const nomeRotaDetalhes = "detalhes"
-
             const oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo(nomeRotaDetalhes, {
                 id : id
@@ -162,9 +161,6 @@ sap.ui.define([
 
             oView.byId(stringCampoDataDoResgate).resetProperty(stringEstadoDoCampo);
             oView.byId(stringCampoDataDoResgate).resetProperty(stringTextoDeEstadoDoCampo);
-
-            
         }
-
     });
 });
