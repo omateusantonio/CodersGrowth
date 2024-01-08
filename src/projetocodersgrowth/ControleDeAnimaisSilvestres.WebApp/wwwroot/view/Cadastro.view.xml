@@ -51,7 +51,8 @@
                             value="{animalSilvestre>/nomeDoAnimal}"
                             showValueStateMessage="true"
                             change=".aoAlterarCampoNomeDoAnimal"
-                            maxLength="50"/>
+                            maxLength="50"
+                            placeholder="{i18n>placeholderNomeDoAnimal}"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -64,7 +65,8 @@
                             id="inputNomeDaEspecie"
                             value="{animalSilvestre>/nomeDaEspecie}"
                             change=".aoAlterarCampoNomeDaEspecie"
-                            maxLength="50"/>
+                            maxLength="50"
+                            placeholder="{i18n>placeholderNomeDaEspecie}"/>
                     </VBox>
                 </HBox>
 
@@ -97,7 +99,8 @@
                                 path: 'animalSilvestre>/custoDeVacinacao',
                                 type: 'sap.ui.model.type.Currency'
                                 }"
-                            change=".aoAlterarCampoPreco"/>
+                            change=".aoAlterarCampoPreco"
+                            placeholder="{i18n>placeholderPrecoDaVacinacao}"/>
                     </VBox>
                 </HBox>
 

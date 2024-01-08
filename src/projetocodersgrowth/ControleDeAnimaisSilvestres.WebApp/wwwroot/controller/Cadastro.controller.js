@@ -56,11 +56,6 @@ sap.ui.define([
         },
 
         aoClicarEmSalvar() {
-            // let oCadastro = this._obterItensPreenchidos();
-            // let oView = this.getView();
-            // let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            // _validador._validarSeCamposEstaoPreenchidos(oCadastro, oView, oResourceBundle);
-            // this._cadastrarNovoAnimal(oCadastro);
             this._tentarSalvarOCadastro();
         },
 
@@ -158,19 +153,20 @@ sap.ui.define([
 
         _tentarSalvarOCadastro() {
             let oCadastro = this._obterItensPreenchidos();
-            let oView = this.getView();
             let oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            const stringMensagemDeErroCorpo = oResourceBundle.getText("corpoDoErro");
+            const stringMensagemDeErroCabecalho = oResourceBundle.getText("cabecalhoDoErro");
+
             try {
-                _validador._validarSeCamposEstaoPreenchidos(oCadastro, oView, oResourceBundle);
+                _validador.validacaoDeTodosOsCampos(oCadastro);
                 this._cadastrarNovoAnimal(oCadastro);
             }
             catch (erro) {
-                MessageBox.error(erro, {
-                    title: "Erro",
+                MessageBox.error(stringMensagemDeErroCorpo, {
+                    title: stringMensagemDeErroCabecalho,
                     id: "messageBoxId2",
-                    details: "<p><strong>TESTE</p></strong>",
-                    contentWidth: "2rem"
-                });
+                    details: erro
+                })
             }
         }
     });
