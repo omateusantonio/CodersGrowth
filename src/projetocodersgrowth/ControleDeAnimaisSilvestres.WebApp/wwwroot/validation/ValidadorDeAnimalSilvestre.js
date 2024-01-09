@@ -16,41 +16,41 @@ sap.ui.define([
             this._oResourceBundle = oResourceBundle;
         },
 
-        _validarSeCamposEstaoPreenchidos(oCadastro) {
-            const stringAtributoNomeDoAnimal = "nomeDoAnimal";
-            const stringAtributoNomeDaEspecie = "nomeDaEspecie";
-            const stringAtributoCustoDaVacinacao = "custoDeVacinacao";
-            const stringAtributoDataDoResgate = "dataDoResgate";
+        _validarSeCamposEstaoPreenchidos(dadosDeCadastro) {
+            const atributoNomeDoAnimal = "nomeDoAnimal";
+            const atributoNomeDaEspecie = "nomeDaEspecie";
+            const atributoCustoDaVacinacao = "custoDeVacinacao";
+            const atributoDataDoResgate = "dataDoResgate";
 
-            const stringErroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const stringErroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const stringErroCampoPrecoDaVacinacaoVazio = this._oResourceBundle.getText("erroCampoPrecoDaVacinacaoVazio");
-            const stringErroCampoDataDoResgateVazio = this._oResourceBundle.getText("erroCampoDataDoResgateVazio");
+            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
+            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
+            const erroCampoPrecoDaVacinacaoVazio = this._oResourceBundle.getText("erroCampoPrecoDaVacinacaoVazio");
+            const erroCampoDataDoResgateVazio = this._oResourceBundle.getText("erroCampoDataDoResgateVazio");
 
-            if (!oCadastro[stringAtributoNomeDoAnimal]) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroCampoNomeDoAnimalVazio);
-                MENSAGENS_DE_ERRO.push(stringErroCampoNomeDoAnimalVazio);
+            if (!dadosDeCadastro[atributoNomeDoAnimal]) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
+                MENSAGENS_DE_ERRO.push(erroCampoNomeDoAnimalVazio);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_NOME_ANIMAL);
             }
 
-            if (!oCadastro[stringAtributoNomeDaEspecie]) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroCampoNomeDaEspecieVazio);
-                MENSAGENS_DE_ERRO.push(stringErroCampoNomeDaEspecieVazio);
+            if (!dadosDeCadastro[atributoNomeDaEspecie]) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroCampoNomeDaEspecieVazio);
+                MENSAGENS_DE_ERRO.push(erroCampoNomeDaEspecieVazio);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_NOME_ESPECIE);
             }
 
-            if (!oCadastro[stringAtributoCustoDaVacinacao]) {
-                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroCampoPrecoDaVacinacaoVazio);
-                MENSAGENS_DE_ERRO.push(stringErroCampoPrecoDaVacinacaoVazio);
+            if (!dadosDeCadastro[atributoCustoDaVacinacao]) {
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroCampoPrecoDaVacinacaoVazio);
+                MENSAGENS_DE_ERRO.push(erroCampoPrecoDaVacinacaoVazio);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_PRECO_VACINACAO);
             }
 
-            if (!oCadastro[stringAtributoDataDoResgate]) {
-                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroCampoDataDoResgateVazio)
-                MENSAGENS_DE_ERRO.push(stringErroCampoDataDoResgateVazio);
+            if (!dadosDeCadastro[atributoDataDoResgate]) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroCampoDataDoResgateVazio)
+                MENSAGENS_DE_ERRO.push(erroCampoDataDoResgateVazio);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_DATA_RESGATE);
             }
@@ -66,25 +66,25 @@ sap.ui.define([
         },
 
         validarNomeDoAnimalPelaView(oEvento){
-            const stringInputNomeDoAnimal = oEvento.getSource().getValue();
-            this._validacaoNomeDoAnimal(stringInputNomeDoAnimal);
+            const inputNomeDoAnimal = oEvento.getSource().getValue();
+            this._validarNomeDoAnimal(inputNomeDoAnimal);
         },
 
-        _validacaoNomeDoAnimal (stringInputNomeDoAnimal) {
+        _validarNomeDoAnimal (inputNomeDoAnimal) {
             const oRegex = new RegExp("[^a-zA-Z]");
-            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDoAnimal);
-            const stringErroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
-            const stringErroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const stringErroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
+            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDoAnimal);
+            const erroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
+            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
+            const erroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
 
             if (boolContemNumeroOuCaracterEspecialNoInput) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroInputNomeDoAnimalInvalido);
-                MENSAGENS_DE_ERRO.push(stringErroInputNomeDoAnimalInvalido);
-            } else if (!stringInputNomeDoAnimal) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroCampoNomeDoAnimalVazio);
-            } else if (stringInputNomeDoAnimal.length < 2) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, stringErroInputNomeDoAnimalTamanhoMinimo);
-                MENSAGENS_DE_ERRO.push(stringErroInputNomeDoAnimalTamanhoMinimo);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalInvalido);
+                MENSAGENS_DE_ERRO.push(erroInputNomeDoAnimalInvalido);
+            } else if (!inputNomeDoAnimal) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
+            } else if (inputNomeDoAnimal.length < 2) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalTamanhoMinimo);
+                MENSAGENS_DE_ERRO.push(erroInputNomeDoAnimalTamanhoMinimo);
             }
             else {
                 this._definirStatusDeSucesso(NOME_CAMPO_NOME_ANIMAL);
@@ -92,25 +92,25 @@ sap.ui.define([
         },
 
         validarNomeDaEspeciePelaView (oEvento) {
-            const stringInputNomeDaEspecie = oEvento.getSource().getValue();
-            this._validacaoNomeDaEspecie(stringInputNomeDaEspecie);
+            const inputNomeDaEspecie = oEvento.getSource().getValue();
+            this._validarNomeDaEspecie(inputNomeDaEspecie);
         },
 
-        _validacaoNomeDaEspecie (stringInputNomeDaEspecie) {
+        _validarNomeDaEspecie (inputNomeDaEspecie) {
             const oRegex = new RegExp("[^a-zA-Z]");
-            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(stringInputNomeDaEspecie);
-            const stringErroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
-            const stringErroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const stringErroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
+            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDaEspecie);
+            const erroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
+            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
+            const erroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
             
             if (boolContemNumeroOuCaracterEspecialNoInput) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroInputNomeDaEspecieInvalido);
-                MENSAGENS_DE_ERRO.push(stringErroInputNomeDaEspecieInvalido);
-            } else if (!stringInputNomeDaEspecie) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroCampoNomeDaEspecieVazio);
-            } else if (stringInputNomeDaEspecie.length < 5) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, stringErroInputNomeDaEspecieTamanhoMinimo);
-                MENSAGENS_DE_ERRO.push(stringErroInputNomeDaEspecieTamanhoMinimo);
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieInvalido);
+                MENSAGENS_DE_ERRO.push(erroInputNomeDaEspecieInvalido);
+            } else if (!inputNomeDaEspecie) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroCampoNomeDaEspecieVazio);
+            } else if (inputNomeDaEspecie.length < 5) {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieTamanhoMinimo);
+                MENSAGENS_DE_ERRO.push(erroInputNomeDaEspecieTamanhoMinimo);
             }
             else {
                 this._definirStatusDeSucesso(NOME_CAMPO_NOME_ESPECIE);
@@ -118,87 +118,87 @@ sap.ui.define([
         },
 
         validarPrecoDeVacinacaoPelaView(oEvento) {
-            const stringInputPreco = oEvento.getSource().getProperty("value");
-            this._validacaoPrecoDeVacinacao(stringInputPreco)
+            const inputPreco = oEvento.getSource().getProperty("value");
+            this._validarPrecoDeVacinacao(inputPreco)
         },
 
-        _validacaoPrecoDeVacinacao (stringInputPreco) {
-            const floatPrecoMinimo = 10.00;
-            const stringInputPrecoFormatado = this._formatarPreco(stringInputPreco);
+        _validarPrecoDeVacinacao (inputPreco) {
+            const precoMinimo = 10.00;
+            const inputPrecoFormatado = this._formatarPreco(inputPreco);
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
-            const boolPrecoDigitadoEhValido = oRegex.test(stringInputPrecoFormatado);
-            const stringErroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
-            const stringErroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
+            const boolPrecoDigitadoEhValido = oRegex.test(inputPrecoFormatado);
+            const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
+            const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
 
-            if (stringInputPrecoFormatado < floatPrecoMinimo) {
-                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroInputPrecoDaVacinacaoPrecoMinimo);
-                MENSAGENS_DE_ERRO.push(stringErroInputPrecoDaVacinacaoPrecoMinimo);
+            if (inputPrecoFormatado < precoMinimo) {
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoPrecoMinimo);
+                MENSAGENS_DE_ERRO.push(erroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!boolPrecoDigitadoEhValido) {
-                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, stringErroInputPrecoDaVacinacaoInvalido);
-                MENSAGENS_DE_ERRO.push(stringErroInputPrecoDaVacinacaoInvalido);
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoInvalido);
+                MENSAGENS_DE_ERRO.push(erroInputPrecoDaVacinacaoInvalido);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_PRECO_VACINACAO);
             }
         },
 
         validarDataDeResgatePelaView(oEvento) {
-            const stringInputData = oEvento.getSource().getProperty("dateValue");
-            this._validacaoDataDeResgate(stringInputData)
+            const inputData = oEvento.getSource().getProperty("dateValue");
+            this._validarDataDeResgate(inputData)
         },
 
-        _validacaoDataDeResgate(stringInputData) {
-            const stringDataAtual = new Date();
-            const stringErroInputDataDoResgateInvalido = this._oResourceBundle.getText("erroInputDataDoResgateInvalido");
-            const stringErroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("erroInputDataDeResgateNaoDeveSerFuturo");
+        _validarDataDeResgate(inputData) {
+            const dataAtual = new Date();
+            const erroInputDataDoResgateInvalido = this._oResourceBundle.getText("erroInputDataDoResgateInvalido");
+            const erroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("erroInputDataDeResgateNaoDeveSerFuturo");
 
-            if (stringInputData > stringDataAtual) {
-                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroInputDataDeResgateNaoDeveSerFuturo);
-                MENSAGENS_DE_ERRO.push(stringErroInputDataDeResgateNaoDeveSerFuturo);
-            } else if (!stringInputData) {
-                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, stringErroInputDataDoResgateInvalido);
-                MENSAGENS_DE_ERRO.push(stringErroInputDataDoResgateInvalido);
+            if (inputData > dataAtual) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDeResgateNaoDeveSerFuturo);
+                MENSAGENS_DE_ERRO.push(erroInputDataDeResgateNaoDeveSerFuturo);
+            } else if (!inputData) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDoResgateInvalido);
+                MENSAGENS_DE_ERRO.push(erroInputDataDoResgateInvalido);
             } else {
                 this._definirStatusDeSucesso(NOME_CAMPO_DATA_RESGATE);
             }
         },
 
-        _formatarPreco(stringInputPreco) {
-            const charPonto = ".";
-            const charVazio = "";
-            const charVirgula = ",";
+        _formatarPreco(inputPreco) {
+            const ponto = ".";
+            const vazio = "";
+            const virgula = ",";
 
-            let stringPrecoSemPonto = String(stringInputPreco).replaceAll(charPonto, charVazio);
-            const stringPrecoCasaDecimalComPonto = stringPrecoSemPonto.replace(charVirgula, charPonto);
+            let precoSemPonto = String(inputPreco).replaceAll(ponto, vazio);
+            const precoFormatado = precoSemPonto.replace(virgula, ponto);
 
-            return stringPrecoCasaDecimalComPonto;
+            return precoFormatado;
         },
 
-        validacaoDeTodosOsCampos(oCadastro) {
+        validacaoDeTodosOsCampos(dadosDeCadastro) {
             MENSAGENS_DE_ERRO = [];
 
-            let stringNomeDoAnimalDigitado = oCadastro.nomeDoAnimal;
-            let stringNomeDaEspecieDigitada = oCadastro.nomeDaEspecie;
-            let stringPrecoDaVacinacaoDigitado = oCadastro.custoDeVacinacao;
-            let stringDataDeResgateDigitada = oCadastro.dataDoResgate;
+            let nomeDoAnimalDigitado = dadosDeCadastro.nomeDoAnimal;
+            let nomeDaEspecieDigitada = dadosDeCadastro.nomeDaEspecie;
+            let precoDaVacinacaoDigitado = dadosDeCadastro.custoDeVacinacao;
+            let dataDeResgateDigitada = dadosDeCadastro.dataDoResgate;
             
-            this._validarSeCamposEstaoPreenchidos(oCadastro);
-            this._validacaoNomeDoAnimal(stringNomeDoAnimalDigitado);
-            this._validacaoNomeDaEspecie(stringNomeDaEspecieDigitada);
-            this._validacaoPrecoDeVacinacao(stringPrecoDaVacinacaoDigitado);
-            this._validacaoDataDeResgate(stringDataDeResgateDigitada);
+            this._validarSeCamposEstaoPreenchidos(dadosDeCadastro);
+            this._validarNomeDoAnimal(nomeDoAnimalDigitado);
+            this._validarNomeDaEspecie(nomeDaEspecieDigitada);
+            this._validarPrecoDeVacinacao(precoDaVacinacaoDigitado);
+            this._validarDataDeResgate(dataDeResgateDigitada);
             
-            let intTamanhoVetorDeErros = MENSAGENS_DE_ERRO.length;
+            let existeErro = MENSAGENS_DE_ERRO.length;
 
-            if (intTamanhoVetorDeErros > 0) {
-                throw this._formatacaoMensagensDeErro();
+            if (existeErro > 0) {
+                throw this._obterMensagemDeErroFormatada();
             }
         },
 
-        _formatacaoMensagensDeErro() {
-            const charVirgula = ",";
+        _obterMensagemDeErroFormatada() {
+            const virgula = ",";
             
-            let stringMensagens = "<li>" + MENSAGENS_DE_ERRO.toString().replaceAll(charVirgula , "</li>\n<li>") + "</li>"
-            return stringMensagens;
+            let mensagens = "<li>" + MENSAGENS_DE_ERRO.toString().replaceAll(virgula , "</li>\n<li>") + "</li>"
+            return mensagens;
         }
     });
  });
