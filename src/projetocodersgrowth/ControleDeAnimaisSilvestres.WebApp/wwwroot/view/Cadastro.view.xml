@@ -7,6 +7,7 @@
 
     <Shell>
         <Page
+            id="paginaDeCadastro"
             showHeader="true"
             title="{i18n>tituloPaginaDeCadastro}"
             showNavButton="true"
@@ -37,74 +38,102 @@
                 width="100%"
                 >
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
-                    <VBox width="40%">
+                    <VBox width="40%" id="teste">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>nomeDoAnimal}"
                             labelFor="inputNomeDoAnimal"
                             design="Bold"/>
-                        <Input 
+                        <Input
                             id="inputNomeDoAnimal"
-                            required="true"
-                            value="{animalSilvestre>/nomeDoAnimal}"/>
+                            type="Text"
+                            value="{animalSilvestre>/nomeDoAnimal}"
+                            showValueStateMessage="true"
+                            change=".aoAlterarNomeDoAnimal"
+                            maxLength="50"
+                            placeholder="{i18n>placeholderNomeDoAnimal}"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             text="{i18n>nomeDaEspecie}"
                             labelFor="inputNomeDaEspecie"
                             design="Bold"
                             showColon="true"/>
                         <Input 
                             id="inputNomeDaEspecie"
-                            required="true"
-                            value="{animalSilvestre>/nomeDaEspecie}"/>
+                            value="{animalSilvestre>/nomeDaEspecie}"
+                            change=".aoAlterarNomeDaEspecie"
+                            maxLength="50"
+                            placeholder="{i18n>placeholderNomeDaEspecie}"/>
                     </VBox>
                 </HBox>
 
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>classe}"
                             labelFor="inputClasseDeAnimal"
                             design="Bold"/>
-                        <ComboBox 
+                        <Select 
                             id="inputClasseDeAnimal" 
                             items="{classes>/}" 
-                            required="true"
                             width="100%"
                             selectedKey="{animalSilvestre>/classe}">
                                 <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
-                        </ComboBox>
+                        </Select>
                     </VBox>
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>custoDeVacinacao}"
                             labelFor="inputPrecoDaVacinacao"
                             design="Bold"/>
                         <Input
                             id="inputPrecoDaVacinacao" 
-                            required="true"
-                            value="{animalSilvestre>/custoDeVacinacao}"/>
+                            value="{
+                                path: 'animalSilvestre>/custoDeVacinacao',
+                                type: 'sap.ui.model.type.Currency'
+                                }"
+                            change=".aoAlterarPreco"
+                            placeholder="{i18n>placeholderPrecoDaVacinacao}"/>
                     </VBox>
                 </HBox>
 
                 <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
                     <VBox width="40%">
                         <Label 
+                            required="true"
                             showColon="true"
                             text="{i18n>dataDoResgate}"
                             labelFor="inputDataDoResgate"
                             design="Bold"/>
                         <DatePicker 
                             id="inputDataDoResgate"
-                            displayFormat="dd/MM/yyyy"
-                            required="true"
-                            value="{animalSilvestre>/dataDoResgate}"/>
+                            valueFormat="yyyy-MM-ddTHH:mm"
+                            displayFormat="dd-MM-yyyy"
+                            value="{ 
+                                path: 'animalSilvestre>/dataDoResgate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {
+                                    style: 'short',
+                                    source: {
+                                        pattern: 'yyyy-MM-ddTHH:mm:ss'
+                                    }
+                                }
+                            }"
+                            change=".aoAlterarData"/>
                     </VBox>
                     <VBox width="40%">
-                        <CheckBox text="{i18n>emExtincao}" id="inputEmExtincao" class="sapUiSmallMarginTop" selected="{animalSilvestre>/emExtincao}"/>
+                        <CheckBox 
+                            text="{i18n>emExtincao}" 
+                            id="inputEmExtincao" 
+                            class="sapUiSmallMarginTop" 
+                            selected="{animalSilvestre>/emExtincao}"/>
                     </VBox>
                 </HBox>
             </layout:VerticalLayout>

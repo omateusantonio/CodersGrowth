@@ -22,7 +22,6 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
         {
             using (var bancoDeDados = ObterConexao())
             {
-                //bancoDeDados.Insert(animalNovo);
                 var idCriada = bancoDeDados.InsertWithInt32Identity(animalNovo);
                 return idCriada;
             }
