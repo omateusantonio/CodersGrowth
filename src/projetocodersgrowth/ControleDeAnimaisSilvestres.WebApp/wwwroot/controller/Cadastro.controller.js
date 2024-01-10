@@ -153,8 +153,8 @@ sap.ui.define([
         async _salvarAnimal() {
             let oCadastro = this._obterDadosDoAnimal();
             let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
-            const cabecalhoDeErroDoi18n = "mensagemDeErroCabecalho";
-            const corpoDoErroDoi18n = "erroAoSalvar";
+            const cabecalhoDeErroDoi18n = "erroAoSalvar";
+            const corpoDoErroDoi18n = "naoFoiPossivelEnviarOCadastro";
             const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
             const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
             let idDoNovoCadastro = null;

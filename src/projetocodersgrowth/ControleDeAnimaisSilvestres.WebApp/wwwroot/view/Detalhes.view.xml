@@ -5,20 +5,20 @@
     <Shell>
         <Page
             showHeader="true"
-            title="{i18n>tituloPaginaDeDetalhe}{animal>/nomeDoAnimal}"
+            title="{i18n>detalhesDo}{animal>/nomeDoAnimal}"
             showNavButton="true"
             navButtonTooltip="Retornar"
             navButtonPress=".aoClicarEmVoltar">
             <headerContent>
                 <Button
-                    text="{i18n>botaoDeEditarAnimal}"
+                    text="{i18n>editar}"
                     iconFirst="true"
                     icon="sap-icon://edit"
                     type="Transparent"
                     width="7rem"
                 />
                 <Button
-                    text="{i18n>botaoDeRemoverAnimal}"
+                    text="{i18n>remover}"
                     iconFirst="true"
                     icon="sap-icon://delete"
                     type="Transparent"

@@ -6,15 +6,15 @@ sap.ui.define([], () => {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             switch (sClasse) {
                 case 0:
-                    return oResourceBundle.getText("Classe0");
+                    return oResourceBundle.getText("anfibio");
                 case 1:
-                    return oResourceBundle.getText("Classe1");
+                    return oResourceBundle.getText("ave");
                 case 2:
-                    return oResourceBundle.getText("Classe2");
+                    return oResourceBundle.getText("mamifero");
                 case 3:
-                    return oResourceBundle.getText("Classe3");
+                    return oResourceBundle.getText("peixe");
                 case 4:
-                    return oResourceBundle.getText("Classe4");
+                    return oResourceBundle.getText("reptil");
                 default:
                     return sClasse;
             }
@@ -24,9 +24,9 @@ sap.ui.define([], () => {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             switch (sStatusExtincao) {
                 case true:
-                    return oResourceBundle.getText("simEmExtincao");
+                    return oResourceBundle.getText("sim");
                 case false:
-                    return oResourceBundle.getText("naoEmExtincao");
+                    return oResourceBundle.getText("nao");
                 default:
                     return sStatusExtincao;
             }
@@ -34,7 +34,7 @@ sap.ui.define([], () => {
 
         inserirTextoERCifrao(sPreco) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            return oResourceBundle.getText("textoPadraoPreco") + sPreco;
+            return oResourceBundle.getText("precoDaVacinacaoRCifrao") + sPreco;
         }
     }
 })

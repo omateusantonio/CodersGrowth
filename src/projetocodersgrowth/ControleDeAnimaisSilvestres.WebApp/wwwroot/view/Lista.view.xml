@@ -4,17 +4,17 @@
     xmlns:mvc="sap.ui.core.mvc">
     <Page 
         showHeader="true"
-        title="{i18n>listaDeAnimais}">
+        title="{i18n>listaDeAnimaisSilvestresResgatados}">
     <Table
         id="listaDeAnimais"
         width="auto"
-        headerText="{i18n>listaDeAnimais}"
+        headerText="{i18n>listaDeAnimaisSilvestresResgatados}"
         items="{animais>/}">
         <headerToolbar>
             <Toolbar>
                 <Button 
                     type="Default"
-                    text="{i18n>botaoDeAdicionarNovoAnimal}"
+                    text="{i18n>cadastrarAnimal}"
                     iconFirst="true"
                     icon="sap-icon://add"
                     press=".aoClicarEmCadastrar"/>
@@ -31,7 +31,7 @@
                     minScreenWidth="Small"
                     demandPopin="true"
                     width="5em">
-                    <Text text="{i18n>idDoAnimal}"/>
+                    <Text text="{i18n>id}"/>
                 </Column>
                 <Column
                     minScreenWidth="Small"
@@ -46,7 +46,7 @@
                 <Column 
                     minScreenWidth="Tablet"
                     demandPopin="false">
-                    <Text text="{i18n>classe}"/>
+                    <Text text="{i18n>classeDeAnimal}"/>
                 </Column>
                 <Column 
                     minScreenWidth="Small"
@@ -56,7 +56,7 @@
                 <Column 
                     minScreenWidth="Small"
                     demandPopin="true">
-                    <Text text="{i18n>custoDeVacinacao}"/>
+                    <Text text="{i18n>precoDeVacinacao}"/>
                 </Column>
                 <Column 
                     hAlign="End"

@@ -22,10 +22,10 @@ sap.ui.define([
             const atributoCustoDaVacinacao = "custoDeVacinacao";
             const atributoDataDoResgate = "dataDoResgate";
 
-            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const erroCampoPrecoDaVacinacaoVazio = this._oResourceBundle.getText("erroCampoPrecoDaVacinacaoVazio");
-            const erroCampoDataDoResgateVazio = this._oResourceBundle.getText("erroCampoDataDoResgateVazio");
+            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("oCampoNomeDoAnimalNaoPodeFicarVazio");
+            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("oCampoNomeDaEspecieNaoPodeFicarVazio");
+            const erroCampoPrecoDaVacinacaoVazio = this._oResourceBundle.getText("oCampoPrecoNaoPodeFicarVazio");
+            const erroCampoDataDoResgateVazio = this._oResourceBundle.getText("oCampoDataDeResgateNaoPodeFicarVazio");
 
             if (!dadosDeCadastro[atributoNomeDoAnimal]) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
@@ -73,9 +73,9 @@ sap.ui.define([
         _validarNomeDoAnimal (inputNomeDoAnimal) {
             const oRegex = new RegExp("[^a-zA-Z]");
             const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDoAnimal);
-            const erroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("erroInputNomeDoAnimalInvalido");
-            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("erroCampoNomeDoAnimalVazio");
-            const erroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDoAnimalTamanhoMinimo");
+            const erroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("oNomeDoAnimalNaoPodeConterNumerosOuCaracteresEspeciais");
+            const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("oCampoNomeDoAnimalNaoPodeFicarVazio");
+            const erroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("oNomeDoAnimalDeveTerAoMenos2Caracteres");
 
             if (boolContemNumeroOuCaracterEspecialNoInput) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalInvalido);
@@ -99,9 +99,9 @@ sap.ui.define([
         _validarNomeDaEspecie (inputNomeDaEspecie) {
             const oRegex = new RegExp("[^a-zA-Z]");
             const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDaEspecie);
-            const erroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("erroInputNomeDaEspecieInvalido");
-            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("erroCampoNomeDaEspecieVazio");
-            const erroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("erroInputNomeDaEspecieTamanhoMinimo");
+            const erroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("oNomeDaEspecieNaoPodeConterNumerosOuCaracteresEspeciais");
+            const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("oCampoNomeDaEspecieNaoPodeFicarVazio");
+            const erroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("oNomeDaEspecieDeveTerAoMenos5Caracteres");
             
             if (boolContemNumeroOuCaracterEspecialNoInput) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieInvalido);
@@ -127,8 +127,8 @@ sap.ui.define([
             const inputPrecoFormatado = this._formatarPreco(inputPreco);
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
             const boolPrecoDigitadoEhValido = oRegex.test(inputPrecoFormatado);
-            const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoInvalido");
-            const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("erroInputPrecoDaVacinacaoPrecoMinimo");
+            const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("oPrecoDaVacinacaoPrecisaEstarEmUmFormatoValido");
+            const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("oPrecoDaVacinacaoDeveSerMaiorDoQue10");
 
             if (inputPrecoFormatado < precoMinimo) {
                 this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoPrecoMinimo);
@@ -148,8 +148,8 @@ sap.ui.define([
 
         _validarDataDeResgate(inputData) {
             const dataAtual = new Date();
-            const erroInputDataDoResgateInvalido = this._oResourceBundle.getText("erroInputDataDoResgateInvalido");
-            const erroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("erroInputDataDeResgateNaoDeveSerFuturo");
+            const erroInputDataDoResgateInvalido = this._oResourceBundle.getText("aDataDeResgatePrecisaEstarEmUmFormatoValido");
+            const erroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("aDataDeResgateNaoPodeSerUmaDataNoFuturo");
 
             if (inputData > dataAtual) {
                 this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDeResgateNaoDeveSerFuturo);
