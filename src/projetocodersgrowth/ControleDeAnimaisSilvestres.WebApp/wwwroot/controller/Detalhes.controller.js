@@ -36,6 +36,20 @@ sap.ui.define([
                 const oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("lista", {}, true);
             }
+        },
+
+        aoClicarEmEditar() {
+            let searchParams = new URLSearchParams(window.location.search);
+            let param1 = searchParams.get("param1");
+            this._navegarParaCadastroComId()
+        },
+
+        _navegarParaCadastroComId(id) {
+            const nomeRotaCadastroComId = "cadastroComId"
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo(nomeRotaCadastroComId, {
+                id : id
+            });
         }
     });
 });

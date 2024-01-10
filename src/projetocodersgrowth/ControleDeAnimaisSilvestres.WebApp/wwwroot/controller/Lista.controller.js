@@ -16,10 +16,6 @@ sap.ui.define([
 		},
         
         aoCoincidirRota() {
-            const oViewModel = new JSONModel({
-                currency: "BRL"
-            });
-            this.getView().setModel(oViewModel, "view");
             this.obterTodos();
         },
 

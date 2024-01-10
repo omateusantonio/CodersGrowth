@@ -19,11 +19,15 @@ sap.ui.define([
             oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this.aoCoincidirRota, this);
         },
 
-        aoCoincidirRota() {
+        aoCoincidirRota(oEvento) {
             _validador = this._criarValidadorDeAnimalSilvestre();
             this._inicializarModeloAnimalSilvestre();
             this._definirItensDaCombobox();
             this._limparStatusDeErro();
+
+            if (!(!oEvento.getParameter("arguments").id)) {
+                console.log("gambiarra");
+            }
         },
 
         aoClicarEmVoltar() {

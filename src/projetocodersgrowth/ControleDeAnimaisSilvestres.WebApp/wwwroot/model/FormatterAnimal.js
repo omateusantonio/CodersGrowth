@@ -1,4 +1,6 @@
-sap.ui.define([], () => {
+sap.ui.define([
+    "sap/ui/core/format/NumberFormat"
+], (NumberFormat) => {
     "use strict";
 
     return {
@@ -35,6 +37,20 @@ sap.ui.define([], () => {
         inserirTextoERCifrao(sPreco) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             return oResourceBundle.getText("precoDaVacinacaoRCifrao") + sPreco;
+        },
+
+        formatarPreco(precoDeVacinacao) {
+            const formatoDePreco = NumberFormat.getCurrencyInstance({
+                "currencyCode": false,
+                "customCurrencies": {
+                    "BRL": {
+                        "isoCode": "BRL",
+                        "decimals": 2
+                    }
+                }
+            });
+
+            return formatoDePreco.format(precoDeVacinacao, "BRL");
         }
     }
 })

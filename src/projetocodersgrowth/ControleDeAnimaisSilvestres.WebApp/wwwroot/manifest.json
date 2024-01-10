@@ -67,6 +67,11 @@
 					"pattern": "Cadastro",
 					"name": "cadastro",
 					"target": "cadastro"
+				},
+				{
+					"pattern": "Cadastro/{id}",
+					"name": "cadastroComId",
+					"target": "cadastroComId"
 				}
 			],
 			"targets": {
@@ -80,6 +85,10 @@
 				},
 				"cadastro": {
 					"id": "cadastro",
+					"name": "Cadastro"
+				},
+				"cadastroComId": {
+					"id": "cadastroComId",
 					"name": "Cadastro"
 				}
 			}
