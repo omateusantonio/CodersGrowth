@@ -9,13 +9,13 @@
         <Page
             id="paginaDeCadastro"
             showHeader="true"
-            title="{i18n>tituloPaginaDeCadastro}"
+            title="{i18n>cadastroDeNovoAnimal}"
             showNavButton="true"
             navButtonTooltip="Retornar"
             navButtonPress=".aoClicarEmVoltar">
             <headerContent>
                 <Button
-                    text="Cancelar"
+                    text="{i18n>Cancelar}"
                     iconFirst="true"
                     icon="sap-icon://cancel"
                     press=".aoClicarEmCancelar"
@@ -23,7 +23,7 @@
                     width="7rem"
                 />
                 <Button
-                    text="Salvar"
+                    text="{i18n>Salvar}"
                     iconFirst="true"
                     icon="sap-icon://save"
                     type="Transparent"
@@ -52,7 +52,7 @@
                             showValueStateMessage="true"
                             change=".aoAlterarNomeDoAnimal"
                             maxLength="50"
-                            placeholder="{i18n>placeholderNomeDoAnimal}"/>
+                            placeholder="{i18n>digiteONomeDoAnimalResgatado}"/>
                     </VBox>
                     <VBox width="40%">
                         <Label 
@@ -66,7 +66,7 @@
                             value="{animalSilvestre>/nomeDaEspecie}"
                             change=".aoAlterarNomeDaEspecie"
                             maxLength="50"
-                            placeholder="{i18n>placeholderNomeDaEspecie}"/>
+                            placeholder="{i18n>digiteONomeDaEspecieDoAnimalResgatado}"/>
                     </VBox>
                 </HBox>
 
@@ -75,7 +75,7 @@
                         <Label 
                             required="true"
                             showColon="true"
-                            text="{i18n>classe}"
+                            text="{i18n>classeDeAnimal}"
                             labelFor="inputClasseDeAnimal"
                             design="Bold"/>
                         <Select 
@@ -90,7 +90,7 @@
                         <Label 
                             required="true"
                             showColon="true"
-                            text="{i18n>custoDeVacinacao}"
+                            text="{i18n>precoDeVacinacao}"
                             labelFor="inputPrecoDaVacinacao"
                             design="Bold"/>
                         <Input
@@ -100,7 +100,7 @@
                                 type: 'sap.ui.model.type.Currency'
                                 }"
                             change=".aoAlterarPreco"
-                            placeholder="{i18n>placeholderPrecoDaVacinacao}"/>
+                            placeholder="{i18n>digiteOPrecoDaVacinacaoApenasNumerosComOuSemVirgula}"/>
                     </VBox>
                 </HBox>
 

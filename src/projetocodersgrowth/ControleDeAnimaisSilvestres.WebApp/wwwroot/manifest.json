@@ -3,8 +3,8 @@
 	"sap.app": {
 		"id": "ui5.controledeanimaissilvestres",
 		"i18n": "i18n/i18n.properties",
-		"title": "{{appTitle}}",
-		"description": "{{appDescription}}",
+		"title": "{{controleDeAnimaisSilvestresWeb}}",
+		"description": "{{umaListaDeControleDeAnimaisSilvestresResgatados}}",
 		"type": "application",
 		"applicationVersion": {
 			"version": "1.0.0"
