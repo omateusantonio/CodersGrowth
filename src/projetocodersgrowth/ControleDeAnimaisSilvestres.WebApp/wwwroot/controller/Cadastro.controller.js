@@ -2,32 +2,41 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox) => {
+    "sap/m/MessageBox",
+    "sap/ui/core/format/NumberFormat"
+], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox, NumberFormat) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
     const NOME_ROTA_LISTA = "lista";
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
     const NOME_MODELO_I18N = "i18n";
+    const NOME_ROTA_EDICAO_CADASTRO = "edicaoNoCadastro"
     let _validador = null;
+    let edicaoAtivada = false;
 
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
 
         onInit() {
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this.aoCoincidirRota, this);
+            oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this.aoCoincidirRotaDoCadastro, this);
+            oRouter.getRoute(NOME_ROTA_EDICAO_CADASTRO).attachPatternMatched(this.aoCoincidirRotaDaEdicaoNoCadastro, this);
         },
 
-        aoCoincidirRota(oEvento) {
+        aoCoincidirRotaDoCadastro() {
             _validador = this._criarValidadorDeAnimalSilvestre();
             this._inicializarModeloAnimalSilvestre();
             this._definirItensDaCombobox();
             this._limparStatusDeErro();
+        },
 
-            if (!(!oEvento.getParameter("arguments").id)) {
-                console.log("gambiarra");
-            }
+        aoCoincidirRotaDaEdicaoNoCadastro() {
+            edicaoAtivada = true;
+            _validador = this._criarValidadorDeAnimalSilvestre();
+            this._inicializarModeloAnimalSilvestre();
+            this._definirItensDaCombobox();
+            this._limparStatusDeErro();
+            this._povoarCamposDoFormulario();
         },
 
         aoClicarEmVoltar() {
@@ -49,7 +58,11 @@ sap.ui.define([
         },
 
         aoClicarEmSalvar() {
-            this._salvarAnimal();
+            if (!edicaoAtivada) {
+                this._salvarAnimal();
+            } else {
+                this._salvarEdicao();
+            }
         },
 
         _definirItensDaCombobox() {
@@ -124,7 +137,7 @@ sap.ui.define([
         },
 
         aoAlterarNomeDoAnimal(oEvento) {
-            _validador.validarNomeDoAnimalPelaView(oEvento);
+            return _validador.validarNomeDoAnimalPelaView(oEvento);
         },
 
         aoAlterarNomeDaEspecie(oEvento) {
@@ -185,6 +198,67 @@ sap.ui.define([
             let oView = this.getView();
             let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             return new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
+        },
+
+        async _povoarCamposDoFormulario() {
+            const id = this._obterIdPelaUrl();
+            let jsonDoCadastro = await this._obterAnimalPeloId(id);
+            let cadastroDoAnimal = JSON.stringify(jsonDoCadastro);
+            let modeloAnimalSilvestre = this.getView().getModel(NOME_MODELO_ANIMAL_SILVESTRE);
+            modeloAnimalSilvestre.setJSON(cadastroDoAnimal);
+        },
+
+        _obterAnimalPeloId(id) {
+            return fetch(`/api/AnimalSilvestre/${id}`)
+            .then(response => response.json())
+            .then(response => {return response});
+        },
+
+        async _salvarEdicao() {
+            let idDoAnimalEditado = this._obterIdPelaUrl();
+            let cadastroAtualizado = this.getView().getModel(NOME_MODELO_ANIMAL_SILVESTRE).getData();
+            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            const cabecalhoDeErroDoi18n = "erroAoSalvarAEdicao";
+            const corpoDoErroDoi18n = "naoFoiPossivelSalvarAEdicaoFeita";
+            const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
+            const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
+            
+            try {
+                _validador.validacaoDeTodosOsCampos(cadastroAtualizado);
+                await this._executarSalvarEdicao(cadastroAtualizado);
+                this._navegarParaDetalhes(idDoAnimalEditado);
+            }
+            catch (erro) {
+                MessageBox.error(erroAoSalvar, {
+                    title: mensagemDeErroCabecalho,
+                    details: erro
+                })
+            }
+        },
+
+        async _executarSalvarEdicao(cadastroAtualizado) {
+            const url = '/api/AnimalSilvestre';
+            const metodoDoFetch = "PUT";
+            const mensagemDeErro = "<strong>ERRO HTTP</strong> <br>Status: "
+
+            await fetch(url, {
+                method: metodoDoFetch,
+                body: JSON.stringify(cadastroAtualizado),
+                headers: {"Content-type": "application/json; charset=UTF-8"}
+            }).then(response => {
+                    if (!response.ok) {
+                        throw (mensagemDeErro + response.status);
+                    }
+            });
+        },
+
+        _obterIdPelaUrl() {
+            const vazio = "";
+            const cadastro = "Cadastro/";
+            const hash = this.getOwnerComponent().getRouter().getHashChanger().hash;
+            const id = hash.replace(cadastro, vazio);
+
+            return id;
         }
     });
 });

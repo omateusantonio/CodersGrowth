@@ -71,17 +71,17 @@ sap.ui.define([
         },
 
         _validarNomeDoAnimal (inputNomeDoAnimal) {
-            const oRegex = new RegExp("[^a-zA-Z]");
-            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDoAnimal);
+            const oRegex = new RegExp("^[A-Za-z]+( [A-Za-z]+)*$");
+            const boolInputEhValido = oRegex.test(inputNomeDoAnimal);
             const erroInputNomeDoAnimalInvalido = this._oResourceBundle.getText("oNomeDoAnimalNaoPodeConterNumerosOuCaracteresEspeciais");
             const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("oCampoNomeDoAnimalNaoPodeFicarVazio");
             const erroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("oNomeDoAnimalDeveTerAoMenos2Caracteres");
 
-            if (boolContemNumeroOuCaracterEspecialNoInput) {
+            if (inputNomeDoAnimal == "") {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
+            } else if (!boolInputEhValido) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalInvalido);
                 MENSAGENS_DE_ERRO.push(erroInputNomeDoAnimalInvalido);
-            } else if (!inputNomeDoAnimal) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
             } else if (inputNomeDoAnimal.length < 2) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalTamanhoMinimo);
                 MENSAGENS_DE_ERRO.push(erroInputNomeDoAnimalTamanhoMinimo);
@@ -97,17 +97,17 @@ sap.ui.define([
         },
 
         _validarNomeDaEspecie (inputNomeDaEspecie) {
-            const oRegex = new RegExp("[^a-zA-Z]");
-            const boolContemNumeroOuCaracterEspecialNoInput = oRegex.test(inputNomeDaEspecie);
+            const oRegex = new RegExp("^[A-Za-z]+( [A-Za-z]+)*$");
+            const boolInputEhValido = oRegex.test(inputNomeDaEspecie);
             const erroInputNomeDaEspecieInvalido = this._oResourceBundle.getText("oNomeDaEspecieNaoPodeConterNumerosOuCaracteresEspeciais");
             const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("oCampoNomeDaEspecieNaoPodeFicarVazio");
             const erroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("oNomeDaEspecieDeveTerAoMenos5Caracteres");
             
-            if (boolContemNumeroOuCaracterEspecialNoInput) {
+            if (inputNomeDaEspecie == "") {
+                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroCampoNomeDaEspecieVazio);
+            } else if (!boolInputEhValido) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieInvalido);
                 MENSAGENS_DE_ERRO.push(erroInputNomeDaEspecieInvalido);
-            } else if (!inputNomeDaEspecie) {
-                this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroCampoNomeDaEspecieVazio);
             } else if (inputNomeDaEspecie.length < 5) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieTamanhoMinimo);
                 MENSAGENS_DE_ERRO.push(erroInputNomeDaEspecieTamanhoMinimo);
@@ -127,10 +127,14 @@ sap.ui.define([
             const inputPrecoFormatado = this._formatarPreco(inputPreco);
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
             const boolPrecoDigitadoEhValido = oRegex.test(inputPrecoFormatado);
+            const erroInputPrecoVacinacaoNaoPodeFicarVazio = this._oResourceBundle.getText("oCampoPrecoNaoPodeFicarVazio");
             const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("oPrecoDaVacinacaoPrecisaEstarEmUmFormatoValido");
             const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("oPrecoDaVacinacaoDeveSerMaiorDoQue10");
 
-            if (inputPrecoFormatado < precoMinimo) {
+            if (inputPrecoFormatado == "") {
+                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoVacinacaoNaoPodeFicarVazio);
+                MENSAGENS_DE_ERRO.push(erroInputPrecoVacinacaoNaoPodeFicarVazio);
+            } else if (inputPrecoFormatado < precoMinimo) {
                 this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoPrecoMinimo);
                 MENSAGENS_DE_ERRO.push(erroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!boolPrecoDigitadoEhValido) {

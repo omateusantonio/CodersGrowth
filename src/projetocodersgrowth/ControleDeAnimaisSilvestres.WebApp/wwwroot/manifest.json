@@ -70,8 +70,8 @@
 				},
 				{
 					"pattern": "Cadastro/{id}",
-					"name": "cadastroComId",
-					"target": "cadastroComId"
+					"name": "edicaoNoCadastro",
+					"target": "edicaoNoCadastro"
 				}
 			],
 			"targets": {
@@ -87,8 +87,8 @@
 					"id": "cadastro",
 					"name": "Cadastro"
 				},
-				"cadastroComId": {
-					"id": "cadastroComId",
+				"edicaoNoCadastro": {
+					"id": "edicaoNoCadastro",
 					"name": "Cadastro"
 				}
 			}

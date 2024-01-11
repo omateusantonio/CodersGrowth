@@ -6,6 +6,8 @@ sap.ui.define([
 ], (Controller, JSONModel, History, FormatterAnimal) => {
     "use strict";
 
+    let ID_ANIMAL_SELECIONADO = null;
+
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         formatterAnimal: FormatterAnimal,
         
@@ -16,14 +18,15 @@ sap.ui.define([
 
         aoCoincidirRota(oEvent)  {
             const id = oEvent.getParameter("arguments").id;
-            this.definirAnimalPeloId(id);
+            this._definirAnimalPeloId(id);
+            ID_ANIMAL_SELECIONADO = id;
         },
 
-        definirAnimalPeloId(id) {
+        _definirAnimalPeloId(id) {
             fetch(`/api/AnimalSilvestre/${id}`)
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animal"))
-            .catch(e => console.error(e));
+            .catch(erro => console.error(erro));
         },
 
         aoClicarEmVoltar() {
@@ -39,15 +42,13 @@ sap.ui.define([
         },
 
         aoClicarEmEditar() {
-            let searchParams = new URLSearchParams(window.location.search);
-            let param1 = searchParams.get("param1");
-            this._navegarParaCadastroComId()
+            this._navegarParaEdicaoNoCadastro(ID_ANIMAL_SELECIONADO);
         },
 
-        _navegarParaCadastroComId(id) {
-            const nomeRotaCadastroComId = "cadastroComId"
+        _navegarParaEdicaoNoCadastro(id) {
+            const nomeRotaEdicaoNoCadastro = "edicaoNoCadastro"
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaCadastroComId, {
+            oRouter.navTo(nomeRotaEdicaoNoCadastro, {
                 id : id
             });
         }
