@@ -100,6 +100,9 @@
                                 type: 'sap.ui.model.type.Float',
                                 formatOptions: {
                                     decimals: '2'
+                                },
+                                constraints:{
+                                    minimum:0
                                 }
                                 }"
                             change=".aoAlterarPreco"

@@ -65,9 +65,8 @@ sap.ui.define([
             this._oView.byId(id).setValueState(ValueState.Success);
         },
 
-        validarNomeDoAnimalPelaView(oEvento){
-            const inputNomeDoAnimal = oEvento.getSource().getValue();
-            this._validarNomeDoAnimal(inputNomeDoAnimal);
+        validarNomeDoAnimalPelaView(nomeDoAnimal){
+            this._validarNomeDoAnimal(nomeDoAnimal);
         },
 
         _validarNomeDoAnimal (inputNomeDoAnimal) {
@@ -91,9 +90,8 @@ sap.ui.define([
             }
         },
 
-        validarNomeDaEspeciePelaView (oEvento) {
-            const inputNomeDaEspecie = oEvento.getSource().getValue();
-            this._validarNomeDaEspecie(inputNomeDaEspecie);
+        validarNomeDaEspeciePelaView (nomeDaEspecie) {
+            this._validarNomeDaEspecie(nomeDaEspecie);
         },
 
         _validarNomeDaEspecie (inputNomeDaEspecie) {
@@ -117,9 +115,8 @@ sap.ui.define([
             }
         },
 
-        validarPrecoDeVacinacaoPelaView(oEvento) {
-            const inputPreco = oEvento.getSource().getProperty("value");
-            this._validarPrecoDeVacinacao(inputPreco)
+        validarPrecoDeVacinacaoPelaView(preco) {
+            this._validarPrecoDeVacinacao(preco)
         },
 
         _validarPrecoDeVacinacao (inputPreco) {
@@ -127,14 +124,10 @@ sap.ui.define([
             const inputPrecoFormatado = this._formatarPreco(inputPreco);
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
             const boolPrecoDigitadoEhValido = oRegex.test(inputPrecoFormatado);
-            const erroInputPrecoVacinacaoNaoPodeFicarVazio = this._oResourceBundle.getText("oCampoPrecoNaoPodeFicarVazio");
             const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("oPrecoDaVacinacaoPrecisaEstarEmUmFormatoValido");
             const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("oPrecoDaVacinacaoDeveSerMaiorDoQue10");
 
-            if (inputPrecoFormatado == "") {
-                this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoVacinacaoNaoPodeFicarVazio);
-                MENSAGENS_DE_ERRO.push(erroInputPrecoVacinacaoNaoPodeFicarVazio);
-            } else if (inputPrecoFormatado < precoMinimo) {
+            if (inputPrecoFormatado < precoMinimo) {
                 this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoPrecoMinimo);
                 MENSAGENS_DE_ERRO.push(erroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!boolPrecoDigitadoEhValido) {
@@ -145,19 +138,24 @@ sap.ui.define([
             }
         },
 
-        validarDataDeResgatePelaView(oEvento) {
-            const inputData = oEvento.getSource().getProperty("dateValue");
-            this._validarDataDeResgate(inputData)
+        validarDataDeResgatePelaView(data) {
+            this._validarDataDeResgate(data)
         },
 
         _validarDataDeResgate(inputData) {
+            inputData = new Date(inputData);
             const dataAtual = new Date();
+            const dataMinima = new Date(1830, 0, 1);
             const erroInputDataDoResgateInvalido = this._oResourceBundle.getText("aDataDeResgatePrecisaEstarEmUmFormatoValido");
             const erroInputDataDeResgateNaoDeveSerFuturo = this._oResourceBundle.getText("aDataDeResgateNaoPodeSerUmaDataNoFuturo");
+            const erroInputDataDeResgateDeveSerApos1830 = this._oResourceBundle.getText("aDataDeResgateDeveSerApos1830");
 
             if (inputData > dataAtual) {
                 this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDeResgateNaoDeveSerFuturo);
                 MENSAGENS_DE_ERRO.push(erroInputDataDeResgateNaoDeveSerFuturo);
+            } else if (inputData < dataMinima) {
+                this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDeResgateDeveSerApos1830);
+                MENSAGENS_DE_ERRO.push(erroInputDataDeResgateDeveSerApos1830);
             } else if (!inputData) {
                 this._definirStatusDeErro(NOME_CAMPO_DATA_RESGATE, erroInputDataDoResgateInvalido);
                 MENSAGENS_DE_ERRO.push(erroInputDataDoResgateInvalido);
