@@ -6,6 +6,8 @@ sap.ui.define([
 ], (Controller, JSONModel, History, FormatterAnimal) => {
     "use strict";
 
+    let ID_ANIMAL_SELECIONADO = null;
+
     return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         formatterAnimal: FormatterAnimal,
         
@@ -16,14 +18,15 @@ sap.ui.define([
 
         aoCoincidirRota(oEvent)  {
             const id = oEvent.getParameter("arguments").id;
-            this.definirAnimalPeloId(id);
+            this._definirAnimalPeloId(id);
+            ID_ANIMAL_SELECIONADO = id;
         },
 
-        definirAnimalPeloId(id) {
+        _definirAnimalPeloId(id) {
             fetch(`/api/AnimalSilvestre/${id}`)
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animal"))
-            .catch(e => console.error(e));
+            .catch(erro => console.error(erro));
         },
 
         aoClicarEmVoltar() {
@@ -36,6 +39,18 @@ sap.ui.define([
                 const oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("lista", {}, true);
             }
+        },
+
+        aoClicarEmEditar() {
+            this._navegarParaEdicao(ID_ANIMAL_SELECIONADO);
+        },
+
+        _navegarParaEdicao(id) {
+            const nomeRotaEdicao = "edicao"
+            const oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo(nomeRotaEdicao, {
+                id : id
+            });
         }
     });
 });
