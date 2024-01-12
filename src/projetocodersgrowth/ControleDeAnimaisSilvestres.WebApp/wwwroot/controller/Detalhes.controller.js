@@ -42,13 +42,13 @@ sap.ui.define([
         },
 
         aoClicarEmEditar() {
-            this._navegarParaEdicaoNoCadastro(ID_ANIMAL_SELECIONADO);
+            this._navegarParaEdicao(ID_ANIMAL_SELECIONADO);
         },
 
-        _navegarParaEdicaoNoCadastro(id) {
-            const nomeRotaEdicaoNoCadastro = "edicaoNoCadastro"
+        _navegarParaEdicao(id) {
+            const nomeRotaEdicao = "edicao"
             const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaEdicaoNoCadastro, {
+            oRouter.navTo(nomeRotaEdicao, {
                 id : id
             });
         }
