@@ -129,7 +129,7 @@ sap.ui.define([
             });
         },
 
-        aoAlterarData(oEvento) {
+        aoAlterarData(oEvento) { 
             const nomePropriedadeValorDaData = "dateValue";
             const data = oEvento.getSource().getProperty(nomePropriedadeValorDaData);
             _validador.validarDataDeResgatePelaView(data);
