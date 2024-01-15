@@ -27,6 +27,7 @@
                     icon="sap-icon://delete"
                     type="Transparent"
                     width="7rem"
+                    press=".aoClicarEmRemover"
                 />
             </headerContent>
                 <VBox class="sapUiSmallMargin">

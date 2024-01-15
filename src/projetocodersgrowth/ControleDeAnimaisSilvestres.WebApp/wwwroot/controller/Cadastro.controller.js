@@ -130,7 +130,7 @@ sap.ui.define([
         },
 
         aoAlterarData(oEvento) {
-            const nomePropriedadeValorDaData = "dateValue"
+            const nomePropriedadeValorDaData = "dateValue";
             const data = oEvento.getSource().getProperty(nomePropriedadeValorDaData);
             _validador.validarDataDeResgatePelaView(data);
         },
@@ -229,7 +229,9 @@ sap.ui.define([
         },
 
         _obterAnimalPeloId(id) {
-            return fetch(`/api/AnimalSilvestre/${id}`)
+            const url = `/api/AnimalSilvestre/${id}`;
+
+            return fetch(url)
             .then(response => response.json())
             .then(response => {return response});
         },

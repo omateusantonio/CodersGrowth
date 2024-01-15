@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core"
+   xmlns:layout="sap.ui.layout">
+   <Dialog
+      id="confirmacaoDaRemocao"
+      title ="{i18n>excluirCadastro}">
+      <layout:VerticalLayout width="100%">
+        <layout:BlockLayout>
+            <layout:BlockLayoutRow>
+                <layout:BlockLayoutCell>
+                    <Text text="{i18n>voceTemCertezaDeQueDesejaExcluirOCadastroDe} + {animal>/nomeDoAnimal}?"/>
+                </layout:BlockLayoutCell>
+            </layout:BlockLayoutRow>
+        </layout:BlockLayout>
+      </layout:VerticalLayout>
+      
+      <beginButton>
+         <Button
+            text="{i18n>cancelar}"
+            press=".aoClicarNoBotaoCancelar"/>
+      </beginButton>
+      <endButton>
+        <Button 
+            text="{i18n>excluir}"
+            press=".aoClicarNoBotaoDeExcluir"/>
+      </endButton>
+   </Dialog>
+</core:FragmentDefinition>
