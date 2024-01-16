@@ -18,6 +18,17 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             }
         }
 
+        public List<AnimalSilvestre> ObterTodosComFiltro(string filtro)
+        {
+            using (var bancoDeDados = ObterConexao())
+            {
+                var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
+                                where colunas.NomeDoAnimal == filtro
+                                select colunas).ToList();
+                return consulta.ToList();
+            }
+        }
+
         public int Criar(AnimalSilvestre animalNovo)
         {
             using (var bancoDeDados = ObterConexao())

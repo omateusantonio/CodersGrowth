@@ -5,6 +5,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
     public interface IRepositorio
     {
         public List<AnimalSilvestre> ObterTodos();
+        public List<AnimalSilvestre> ObterTodosComFiltro(string filtro);
         public int Criar(AnimalSilvestre animalNovo);
         public void Remover(int id);
         public AnimalSilvestre ObterPorId(int id);
