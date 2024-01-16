@@ -143,7 +143,9 @@ sap.ui.define([
         },
 
         _validarDataDeResgate(data) {
-            data = new Date(data);
+            if (data) {
+                data = new Date(data);
+            }
             const dataAtual = new Date();
             const dataMinima = new Date(1830, 0, 1);
             const erroInputDataDoResgateInvalido = this._oResourceBundle.getText("aDataDeResgatePrecisaEstarEmUmFormatoValido");
