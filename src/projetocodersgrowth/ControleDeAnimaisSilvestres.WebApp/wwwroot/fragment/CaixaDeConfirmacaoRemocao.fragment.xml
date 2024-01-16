@@ -9,7 +9,7 @@
         <layout:BlockLayout>
             <layout:BlockLayoutRow>
                 <layout:BlockLayoutCell>
-                    <Text text="{i18n>voceTemCertezaDeQueDesejaExcluirOCadastroDe} + {animal>/nomeDoAnimal}?"/>
+                    <Text text="{i18n>voceTemCertezaDeQueDesejaExcluirOCadastroDe}{animal>/nomeDoAnimal}?"/>
                 </layout:BlockLayoutCell>
             </layout:BlockLayoutRow>
         </layout:BlockLayout>

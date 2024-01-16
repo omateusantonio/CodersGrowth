@@ -3,9 +3,8 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/routing/History",
     "../model/FormatterAnimal",
-    "sap/m/MessageToast",
     "sap/m/MessageBox"
-], (Controller, JSONModel, History, FormatterAnimal, MessageToast, MessageBox) => {
+], (Controller, JSONModel, History, FormatterAnimal, MessageBox) => {
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
@@ -98,9 +97,6 @@ sap.ui.define([
                 if (statusDaRemocao) {
                     this._fecharCaixaDeDialogo();
                     this._exibirMensagemDeExclusaoBemSucedida();
-                    setTimeout(() => {
-                        this._navegarParaLista();
-                    }, 1500);
                 }
             }
             catch (erro) {
@@ -116,14 +112,15 @@ sap.ui.define([
             const id = this._obterIdDaRota();
             const metodoDoFetch = "DELETE";
             const url = `/api/AnimalSilvestre/${id}`;
-            const mensagemDeErro = "<strong>ERRO HTTP</strong> <br>Status: ";
+            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>";
     
             return fetch (url, {
                 method: metodoDoFetch
             })
-            .then(response => {
+            .then(async (response) => {
                 if (!response.ok) {
-                    throw (mensagemDeErro + response.status);
+                    const mensagemDoBackEnd = await response.text();
+                    throw (mensagemDeErro + mensagemDoBackEnd);
                 } else {
                     return response.ok;
                 }
@@ -134,12 +131,16 @@ sap.ui.define([
             let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
             const exclusaoFeitaComSucesso = oResourceBundle.getText(exclusaoFeitaComSucessoi18n);
+            let that = this;
 
-            MessageToast.show(exclusaoFeitaComSucesso, {
-                duration: 1000,
-                autoclose: true,
-                animationDuration: 500
-            })
+            MessageBox.success(exclusaoFeitaComSucesso, {
+                actions: [MessageBox.Action.OK],
+                onClose: function(acao) {
+                    if (acao == MessageBox.Action.OK) {
+                        that._navegarParaLista();
+                    }
+                }
+            });
         },
 
         _navegarParaLista() {
