@@ -131,13 +131,12 @@ sap.ui.define([
             let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
             const exclusaoFeitaComSucesso = oResourceBundle.getText(exclusaoFeitaComSucessoi18n);
-            let that = this;
 
             MessageBox.success(exclusaoFeitaComSucesso, {
                 actions: [MessageBox.Action.OK],
-                onClose: function(acao) {
+                onClose: (acao) => {
                     if (acao == MessageBox.Action.OK) {
-                        that._navegarParaLista();
+                        this._navegarParaLista();
                     }
                 }
             });
