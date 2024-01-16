@@ -35,7 +35,9 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
 
         public int Criar(AnimalSilvestre animalNovo)
         {
-            const string textoDeComando = "INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
+            const string textoDeComando = @"INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) 
+                                            OUTPUT INSERTED.Id 
+                                            VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
             using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
                 conexaoSql.Open();
@@ -47,7 +49,8 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
                 comandoSql.Parameters.AddWithValue("@EmExtincao", animalNovo.EmExtincao);
                 comandoSql.Parameters.AddWithValue("@CustoDeVacinacao", animalNovo.CustoDeVacinacao);
                 comandoSql.ExecuteNonQuery();
-                return animalNovo.Id;
+                int id = (int)comandoSql.ExecuteScalar();
+                return id;
             }
         }
 
