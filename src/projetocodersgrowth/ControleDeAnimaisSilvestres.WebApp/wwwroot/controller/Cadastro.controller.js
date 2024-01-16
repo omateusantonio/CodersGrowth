@@ -98,7 +98,7 @@ sap.ui.define([
             let resposta = null;
             let formulario = null;
             let idDoCadastro = null;
-            let mensagemDeErro = "<strong>ERRO HTTP</strong> <br>Status: "
+            let mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
 
             resposta = await fetch(url, {
                 method: metodoDoFetch,
@@ -107,7 +107,8 @@ sap.ui.define([
             });
 
             if (!resposta.ok) {
-                throw (mensagemDeErro + resposta.status);
+                const textoDoBackEnd = await resposta.text();
+                throw (mensagemDeErro + textoDoBackEnd);
             }
 
             formulario = await resposta.json();
@@ -129,8 +130,8 @@ sap.ui.define([
             });
         },
 
-        aoAlterarData(oEvento) {
-            const nomePropriedadeValorDaData = "dateValue"
+        aoAlterarData(oEvento) { 
+            const nomePropriedadeValorDaData = "dateValue";
             const data = oEvento.getSource().getProperty(nomePropriedadeValorDaData);
             _validador.validarDataDeResgatePelaView(data);
         },
@@ -229,7 +230,9 @@ sap.ui.define([
         },
 
         _obterAnimalPeloId(id) {
-            return fetch(`/api/AnimalSilvestre/${id}`)
+            const url = `/api/AnimalSilvestre/${id}`;
+
+            return fetch(url)
             .then(response => response.json())
             .then(response => {return response});
         },
@@ -259,15 +262,16 @@ sap.ui.define([
         async _executarAtualizacao(dadosDoAnimal) {
             const url = '/api/AnimalSilvestre';
             const metodoDoFetch = "PUT";
-            const mensagemDeErro = "<strong>ERRO HTTP</strong> <br>Status: "
+            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
 
             await fetch(url, {
                 method: metodoDoFetch,
                 body: JSON.stringify(dadosDoAnimal),
                 headers: {"Content-type": "application/json; charset=UTF-8"}
-            }).then(response => {
+            }).then(async (response) => {
                     if (!response.ok) {
-                        throw (mensagemDeErro + response.status);
+                        const textoDoBackEnd = await response.text();
+                        throw (mensagemDeErro + textoDoBackEnd);
                     }
             });
         },

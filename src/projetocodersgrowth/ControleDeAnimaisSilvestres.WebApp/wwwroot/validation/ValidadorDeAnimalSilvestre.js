@@ -76,7 +76,7 @@ sap.ui.define([
             const erroCampoNomeDoAnimalVazio = this._oResourceBundle.getText("oCampoNomeDoAnimalNaoPodeFicarVazio");
             const erroInputNomeDoAnimalTamanhoMinimo = this._oResourceBundle.getText("oNomeDoAnimalDeveTerAoMenos2Caracteres");
 
-            if (nomeDoAnimal == "") {
+            if (!nomeDoAnimal) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroCampoNomeDoAnimalVazio);
             } else if (!nomeEhValido) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ANIMAL, erroInputNomeDoAnimalInvalido);
@@ -101,7 +101,7 @@ sap.ui.define([
             const erroCampoNomeDaEspecieVazio = this._oResourceBundle.getText("oCampoNomeDaEspecieNaoPodeFicarVazio");
             const erroInputNomeDaEspecieTamanhoMinimo = this._oResourceBundle.getText("oNomeDaEspecieDeveTerAoMenos5Caracteres");
             
-            if (nomeDaEspecie == "") {
+            if (!nomeDaEspecie) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroCampoNomeDaEspecieVazio);
             } else if (!nomeEhValido) {
                 this._definirStatusDeErro(NOME_CAMPO_NOME_ESPECIE, erroInputNomeDaEspecieInvalido);
