@@ -1,10 +1,10 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History",
     "../model/FormatterAnimal",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, History, FormatterAnimal, MessageBox) => {
+    "sap/m/MessageBox",
+    "../common/HttpRequest"
+], (Controller, JSONModel, FormatterAnimal, MessageBox, HttpRequest) => {
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
@@ -26,22 +26,14 @@ sap.ui.define([
         },
 
         _definirAnimalPeloId(id) {
-            fetch(`/api/AnimalSilvestre/${id}`)
+            HttpRequest.obterPorId(id)
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animal"))
             .catch(erro => console.error(erro));
         },
 
         aoClicarEmVoltar() {
-            const oHistory = History.getInstance();
-            const sPreviousHash = oHistory.getPreviousHash();
-
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                const oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("lista", {}, true);
-            }
+            this._navegarParaLista();
         },
 
         aoClicarEmEditar() {
@@ -108,23 +100,18 @@ sap.ui.define([
             }
         },
         
-        _executarRemocao() {
+        async _executarRemocao() {
             const id = this._obterIdDaRota();
-            const metodoDoFetch = "DELETE";
-            const url = `/api/AnimalSilvestre/${id}`;
             const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>";
-    
-            return fetch (url, {
-                method: metodoDoFetch
-            })
-            .then(async (response) => {
-                if (!response.ok) {
-                    const mensagemDoBackEnd = await response.text();
-                    throw (mensagemDeErro + mensagemDoBackEnd);
-                } else {
-                    return response.ok;
-                }
-            });
+
+            let resposta = await HttpRequest.remover(id);
+            
+            if (!resposta.ok) {
+                const mensagemDoBackEnd = await resposta.text();
+                throw (mensagemDeErro + mensagemDoBackEnd);
+            } else {
+                return await resposta.ok;
+            };
         },
 
         _exibirMensagemDeExclusaoBemSucedida() {

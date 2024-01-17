@@ -1,10 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "../model/FormatterAnimal"
-], (Controller, JSONModel, Filter, FilterOperator, FormatterAnimal) => {
+    "../model/FormatterAnimal",
+    "../common/HttpRequest"
+], (Controller, JSONModel, FormatterAnimal, HttpRequest) => {
 	"use strict";
 
 	return Controller.extend("ui5.controledeanimaissilvestres.controller.Lista", {
@@ -16,23 +15,17 @@ sap.ui.define([
 		},
         
         aoCoincidirRota() {
-            this.obterTodos();
+            this._obterListaDeAnimais();
         },
 
         aoFiltrarAnimais(evento) {
-            const nomeASerFiltrado = evento.getParameter("query");
-            this.obterTodos(nomeASerFiltrado);
+            const nomeParametroQuery = "query";
+            const nomeASerFiltrado = evento.getParameter(nomeParametroQuery);
+            this._obterListaDeAnimais(nomeASerFiltrado);
         },
 
-        obterTodos(nomeASerFiltrado) {
-            let url = "/api/AnimalSilvestre";
-
-            if(nomeASerFiltrado) {
-                const caminhoDoFiltro = "?animal=";
-                url = url + caminhoDoFiltro + nomeASerFiltrado;
-            }
-
-            fetch(url)
+        _obterListaDeAnimais(nomeASerFiltrado) {
+            HttpRequest.obterTodos(nomeASerFiltrado)
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animais"))
             .catch(erro => console.error(erro));

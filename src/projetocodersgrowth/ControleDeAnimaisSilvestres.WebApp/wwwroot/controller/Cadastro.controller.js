@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox) => {
+    "sap/m/MessageBox",
+    "../common/HttpRequest"
+], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox, HttpRequest) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
@@ -13,6 +14,7 @@ sap.ui.define([
     const NOME_ROTA_EDICAO = "edicao";
     const NOME_PROPRIEDADE_VALUE = "value";
     const ZERO = 0;
+    const MENSAGEM_DE_ERRO = "<strong>Ocorreu um erro:</strong> <br>";
     let _validador = null;
     let edicaoAtivada = false;
 
@@ -42,7 +44,16 @@ sap.ui.define([
         },
 
         aoClicarEmVoltar() {
-            this._navegarParaLista();
+            this._navegarParaListaOuDetalhes();
+        },
+
+        _navegarParaListaOuDetalhes() {
+            if (!edicaoAtivada) {
+                this._navegarParaLista();
+            } else {
+                const id = this._obterIdDaRota();
+                this._navegarParaDetalhes(id);
+            }
         },
 
         aoClicarEmCancelar() {
@@ -93,22 +104,15 @@ sap.ui.define([
         },
 
         async _executarSalvarAnimal(dados) {
-            const url = '/api/AnimalSilvestre';
-            const metodoDoFetch = "POST";
             let resposta = null;
             let formulario = null;
             let idDoCadastro = null;
-            let mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
 
-            resposta = await fetch(url, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dados),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            });
+            resposta = await HttpRequest.criar(dados);
 
             if (!resposta.ok) {
                 const textoDoBackEnd = await resposta.text();
-                throw (mensagemDeErro + textoDoBackEnd);
+                throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
             }
 
             formulario = await resposta.json();
@@ -260,18 +264,10 @@ sap.ui.define([
         },
 
         async _executarAtualizacao(dadosDoAnimal) {
-            const url = '/api/AnimalSilvestre';
-            const metodoDoFetch = "PUT";
-            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
-
-            await fetch(url, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dadosDoAnimal),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            }).then(async (response) => {
+            await HttpRequest.atualizar(dadosDoAnimal).then(async (response) => {
                     if (!response.ok) {
                         const textoDoBackEnd = await response.text();
-                        throw (mensagemDeErro + textoDoBackEnd);
+                        throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
                     }
             });
         },
