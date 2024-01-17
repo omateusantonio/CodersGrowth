@@ -19,25 +19,23 @@ sap.ui.define([
             this.obterTodos();
         },
 
-        aoFiltrarAnimais(oEvent) {
-            // cria o array do filtro
-            const aFilter = [];
-            const sQuery = oEvent.getParameter("query");
-            if (sQuery) {
-                aFilter.push(new Filter("nomeDoAnimal", FilterOperator.Contains, sQuery));
-            }
-
-            // binding do filtro
-            const oList = this.byId("listaDeAnimais");
-            const oBinding = oList.getBinding("items");
-            oBinding.filter(aFilter);
+        aoFiltrarAnimais(evento) {
+            const nomeASerFiltrado = evento.getParameter("query");
+            this.obterTodos(nomeASerFiltrado);
         },
 
-        obterTodos() {
-            fetch('/api/AnimalSilvestre')
+        obterTodos(nomeASerFiltrado) {
+            let url = "/api/AnimalSilvestre";
+
+            if(nomeASerFiltrado) {
+                const caminhoDoFiltro = "?animal=";
+                url = url + caminhoDoFiltro + nomeASerFiltrado;
+            }
+
+            fetch(url)
             .then(response => response.json())
             .then(response => this.getView().setModel(new JSONModel(response), "animais"))
-            .catch(e => console.error(e));
+            .catch(erro => console.error(erro));
         },
 
         aoClicarNoItemDaLista(oEvent) {

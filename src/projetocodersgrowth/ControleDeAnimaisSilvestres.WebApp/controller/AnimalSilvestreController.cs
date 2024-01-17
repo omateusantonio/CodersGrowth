@@ -19,26 +19,19 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         }
 
         [HttpGet]
-        public ActionResult<List<AnimalSilvestre>> ObterTodos(string? filtro)
+        public ActionResult<List<AnimalSilvestre>> ObterTodos([FromQuery]string? animal)
         {
             try
             {
-                var modelo = servico.ObterTodos();
-                return Ok(modelo);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult<List<AnimalSilvestre>> ObterTodosComFiltro(string filtro)
-        {
-            try
-            {
-                var modelo = servico.ObterTodosComFiltro(filtro);
-                return Ok(modelo);
+                if (animal ==  null)
+                {
+                    var modelo = servico.ObterTodos();
+                    return Ok(modelo);
+                } else
+                {
+                    var modelo = servico.ObterTodosComFiltro(animal);
+                    return Ok(modelo);
+                }
             }
             catch (Exception ex)
             {

@@ -12,6 +12,12 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             return listaAnimais.ObterTodos();
         }
 
+        public List<AnimalSilvestre> ObterTodosComFiltro(string animal)
+        {
+            var listaFiltrada = listaAnimais.ObterTodos().FindAll(x => x.NomeDoAnimal.Contains(animal));
+            return listaFiltrada;
+        }
+
         public int Criar(AnimalSilvestre novoAnimal)
         {
             listaAnimais.Inserir(novoAnimal);
