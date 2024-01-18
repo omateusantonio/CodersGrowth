@@ -56,7 +56,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
                 var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                            where colunas.Id == id
                            select colunas).ToList();
-            return consulta.FirstOrDefault(x => x.Id.Equals(id));
+                return consulta.FirstOrDefault(x => x.Id.Equals(id));
             }
         }
 

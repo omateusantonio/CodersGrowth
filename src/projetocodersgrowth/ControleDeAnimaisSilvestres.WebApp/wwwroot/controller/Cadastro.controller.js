@@ -1,29 +1,29 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
     "sap/m/MessageBox",
-    "../common/HttpRequest"
-], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox, HttpRequest) => {
+    "../common/HttpRequest",
+], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, MessageBox, HttpRequest) => {
     "use strict";
 
     const NOME_ROTA_CADASTRO = "cadastro";
     const NOME_ROTA_LISTA = "lista";
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
-    const NOME_MODELO_I18N = "i18n";
     const NOME_ROTA_EDICAO = "edicao";
+    const NOME_ROTA_DETALHES ="detalhes";
     const NOME_PROPRIEDADE_VALUE = "value";
     const ZERO = 0;
     const MENSAGEM_DE_ERRO = "<strong>Ocorreu um erro:</strong> <br>";
+    const ROTA_CADASTRO = "Cadastro/";
     let _validador = null;
     let edicaoAtivada = false;
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
+    return BaseController.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
 
         onInit() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this._aoCoincidirRotaDoCadastro, this);
-            oRouter.getRoute(NOME_ROTA_EDICAO).attachPatternMatched(this._aoCoincidirRotaDaEdicao, this);
+            this.obterRoteadorEManipularRota(NOME_ROTA_CADASTRO, this._aoCoincidirRotaDoCadastro);
+            this.obterRoteadorEManipularRota(NOME_ROTA_EDICAO, this._aoCoincidirRotaDaEdicao);
         },
 
         _aoCoincidirRotaComum() {
@@ -48,16 +48,16 @@ sap.ui.define([
         },
 
         _navegarParaListaOuDetalhes() {
-            if (!edicaoAtivada) {
-                this._navegarParaLista();
+            if (edicaoAtivada == false) {
+                this.navegarParaRota(NOME_ROTA_LISTA);
             } else {
-                const id = this._obterIdDaRota();
-                this._navegarParaDetalhes(id);
+                const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
+                this.navegarParaRota(NOME_ROTA_DETALHES, id);
             }
         },
 
         aoClicarEmCancelar() {
-            this._navegarParaLista();
+            this.navegarParaRota(NOME_ROTA_LISTA);
         },
 
         _obterDadosDoAnimal() {
@@ -98,25 +98,19 @@ sap.ui.define([
                             {Nome : enumClassePeixeNome, Chave : enumClassePeixe}, 
                             {Nome : enumClasseReptilNome, Chave : enumClasseReptil}];
             const oLista = new JSONModel(oItems);
-            const oView = this.getView();
-
-            oView.setModel(oLista, nomeAliasLista);
+            this.setarModelo(oLista, nomeAliasLista);
         },
 
         async _executarSalvarAnimal(dados) {
-            let resposta = null;
-            let formulario = null;
-            let idDoCadastro = null;
-
-            resposta = await HttpRequest.criar(dados);
+            let resposta = await HttpRequest.criar(dados);
 
             if (!resposta.ok) {
                 const textoDoBackEnd = await resposta.text();
                 throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
             }
 
-            formulario = await resposta.json();
-            idDoCadastro =  await formulario.id;
+            let formulario = await resposta.json();
+            let idDoCadastro =  await formulario.id;
 
             return idDoCadastro;
         },
@@ -127,21 +121,17 @@ sap.ui.define([
         },
 
         _navegarParaDetalhes(id) {
-            const nomeRotaDetalhes = "detalhes"
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaDetalhes, {
-                id : id
-            });
+            this.navegarParaRota(NOME_ROTA_DETALHES, id);
         },
 
-        aoAlterarData(oEvento) { 
+        aoAlterarData(evento) { 
             const nomePropriedadeValorDaData = "dateValue";
-            const data = oEvento.getSource().getProperty(nomePropriedadeValorDaData);
+            const data = this.obterFonteDoEvento(evento).getProperty(nomePropriedadeValorDaData);
             _validador.validarDataDeResgatePelaView(data);
         },
 
-        aoAlterarPreco(oEvento) {
-            const preco = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarPreco(evento) {
+            const preco = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
             this._definirValorZeroSePrecoForVazio(preco);
             _validador.validarPrecoDeVacinacaoPelaView(preco);
         },
@@ -153,13 +143,13 @@ sap.ui.define([
             }
         },
 
-        aoAlterarNomeDoAnimal(oEvento) {
-            const nomeDoAnimal = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarNomeDoAnimal(evento) {
+            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDoAnimalPelaView(nomeDoAnimal);
         },
 
-        aoAlterarNomeDaEspecie(oEvento) {
-            const nomeDaEspecie = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarNomeDaEspecie(evento) {
+            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDaEspeciePelaView(nomeDaEspecie);
         },
 
@@ -180,7 +170,7 @@ sap.ui.define([
         _redefinirPropriedadesDoStatus(id) {
             const stringEstadoDoCampo = "valueState";
             const stringTextoDeEstadoDoCampo = "valueStateText";
-            const oView = this.getView();
+            const oView = this.obterView();
 
             oView.byId(id).resetProperty(stringEstadoDoCampo);
             oView.byId(id).resetProperty(stringTextoDeEstadoDoCampo);
@@ -188,11 +178,10 @@ sap.ui.define([
 
         async _salvarAnimal() {
             let oCadastro = this._obterDadosDoAnimal();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const cabecalhoDeErroDoi18n = "erroAoSalvar";
             const corpoDoErroDoi18n = "naoFoiPossivelEnviarOCadastro";
-            const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
+            const erroAoSalvar = this.obterStringDoi18n(corpoDoErroDoi18n);
+            const mensagemDeErroCabecalho = this.obterStringDoi18n(cabecalhoDeErroDoi18n);
             let idDoNovoCadastro = null;
             
             try {
@@ -201,54 +190,47 @@ sap.ui.define([
                 this._navegarParaDetalhes(idDoNovoCadastro);
             }
             catch (erro) {
-                MessageBox.error(erroAoSalvar, {
-                    title: mensagemDeErroCabecalho,
-                    details: erro
-                })
+                this.dispararMessageBoxDeErro(erroAoSalvar, mensagemDeErroCabecalho, erro);
             }
         },
 
         _navegarParaLista() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(NOME_ROTA_LISTA, {});
+            this.navegarParaRota(NOME_ROTA_LISTA);
         },
 
         _criarValidadorDeAnimalSilvestre() {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            let oView = this.obterView();
+            let oResourceBundle = this.obterResourceBundle();
             return new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
         },
 
         async _carregarAnimalSilvestre() {
-            const id = this._obterIdDaRota();
+            const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             let retorno = await this._obterAnimalPeloId(id);
             this._modeloAnimalSilvestre(new JSONModel(retorno));
         },
 
         _modeloAnimalSilvestre(dados) {
             if (dados) {
-                this.getView().setModel(dados, NOME_MODELO_ANIMAL_SILVESTRE);
+                this.setarModelo(dados, NOME_MODELO_ANIMAL_SILVESTRE);
                 return;
             }
-            return this.getView().getModel(NOME_MODELO_ANIMAL_SILVESTRE);
+            return this.obterModelo(NOME_MODELO_ANIMAL_SILVESTRE);
         },
 
         _obterAnimalPeloId(id) {
-            const url = `/api/AnimalSilvestre/${id}`;
-
-            return fetch(url)
-            .then(response => response.json())
-            .then(response => {return response});
+            return HttpRequest.obterPorId(id)
+            .then(resposta => resposta.json())
+            .then(resposta => {return resposta});
         },
 
         async _atualizarAnimal() {
             let dadosDoAnimal = this._obterDadosDoAnimal();
-            let id = this._obterIdDaRota();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            let id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             const cabecalhoDeErroDoi18n = "erroAoSalvarAEdicao";
             const corpoDoErroDoi18n = "naoFoiPossivelSalvarAEdicaoFeita";
-            const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
+            const erroAoSalvar = this.obterStringDoi18n(corpoDoErroDoi18n);
+            const mensagemDeErroCabecalho = this.obterStringDoi18n(cabecalhoDeErroDoi18n);
             
             try {
                 _validador.validacaoDeTodosOsCampos(dadosDoAnimal);
@@ -256,29 +238,17 @@ sap.ui.define([
                 this._navegarParaDetalhes(id);
             }
             catch (erro) {
-                MessageBox.error(erroAoSalvar, {
-                    title: mensagemDeErroCabecalho,
-                    details: erro
-                })
+                this.dispararMessageBoxDeErro(erroAoSalvar, mensagemDeErroCabecalho, erro);
             }
         },
 
         async _executarAtualizacao(dadosDoAnimal) {
-            await HttpRequest.atualizar(dadosDoAnimal).then(async (response) => {
-                    if (!response.ok) {
-                        const textoDoBackEnd = await response.text();
+            await HttpRequest.atualizar(dadosDoAnimal).then(async (resposta) => {
+                    if (!resposta.ok) {
+                        const textoDoBackEnd = await resposta.text();
                         throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
                     }
             });
-        },
-
-        _obterIdDaRota() {
-            const vazio = "";
-            const cadastro = "Cadastro/";
-            const hash = this.getOwnerComponent().getRouter().getHashChanger().hash;
-            const id = hash.replace(cadastro, vazio);
-
-            return id;
         }
     });
 });

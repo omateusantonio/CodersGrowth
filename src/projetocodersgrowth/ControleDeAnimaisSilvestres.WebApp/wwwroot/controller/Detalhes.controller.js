@@ -1,51 +1,65 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/FormatterAnimal",
     "sap/m/MessageBox",
     "../common/HttpRequest"
-], (Controller, JSONModel, FormatterAnimal, MessageBox, HttpRequest) => {
+], (BaseController, JSONModel, FormatterAnimal, MessageBox, HttpRequest) => {
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
-    const NOME_MODELO_I18N = "i18n";
     const NOME_ROTA_DETALHES = "detalhes";
+    const NOME_ROTA_LISTA = "lista";
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
+    return BaseController.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         formatterAnimal: FormatterAnimal,
         
         onInit() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute(NOME_ROTA_DETALHES).attachPatternMatched(this.aoCoincidirRota, this);
+            this.obterRoteadorEManipularRota(NOME_ROTA_DETALHES, this._aoCoincidirRota);
         },
 
-        aoCoincidirRota(oEvent)  {
-            const id = oEvent.getParameter("arguments").id;
+        _aoCoincidirRota(evento)  {
+            const nomeParametroArguments = "arguments";
+            const id = evento.getParameter(nomeParametroArguments).id;
             this._definirAnimalPeloId(id);
             ID_ANIMAL_SELECIONADO = id;
         },
 
-        _definirAnimalPeloId(id) {
-            HttpRequest.obterPorId(id)
-            .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animal"))
-            .catch(erro => console.error(erro));
+        async _definirAnimalPeloId(id) {
+            const naoFoiPossivelCarregarOAnimalSelecionado18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
+            const naoFoiPossivelCarregarOAnimalSelecionado = this.obterStringDoi18n(naoFoiPossivelCarregarOAnimalSelecionado18n);
+            const erroAoCarregarOCadastroDoAnimal18n = "erroAoCarregarOCadastroDoAnimal";
+            const erroAoCarregarOCadastroDoAnimal = this.obterStringDoi18n(erroAoCarregarOCadastroDoAnimal18n);
+
+            try {
+                this._executarObterPorId(id);
+            } catch (erro) {
+                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarOAnimalSelecionado, erroAoCarregarOCadastroDoAnimal, erro);
+            }
+        },
+
+        async _executarObterPorId(id) {
+            const nomeDoModelo = "animal";
+            const mensagemDeErro =  "<strong>Ocorreu um erro:</strong> <br>";
+            let resposta = await HttpRequest.obterPorId(id);
+
+            if (!resposta.ok) {
+                const textoDoBackEnd = resposta.text();
+                throw (mensagemDeErro + textoDoBackEnd);
+            }
+
+            let dados = await resposta.json();
+            this.setarModelo(new JSONModel(await dados), nomeDoModelo);
         },
 
         aoClicarEmVoltar() {
-            this._navegarParaLista();
+            const nomeRotaLista = "lista";
+            this.navegarParaRota(nomeRotaLista);
         },
 
         aoClicarEmEditar() {
-            this._navegarParaEdicao(ID_ANIMAL_SELECIONADO);
-        },
-
-        _navegarParaEdicao(id) {
             const nomeRotaEdicao = "edicao"
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaEdicao, {
-                id : id
-            });
+            this.navegarParaRota(nomeRotaEdicao, ID_ANIMAL_SELECIONADO);
         },
         
         aoClicarEmRemover() {
@@ -61,28 +75,19 @@ sap.ui.define([
         },
 
         _fecharCaixaDeDialogo() {
-            this.byId("confirmacaoDaRemocao").close();
+            const idDoFragment = "confirmacaoDaRemocao";
+            this.byId(idDoFragment).close();
         },
 
         aoClicarNoBotaoCancelar() {
             this._fecharCaixaDeDialogo();
         },
 
-        _obterIdDaRota() {
-            const vazio = "";
-            const cadastro = "Detalhes/";
-            const hash = this.getOwnerComponent().getRouter().getHashChanger().hash;
-            const id = hash.replace(cadastro, vazio);
-
-            return id;
-        },
-
         async aoClicarNoBotaoDeExcluir() {
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const naoFoiPossivelExcluirOCadastroi18n = "erroNaoFoiPossivelExcluirOCadastro"
-            const naoFoiPossivelExcluirOCadastro = oResourceBundle.getText(naoFoiPossivelExcluirOCadastroi18n);
+            const naoFoiPossivelExcluirOCadastro = this.obterStringDoi18n(naoFoiPossivelExcluirOCadastroi18n);
             const erroAoExcluir18n = "erroAoExcluir";
-            const erroAoExcluir = oResourceBundle.getText(erroAoExcluir18n);
+            const erroAoExcluir = this.obterStringDoi18n(erroAoExcluir18n);
 
             try {
                 const statusDaRemocao = await this._executarRemocao();
@@ -93,15 +98,13 @@ sap.ui.define([
             }
             catch (erro) {
                 this._fecharCaixaDeDialogo();
-                MessageBox.error(naoFoiPossivelExcluirOCadastro, {
-                    title: erroAoExcluir,
-                    details: erro
-                })
+                this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastro, erroAoExcluir, erro);
             }
         },
         
         async _executarRemocao() {
-            const id = this._obterIdDaRota();
+            const rotaDetalhes = "Detalhes/";
+            const id = this.obterIdAPartirDaRota(rotaDetalhes);
             const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>";
 
             let resposta = await HttpRequest.remover(id);
@@ -115,24 +118,17 @@ sap.ui.define([
         },
 
         _exibirMensagemDeExclusaoBemSucedida() {
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
-            const exclusaoFeitaComSucesso = oResourceBundle.getText(exclusaoFeitaComSucessoi18n);
+            const exclusaoFeitaComSucesso = this.obterStringDoi18n(exclusaoFeitaComSucessoi18n);
 
             MessageBox.success(exclusaoFeitaComSucesso, {
                 actions: [MessageBox.Action.OK],
                 onClose: (acao) => {
                     if (acao == MessageBox.Action.OK) {
-                        this._navegarParaLista();
+                        this.navegarParaRota(NOME_ROTA_LISTA);
                     }
                 }
             });
-        },
-
-        _navegarParaLista() {
-            const nomeRotaLista = "lista";
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaLista, {});
-        },
+        }
     });
 });
