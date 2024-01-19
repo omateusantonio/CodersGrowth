@@ -201,7 +201,7 @@ sap.ui.define([
         _obterMensagemDeErroFormatada() {
             const virgula = ",";
             
-            let mensagens = "<li>" + MENSAGENS_DE_ERRO.toString().replaceAll(virgula , "</li>\n<li>") + "</li>"
+            let mensagens = "<li>" + MENSAGENS_DE_ERRO.toString().replaceAll(virgula , "</li>\n<li>") + "</li>";
             return mensagens;
         }
     });

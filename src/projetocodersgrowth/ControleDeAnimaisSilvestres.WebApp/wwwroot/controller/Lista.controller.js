@@ -12,8 +12,7 @@ sap.ui.define([
         formatterAnimal: FormatterAnimal,
 
 		onInit() {
-            const nomeRotaLista = "lista";
-            this.obterRoteadorEManipularRota(nomeRotaLista, this._aoCoincidirRota);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_LISTA, this._aoCoincidirRota);
 		},
         
         _aoCoincidirRota() {
@@ -26,38 +25,33 @@ sap.ui.define([
             this._executarObterTodos(nomeASerFiltrado);
         },
 
-        _obterListaDeAnimais() {
-            const naoFoiPossivelCarregarAListaDeAnimais18n = "erroNaoFoiPossivelCarregarAListaDeAnimais"
-            const naoFoiPossivelExcluirOCadastro = this.obterStringDoi18n(naoFoiPossivelCarregarAListaDeAnimais18n);
-            const erroAoCarregarALista18n = "erroAoCarregarALista";
-            const erroAoExcluir = this.obterStringDoi18n(erroAoCarregarALista18n);
+        async _obterListaDeAnimais() {
+            const naoFoiPossivelCarregarAListaDeAnimaisi18n = "erroNaoFoiPossivelCarregarAListaDeAnimais"
+            const erroAoCarregarAListai18n = "erroAoCarregarALista";
 
             try {
-                this._executarObterTodos();
+                await this._executarObterTodos();
             } catch (erro) {
-                this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastro, erroAoExcluir, erro);
+                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarAListaDeAnimaisi18n, erroAoCarregarAListai18n, erro);
             }
         },
 
         aoClicarNoItemDaLista(evento) {
-            const nomeRotaDetalhes = "detalhes";
             const nomePropriedadeId = "id";
             const id = this.obterFonteDoEvento(evento).getBindingContext(NOME_MODELO_ANIMAIS_SILVESTRES).getProperty(nomePropriedadeId);
-            this.navegarParaRota(nomeRotaDetalhes, id);
+            this.navegarParaRota(this.NOME_ROTA_DETALHES, id);
 		},
 
         aoClicarEmCadastrar() {
-            const nomeRotaCadastro = "cadastro";
-            this.navegarParaRota(nomeRotaCadastro);
+            this.navegarParaRota(this.NOME_ROTA_CADASTRO);
         },
 
         async _executarObterTodos(nomeASerFiltrado) {
-            const mensagemDeErro =  "<strong>Ocorreu um erro:</strong> <br>";
             let resposta = await HttpRequest.obterTodos(nomeASerFiltrado);
 
             if (!resposta.ok) {
                 const textoDoBackEnd = resposta.text();
-                throw (mensagemDeErro + textoDoBackEnd);
+                throw (this.MENSAGEM_DE_ERRO + textoDoBackEnd);
             }
             let listaDeAnimais = await resposta.json();
             this.setarModelo(new JSONModel(await listaDeAnimais), NOME_MODELO_ANIMAIS_SILVESTRES);

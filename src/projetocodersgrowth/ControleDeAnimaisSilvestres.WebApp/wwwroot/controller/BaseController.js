@@ -5,6 +5,13 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("ui5.controledeanimaissilvestres.controller.BaseController", {
+        NOME_ROTA_LISTA: "lista",
+        NOME_ROTA_CADASTRO: "cadastro",
+        NOME_ROTA_DETALHES: "detalhes",
+        NOME_ROTA_EDICAO: "edicao",
+        NOME_PROPRIEDADE_VALUE: "value",
+        ZERO: 0,
+        MENSAGEM_DE_ERRO: "<strong>Ocorreu um erro:</strong> <br>",
 
         obterView() {
             return this.getView();
@@ -63,7 +70,10 @@ sap.ui.define([
             return i18n.getText(string);
         },
 
-        dispararMessageBoxDeErro(corpoDaMessageBox, cabecalhoDaMessageBox, detalhesDoErro) {
+        dispararMessageBoxDeErro(textoDoCorpoDoErroi18n, textoDoCabecalhoDoErroi18n, detalhesDoErro) {
+            const corpoDaMessageBox = this.obterStringDoi18n(textoDoCorpoDoErroi18n);
+            const cabecalhoDaMessageBox = this.obterStringDoi18n(textoDoCabecalhoDoErroi18n);
+
             MessageBox.error(corpoDaMessageBox, {
                 title: cabecalhoDaMessageBox,
                 details: detalhesDoErro

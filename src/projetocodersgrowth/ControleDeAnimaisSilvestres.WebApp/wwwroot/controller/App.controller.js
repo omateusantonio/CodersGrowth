@@ -1,8 +1,8 @@
 ﻿sap.ui.define([
 	"./BaseController"
-], (Controller) => {
+], (BaseController) => {
 	"use strict";
 
-	return Controller.extend("ui5.controledeanimaissilvestres.controller.App", {
+	return BaseController.extend("ui5.controledeanimaissilvestres.controller.App", {
 	});
 });

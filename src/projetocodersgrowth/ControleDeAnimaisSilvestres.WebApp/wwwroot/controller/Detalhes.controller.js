@@ -8,14 +8,12 @@ sap.ui.define([
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
-    const NOME_ROTA_DETALHES = "detalhes";
-    const NOME_ROTA_LISTA = "lista";
 
     return BaseController.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         formatterAnimal: FormatterAnimal,
         
         onInit() {
-            this.obterRoteadorEManipularRota(NOME_ROTA_DETALHES, this._aoCoincidirRota);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_DETALHES, this._aoCoincidirRota);
         },
 
         _aoCoincidirRota(evento)  {
@@ -26,40 +24,37 @@ sap.ui.define([
         },
 
         async _definirAnimalPeloId(id) {
-            const naoFoiPossivelCarregarOAnimalSelecionado18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
-            const naoFoiPossivelCarregarOAnimalSelecionado = this.obterStringDoi18n(naoFoiPossivelCarregarOAnimalSelecionado18n);
-            const erroAoCarregarOCadastroDoAnimal18n = "erroAoCarregarOCadastroDoAnimal";
-            const erroAoCarregarOCadastroDoAnimal = this.obterStringDoi18n(erroAoCarregarOCadastroDoAnimal18n);
+            const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
+            const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
 
             try {
-                this._executarObterPorId(id);
+                await this._executarObterPorId(id);
             } catch (erro) {
-                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarOAnimalSelecionado, erroAoCarregarOCadastroDoAnimal, erro);
+                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarOAnimalSelecionadoi18n, erroAoCarregarOCadastroDoAnimali18n, erro);
             }
         },
 
         async _executarObterPorId(id) {
             const nomeDoModelo = "animal";
-            const mensagemDeErro =  "<strong>Ocorreu um erro:</strong> <br>";
             let resposta = await HttpRequest.obterPorId(id);
 
             if (!resposta.ok) {
-                const textoDoBackEnd = resposta.text();
-                throw (mensagemDeErro + textoDoBackEnd);
+                const textoDoBackEnd = await resposta.text();
+                throw (this.MENSAGEM_DE_ERRO + textoDoBackEnd);
+            } else {
+                let dados = await resposta.json();
+                this.setarModelo(new JSONModel(await dados), nomeDoModelo);
             }
-
-            let dados = await resposta.json();
-            this.setarModelo(new JSONModel(await dados), nomeDoModelo);
         },
 
         aoClicarEmVoltar() {
             const nomeRotaLista = "lista";
-            this.navegarParaRota(nomeRotaLista);
+            this.navegarParaRota(this.NOME_ROTA_LISTA);
         },
 
         aoClicarEmEditar() {
             const nomeRotaEdicao = "edicao"
-            this.navegarParaRota(nomeRotaEdicao, ID_ANIMAL_SELECIONADO);
+            this.navegarParaRota(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
         },
         
         aoClicarEmRemover() {
@@ -85,9 +80,7 @@ sap.ui.define([
 
         async aoClicarNoBotaoDeExcluir() {
             const naoFoiPossivelExcluirOCadastroi18n = "erroNaoFoiPossivelExcluirOCadastro"
-            const naoFoiPossivelExcluirOCadastro = this.obterStringDoi18n(naoFoiPossivelExcluirOCadastroi18n);
             const erroAoExcluir18n = "erroAoExcluir";
-            const erroAoExcluir = this.obterStringDoi18n(erroAoExcluir18n);
 
             try {
                 const statusDaRemocao = await this._executarRemocao();
@@ -98,20 +91,19 @@ sap.ui.define([
             }
             catch (erro) {
                 this._fecharCaixaDeDialogo();
-                this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastro, erroAoExcluir, erro);
+                this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastroi18n, erroAoExcluir18n, erro);
             }
         },
         
         async _executarRemocao() {
             const rotaDetalhes = "Detalhes/";
             const id = this.obterIdAPartirDaRota(rotaDetalhes);
-            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>";
 
             let resposta = await HttpRequest.remover(id);
             
             if (!resposta.ok) {
                 const mensagemDoBackEnd = await resposta.text();
-                throw (mensagemDeErro + mensagemDoBackEnd);
+                throw (this.MENSAGEM_DE_ERRO + mensagemDoBackEnd);
             } else {
                 return await resposta.ok;
             };
@@ -125,7 +117,7 @@ sap.ui.define([
                 actions: [MessageBox.Action.OK],
                 onClose: (acao) => {
                     if (acao == MessageBox.Action.OK) {
-                        this.navegarParaRota(NOME_ROTA_LISTA);
+                        this.navegarParaRota(this.NOME_ROTA_LISTA);
                     }
                 }
             });

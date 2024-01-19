@@ -45,11 +45,17 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
             try
             {
                 var modelo = servico.ObterPorId(id);
-                return Ok(modelo);
+                if (modelo != null)
+                {
+                    return Ok(modelo);
+                } else
+                {
+                    return NotFound("O animal selecionado não existe no registro");
+                }
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

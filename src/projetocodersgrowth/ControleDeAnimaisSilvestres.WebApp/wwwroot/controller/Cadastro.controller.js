@@ -2,19 +2,11 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
-    "sap/m/MessageBox",
     "../common/HttpRequest",
-], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, MessageBox, HttpRequest) => {
+], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequest) => {
     "use strict";
 
-    const NOME_ROTA_CADASTRO = "cadastro";
-    const NOME_ROTA_LISTA = "lista";
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
-    const NOME_ROTA_EDICAO = "edicao";
-    const NOME_ROTA_DETALHES ="detalhes";
-    const NOME_PROPRIEDADE_VALUE = "value";
-    const ZERO = 0;
-    const MENSAGEM_DE_ERRO = "<strong>Ocorreu um erro:</strong> <br>";
     const ROTA_CADASTRO = "Cadastro/";
     let _validador = null;
     let edicaoAtivada = false;
@@ -22,8 +14,8 @@ sap.ui.define([
     return BaseController.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
 
         onInit() {
-            this.obterRoteadorEManipularRota(NOME_ROTA_CADASTRO, this._aoCoincidirRotaDoCadastro);
-            this.obterRoteadorEManipularRota(NOME_ROTA_EDICAO, this._aoCoincidirRotaDaEdicao);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_CADASTRO, this._aoCoincidirRotaDoCadastro);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_EDICAO, this._aoCoincidirRotaDaEdicao);
         },
 
         _aoCoincidirRotaComum() {
@@ -49,22 +41,22 @@ sap.ui.define([
 
         _navegarParaListaOuDetalhes() {
             if (edicaoAtivada == false) {
-                this.navegarParaRota(NOME_ROTA_LISTA);
+                this.navegarParaRota(this.NOME_ROTA_LISTA);
             } else {
                 const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
-                this.navegarParaRota(NOME_ROTA_DETALHES, id);
+                this.navegarParaRota(this.NOME_ROTA_DETALHES, id);
             }
         },
 
         aoClicarEmCancelar() {
-            this.navegarParaRota(NOME_ROTA_LISTA);
+            this.navegarParaRota(this.NOME_ROTA_LISTA);
         },
 
         _obterDadosDoAnimal() {
             const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
             dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
             dadosDeCadastro.classe = Number(dadosDeCadastro.classe);
-            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? ZERO : (dadosDeCadastro.custoDeVacinacao);
+            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
             
             return dadosDeCadastro;
         },
@@ -106,7 +98,7 @@ sap.ui.define([
 
             if (!resposta.ok) {
                 const textoDoBackEnd = await resposta.text();
-                throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
+                throw (this.MENSAGEM_DE_ERRO + textoDoBackEnd);
             }
 
             let formulario = await resposta.json();
@@ -121,7 +113,7 @@ sap.ui.define([
         },
 
         _navegarParaDetalhes(id) {
-            this.navegarParaRota(NOME_ROTA_DETALHES, id);
+            this.navegarParaRota(this.NOME_ROTA_DETALHES, id);
         },
 
         aoAlterarData(evento) { 
@@ -131,7 +123,7 @@ sap.ui.define([
         },
 
         aoAlterarPreco(evento) {
-            const preco = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
+            const preco = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             this._definirValorZeroSePrecoForVazio(preco);
             _validador.validarPrecoDeVacinacaoPelaView(preco);
         },
@@ -144,12 +136,12 @@ sap.ui.define([
         },
 
         aoAlterarNomeDoAnimal(evento) {
-            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
+            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDoAnimalPelaView(nomeDoAnimal);
         },
 
         aoAlterarNomeDaEspecie(evento) {
-            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(NOME_PROPRIEDADE_VALUE);
+            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDaEspeciePelaView(nomeDaEspecie);
         },
 
@@ -177,25 +169,23 @@ sap.ui.define([
         },
 
         async _salvarAnimal() {
-            let oCadastro = this._obterDadosDoAnimal();
+            let cadastro = this._obterDadosDoAnimal();
             const cabecalhoDeErroDoi18n = "erroAoSalvar";
             const corpoDoErroDoi18n = "naoFoiPossivelEnviarOCadastro";
-            const erroAoSalvar = this.obterStringDoi18n(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = this.obterStringDoi18n(cabecalhoDeErroDoi18n);
             let idDoNovoCadastro = null;
             
             try {
-                _validador.validacaoDeTodosOsCampos(oCadastro);
-                idDoNovoCadastro = await this._executarSalvarAnimal(oCadastro);
+                _validador.validacaoDeTodosOsCampos(cadastro);
+                idDoNovoCadastro = await this._executarSalvarAnimal(cadastro);
                 this._navegarParaDetalhes(idDoNovoCadastro);
             }
             catch (erro) {
-                this.dispararMessageBoxDeErro(erroAoSalvar, mensagemDeErroCabecalho, erro);
+                this.dispararMessageBoxDeErro(corpoDoErroDoi18n, cabecalhoDeErroDoi18n, erro);
             }
         },
 
         _navegarParaLista() {
-            this.navegarParaRota(NOME_ROTA_LISTA);
+            this.navegarParaRota(this.NOME_ROTA_LISTA);
         },
 
         _criarValidadorDeAnimalSilvestre() {
@@ -229,8 +219,6 @@ sap.ui.define([
             let id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             const cabecalhoDeErroDoi18n = "erroAoSalvarAEdicao";
             const corpoDoErroDoi18n = "naoFoiPossivelSalvarAEdicaoFeita";
-            const erroAoSalvar = this.obterStringDoi18n(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = this.obterStringDoi18n(cabecalhoDeErroDoi18n);
             
             try {
                 _validador.validacaoDeTodosOsCampos(dadosDoAnimal);
@@ -238,7 +226,7 @@ sap.ui.define([
                 this._navegarParaDetalhes(id);
             }
             catch (erro) {
-                this.dispararMessageBoxDeErro(erroAoSalvar, mensagemDeErroCabecalho, erro);
+                this.dispararMessageBoxDeErro(corpoDoErroDoi18n, cabecalhoDeErroDoi18n, erro);
             }
         },
 
@@ -246,7 +234,7 @@ sap.ui.define([
             await HttpRequest.atualizar(dadosDoAnimal).then(async (resposta) => {
                     if (!resposta.ok) {
                         const textoDoBackEnd = await resposta.text();
-                        throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
+                        throw (this.MENSAGEM_DE_ERRO + textoDoBackEnd);
                     }
             });
         }
