@@ -24,7 +24,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             {
                 var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                                 where colunas.NomeDoAnimal.StartsWith(animal)
-                                select colunas).ToList();
+                                select colunas);
                 return consulta.ToList();
             }
         }

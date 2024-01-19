@@ -32,17 +32,10 @@ sap.ui.define([
             return evento.getSource();
         },
 
-        navegarParaRota(rotaDestino, id) {
+        navegarPara(rotaDestino, parametros = {}) {
             const roteador = this._obterRoteador();
-
-            if (!id) {
-                roteador.navTo(rotaDestino, {});
-            } else {
-                roteador.navTo(rotaDestino, {
-                    id: id
-                });
-            }
-        },
+            roteador.navTo(rotaDestino, parametros);
+            },
 
         _obterRoteador() {
             return this.getOwnerComponent().getRouter();

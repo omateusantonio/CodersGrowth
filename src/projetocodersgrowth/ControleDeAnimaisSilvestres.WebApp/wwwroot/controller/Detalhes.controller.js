@@ -3,8 +3,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/FormatterAnimal",
     "sap/m/MessageBox",
-    "../common/HttpRequest"
-], (BaseController, JSONModel, FormatterAnimal, MessageBox, HttpRequest) => {
+    "../common/HttpRequest",
+    "../common/HttpRequestAnimalSilvestre"
+], (BaseController, JSONModel, FormatterAnimal, MessageBox, HttpRequestAnimalSilvestre) => {
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
@@ -20,41 +21,28 @@ sap.ui.define([
             const nomeParametroArguments = "arguments";
             const id = evento.getParameter(nomeParametroArguments).id;
             this._definirAnimalPeloId(id);
-            ID_ANIMAL_SELECIONADO = id;
+            ID_ANIMAL_SELECIONADO = {id: id};
         },
 
         async _definirAnimalPeloId(id) {
+            const nomeDoModelo = "animal";
             const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
             const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
 
             try {
-                await this._executarObterPorId(id);
+                let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
+                this.setarModelo(new JSONModel(await dados), nomeDoModelo);
             } catch (erro) {
                 this.dispararMessageBoxDeErro(naoFoiPossivelCarregarOAnimalSelecionadoi18n, erroAoCarregarOCadastroDoAnimali18n, erro);
             }
         },
 
-        async _executarObterPorId(id) {
-            const nomeDoModelo = "animal";
-            let resposta = await HttpRequest.obterPorId(id);
-
-            if (!resposta.ok) {
-                const textoDoBackEnd = await resposta.text();
-                throw (this.MENSAGEM_DE_ERRO + textoDoBackEnd);
-            } else {
-                let dados = await resposta.json();
-                this.setarModelo(new JSONModel(await dados), nomeDoModelo);
-            }
-        },
-
         aoClicarEmVoltar() {
-            const nomeRotaLista = "lista";
-            this.navegarParaRota(this.NOME_ROTA_LISTA);
+            this.navegarPara(this.NOME_ROTA_LISTA);
         },
 
         aoClicarEmEditar() {
-            const nomeRotaEdicao = "edicao"
-            this.navegarParaRota(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
+            this.navegarPara(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
         },
         
         aoClicarEmRemover() {
@@ -79,11 +67,13 @@ sap.ui.define([
         },
 
         async aoClicarNoBotaoDeExcluir() {
+            const rotaDetalhes = "Detalhes/";
+            const id = this.obterIdAPartirDaRota(rotaDetalhes);
             const naoFoiPossivelExcluirOCadastroi18n = "erroNaoFoiPossivelExcluirOCadastro"
             const erroAoExcluir18n = "erroAoExcluir";
 
             try {
-                const statusDaRemocao = await this._executarRemocao();
+                const statusDaRemocao = await HttpRequestAnimalSilvestre.executarRemocao(id);
                 if (statusDaRemocao) {
                     this._fecharCaixaDeDialogo();
                     this._exibirMensagemDeExclusaoBemSucedida();
@@ -94,20 +84,6 @@ sap.ui.define([
                 this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastroi18n, erroAoExcluir18n, erro);
             }
         },
-        
-        async _executarRemocao() {
-            const rotaDetalhes = "Detalhes/";
-            const id = this.obterIdAPartirDaRota(rotaDetalhes);
-
-            let resposta = await HttpRequest.remover(id);
-            
-            if (!resposta.ok) {
-                const mensagemDoBackEnd = await resposta.text();
-                throw (this.MENSAGEM_DE_ERRO + mensagemDoBackEnd);
-            } else {
-                return await resposta.ok;
-            };
-        },
 
         _exibirMensagemDeExclusaoBemSucedida() {
             const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
@@ -117,7 +93,7 @@ sap.ui.define([
                 actions: [MessageBox.Action.OK],
                 onClose: (acao) => {
                     if (acao == MessageBox.Action.OK) {
-                        this.navegarParaRota(this.NOME_ROTA_LISTA);
+                        this.navegarPara(this.NOME_ROTA_LISTA);
                     }
                 }
             });

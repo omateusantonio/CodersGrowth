@@ -3,7 +3,8 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
     "../common/HttpRequest",
-], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequest) => {
+    "../common/HttpRequestAnimalSilvestre"
+], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequest, HttpRequestAnimalSilvestre) => {
     "use strict";
 
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
@@ -41,21 +42,21 @@ sap.ui.define([
 
         _navegarParaListaOuDetalhes() {
             if (edicaoAtivada == false) {
-                this.navegarParaRota(this.NOME_ROTA_LISTA);
+                this.navegarPara(this.NOME_ROTA_LISTA);
             } else {
-                const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
-                this.navegarParaRota(this.NOME_ROTA_DETALHES, id);
+                const id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
+                this.navegarPara(this.NOME_ROTA_DETALHES, id);
             }
         },
 
         aoClicarEmCancelar() {
-            this.navegarParaRota(this.NOME_ROTA_LISTA);
+            this.navegarPara(this.NOME_ROTA_LISTA);
         },
 
         _obterDadosDoAnimal() {
             const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
             dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
-            dadosDeCadastro.classe = Number(dadosDeCadastro.classe);
+            dadosDeCadastro.classe = dadosDeCadastro.classe == undefined || NaN ? this.ZERO : Number(dadosDeCadastro.classe);
             dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
             
             return dadosDeCadastro;
@@ -110,10 +111,6 @@ sap.ui.define([
         _inicializarModeloAnimalSilvestre() {
             let oModelo = new JSONModel({});
             this._modeloAnimalSilvestre(oModelo);
-        },
-
-        _navegarParaDetalhes(id) {
-            this.navegarParaRota(this.NOME_ROTA_DETALHES, id);
         },
 
         aoAlterarData(evento) { 
@@ -176,16 +173,12 @@ sap.ui.define([
             
             try {
                 _validador.validacaoDeTodosOsCampos(cadastro);
-                idDoNovoCadastro = await this._executarSalvarAnimal(cadastro);
-                this._navegarParaDetalhes(idDoNovoCadastro);
+                idDoNovoCadastro = {id: await HttpRequestAnimalSilvestre.executarSalvarAnimal(cadastro)};
+                this.navegarPara(this.NOME_ROTA_DETALHES, idDoNovoCadastro);
             }
             catch (erro) {
                 this.dispararMessageBoxDeErro(corpoDoErroDoi18n, cabecalhoDeErroDoi18n, erro);
             }
-        },
-
-        _navegarParaLista() {
-            this.navegarParaRota(this.NOME_ROTA_LISTA);
         },
 
         _criarValidadorDeAnimalSilvestre() {
@@ -216,14 +209,14 @@ sap.ui.define([
 
         async _atualizarAnimal() {
             let dadosDoAnimal = this._obterDadosDoAnimal();
-            let id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
+            let id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
             const cabecalhoDeErroDoi18n = "erroAoSalvarAEdicao";
             const corpoDoErroDoi18n = "naoFoiPossivelSalvarAEdicaoFeita";
             
             try {
                 _validador.validacaoDeTodosOsCampos(dadosDoAnimal);
                 await this._executarAtualizacao(dadosDoAnimal);
-                this._navegarParaDetalhes(id);
+                this.navegarPara(this.NOME_ROTA_DETALHES, id);
             }
             catch (erro) {
                 this.dispararMessageBoxDeErro(corpoDoErroDoi18n, cabecalhoDeErroDoi18n, erro);

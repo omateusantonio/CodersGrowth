@@ -4,51 +4,53 @@ sap.ui.define([], () => {
     const URL = "/api/AnimalSilvestre";
 
     return {
-
+        
         obterTodos(nomeASerFiltrado) {
             if(nomeASerFiltrado) {
                 const caminhoDoFiltro = "?animal=";
-                let novaUrl = null;
+                let novaUrl = URL + caminhoDoFiltro + nomeASerFiltrado;
 
-                novaUrl = URL + caminhoDoFiltro + nomeASerFiltrado;
-                return fetch(novaUrl);
+                return this._request(novaUrl);
             } else {
-                return fetch(URL);
+                return this._request(URL);
             }
         },
 
+
         criar(dados) {
-            const url = '/api/AnimalSilvestre';
             const metodoDoFetch = "POST";
-            
-            return fetch(url, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dados),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            });
+            const cabecalho = {"Content-type": "application/json; charset=UTF-8"};
+
+            return this._request(URL, metodoDoFetch, dados, cabecalho);
         },
 
         obterPorId(id) {
             const urlComId = `${URL}/${id}`;
-            return fetch(urlComId)
+            return this._request(urlComId);
         },
 
         atualizar(dadosDoAnimal) {
             const metodoDoFetch = "PUT";
+            const cabecalho = {"Content-type": "application/json; charset=UTF-8"};
 
-            return fetch(URL, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dadosDoAnimal),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            })
+            return this._request(URL, metodoDoFetch, dadosDoAnimal, cabecalho);
         },
 
         remover(id) {
             const urlComId = `${URL}/${id}`;
             const metodoDoFetch = "DELETE";
-    
-            return fetch (urlComId, {
-                method: metodoDoFetch
+            
+            return this._request(urlComId, metodoDoFetch);
+            // return fetch (urlComId, {
+            //     method: metodoDoFetch
+            // });
+        },
+
+        _request(url, metodoHttp, dados, cabecalho={}) {
+            return fetch (url, {
+                method: metodoHttp,
+                body: JSON.stringify(dados),
+                headers: cabecalho
             });
         }
     }
