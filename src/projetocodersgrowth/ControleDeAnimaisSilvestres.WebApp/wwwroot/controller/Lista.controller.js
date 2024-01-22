@@ -19,11 +19,15 @@ sap.ui.define([
             this._obterListaDeAnimais();
         },
 
+        _modeloAnimaisSilvestres(dados) {
+            return this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, dados);
+        },
+
         async aoFiltrarAnimais(evento) {
             const nomeParametroQuery = "query";
             const nomeASerFiltrado = evento.getParameter(nomeParametroQuery);
             let animaisFiltrados = HttpRequestAnimalSilvestre.executarObterTodos(nomeASerFiltrado);
-            this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, new JSONModel(await animaisFiltrados));
+            this._modeloAnimaisSilvestres(new JSONModel(await animaisFiltrados));
         },
 
         async _obterListaDeAnimais() {
@@ -32,7 +36,7 @@ sap.ui.define([
 
             try {
                 let listaDeAnimais = await HttpRequestAnimalSilvestre.executarObterTodos();
-                this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, new JSONModel(await listaDeAnimais));
+                this._modeloAnimaisSilvestres(new JSONModel(await listaDeAnimais));
             } catch (erro) {
                 this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarAListaDeAnimaisi18n, 
                                             textoDoCabecalhoDoErroi18n: erroAoCarregarAListai18n, 

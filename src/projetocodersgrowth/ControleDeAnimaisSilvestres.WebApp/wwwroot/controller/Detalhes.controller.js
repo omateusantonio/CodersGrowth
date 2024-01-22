@@ -23,14 +23,18 @@ sap.ui.define([
             ID_ANIMAL_SELECIONADO = {id: id};
         },
 
-        async _definirAnimalPeloId(id) {
+        _modeloAnimal(dados) {
             const nomeDoModelo = "animal";
+            return this.modelo(nomeDoModelo, dados);
+        },
+
+        async _definirAnimalPeloId(id) {
             const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
             const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
 
             try {
                 let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
-                this.modelo(nomeDoModelo, new JSONModel(await dados));
+                this._modeloAnimal(new JSONModel(await dados));
             } catch (erro) {
                 this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarOAnimalSelecionadoi18n, 
                                             textoDoCabecalhoDoErroi18n: erroAoCarregarOCadastroDoAnimali18n, 

@@ -54,12 +54,17 @@ sap.ui.define([
         },
 
         _obterDadosDoAnimal() {
-            const dadosDeCadastro = this.modelo(NOME_MODELO_ANIMAL_SILVESTRE).getData();
+            const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
             dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
             dadosDeCadastro.classe = dadosDeCadastro.classe == undefined || NaN ? this.ZERO : Number(dadosDeCadastro.classe);
             dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
             
             return dadosDeCadastro;
+        },
+
+        _modeloCombobox(dados) {
+            const nomeAliasLista = "classes";
+            return this.modelo(nomeAliasLista, dados);
         },
 
         aoClicarEmSalvar() {
@@ -71,7 +76,6 @@ sap.ui.define([
         },
 
         _definirItensDaCombobox() {
-            const nomeAliasLista = "classes";
 
             const enumClasseAnfibio = 0;
             const enumClasseAve = 1;
@@ -91,12 +95,16 @@ sap.ui.define([
                             {Nome : enumClassePeixeNome, Chave : enumClassePeixe}, 
                             {Nome : enumClasseReptilNome, Chave : enumClasseReptil}];
             const oLista = new JSONModel(oItems);
-            this.modelo(nomeAliasLista, oLista);
+            this._modeloCombobox(oLista);
         },
 
         _inicializarModeloAnimalSilvestre() {
             let oModelo = new JSONModel({});
-            this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, oModelo);
+            this._modeloAnimalSilvestre(oModelo);
+        },
+
+        _modeloAnimalSilvestre(dados) {
+            return this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, dados);
         },
 
         aoAlterarData(evento) { 
@@ -114,7 +122,7 @@ sap.ui.define([
         _definirValorZeroSePrecoForVazio (preco) {
             if (!preco) {
                 const propriedadeDataDoModelo = "/custoDeVacinacao";
-                this.modelo(NOME_MODELO_ANIMAL_SILVESTRE).setProperty(propriedadeDataDoModelo, ZERO)
+                this._modeloAnimalSilvestre.setProperty(propriedadeDataDoModelo, ZERO)
             }
         },
 
@@ -178,7 +186,7 @@ sap.ui.define([
         async _carregarAnimalSilvestre() {
             const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             let retorno = await this._obterAnimalPeloId(id);
-            this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, new JSONModel(retorno));
+            this._modeloAnimalSilvestre(new JSONModel(retorno));
         },
 
         async _obterAnimalPeloId(id) {
