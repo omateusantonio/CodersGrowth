@@ -40,7 +40,7 @@ sap.ui.define([
             };
         },
 
-        async executarSalvarAnimal(dados) {
+        async executarCriarAnimal(dados) {
             let resposta = await HttpRequest.criar(dados);
 
             if (!resposta.ok) {
@@ -52,6 +52,15 @@ sap.ui.define([
             let idDoCadastro =  await formulario.id;
 
             return idDoCadastro;
+        },
+
+        async executarSalvarAnimal(dados) {
+            let resposta = await HttpRequest.atualizar(dados);
+
+            if (!resposta.ok) {
+                const textoDoBackEnd = await resposta.text();
+                throw (MENSAGEM_DE_ERRO + textoDoBackEnd);
+            };
         }
     }
 })

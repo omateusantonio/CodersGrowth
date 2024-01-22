@@ -63,14 +63,23 @@ sap.ui.define([
             return i18n.getText(string);
         },
 
-        dispararMessageBoxDeErro(textoDoCorpoDoErroi18n, textoDoCabecalhoDoErroi18n, detalhesDoErro) {
-            const corpoDaMessageBox = this.obterStringDoi18n(textoDoCorpoDoErroi18n);
-            const cabecalhoDaMessageBox = this.obterStringDoi18n(textoDoCabecalhoDoErroi18n);
+        mostrarMensagemDeErro(conteudoDoErro={}) {
+
+
+            const corpoDaMessageBox = this.obterStringDoi18n(conteudoDoErro.textoDoCorpoDoErroi18n);
+            const cabecalhoDaMessageBox = this.obterStringDoi18n(conteudoDoErro.textoDoCabecalhoDoErroi18n);
 
             MessageBox.error(corpoDaMessageBox, {
                 title: cabecalhoDaMessageBox,
-                details: detalhesDoErro
+                details: conteudoDoErro.detalhesDoErro
             })
-        }
+        },
+
+        modelo(nomeDoModelo, dados) {
+            if (dados) {
+                return this.getView().setModel(dados, nomeDoModelo);
+            }
+            return this.getView().getModel(nomeDoModelo);
+        },
 	});
 });

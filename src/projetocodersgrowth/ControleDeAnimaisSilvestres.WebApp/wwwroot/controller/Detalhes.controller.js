@@ -3,7 +3,6 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/FormatterAnimal",
     "sap/m/MessageBox",
-    "../common/HttpRequest",
     "../common/HttpRequestAnimalSilvestre"
 ], (BaseController, JSONModel, FormatterAnimal, MessageBox, HttpRequestAnimalSilvestre) => {
     "use strict";
@@ -31,9 +30,11 @@ sap.ui.define([
 
             try {
                 let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
-                this.setarModelo(new JSONModel(await dados), nomeDoModelo);
+                this.modelo(nomeDoModelo, new JSONModel(await dados));
             } catch (erro) {
-                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarOAnimalSelecionadoi18n, erroAoCarregarOCadastroDoAnimali18n, erro);
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarOAnimalSelecionadoi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoCarregarOCadastroDoAnimali18n, 
+                                            detalhesDoErro: erro});
             }
         },
 
@@ -81,7 +82,9 @@ sap.ui.define([
             }
             catch (erro) {
                 this._fecharCaixaDeDialogo();
-                this.dispararMessageBoxDeErro(naoFoiPossivelExcluirOCadastroi18n, erroAoExcluir18n, erro);
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelExcluirOCadastroi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoExcluir18n, 
+                                            detalhesDoErro: erro});
             }
         },
 

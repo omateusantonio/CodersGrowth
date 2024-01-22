@@ -2,9 +2,8 @@ sap.ui.define([
 	"./BaseController",
 	"sap/ui/model/json/JSONModel",
     "../model/FormatterAnimal",
-    "../common/HttpRequest",
     "../common/HttpRequestAnimalSilvestre"
-], (BaseController, JSONModel, FormatterAnimal, HttpRequest, HttpRequestAnimalSilvestre) => {
+], (BaseController, JSONModel, FormatterAnimal, HttpRequestAnimalSilvestre) => {
 	"use strict";
 
     const NOME_MODELO_ANIMAIS_SILVESTRES = "animais";
@@ -24,7 +23,7 @@ sap.ui.define([
             const nomeParametroQuery = "query";
             const nomeASerFiltrado = evento.getParameter(nomeParametroQuery);
             let animaisFiltrados = HttpRequestAnimalSilvestre.executarObterTodos(nomeASerFiltrado);
-            this.setarModelo(new JSONModel(await animaisFiltrados), NOME_MODELO_ANIMAIS_SILVESTRES);
+            this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, new JSONModel(await animaisFiltrados));
         },
 
         async _obterListaDeAnimais() {
@@ -33,9 +32,11 @@ sap.ui.define([
 
             try {
                 let listaDeAnimais = await HttpRequestAnimalSilvestre.executarObterTodos();
-                this.setarModelo(new JSONModel(await listaDeAnimais), NOME_MODELO_ANIMAIS_SILVESTRES);
+                this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, new JSONModel(await listaDeAnimais));
             } catch (erro) {
-                this.dispararMessageBoxDeErro(naoFoiPossivelCarregarAListaDeAnimaisi18n, erroAoCarregarAListai18n, erro);
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarAListaDeAnimaisi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoCarregarAListai18n, 
+                                            detalhesDoErro: erro});
             }
         },
 
