@@ -121,13 +121,15 @@ sap.ui.define([
 
         _validarPrecoDeVacinacao (preco) {
             const precoMinimo = 10.00;
-            const precoFormatado = this._formatarPreco(preco);
+            if (preco > 1) {
+                preco = this._formatarPreco(preco);
+            }
             const oRegex = new RegExp("^(\\d+)(?:[\\.|,](\\d{1,2}))?$");
-            const precoDigitadoEhValido = oRegex.test(precoFormatado);
+            const precoDigitadoEhValido = oRegex.test(preco);
             const erroInputPrecoDaVacinacaoInvalido = this._oResourceBundle.getText("oPrecoDaVacinacaoPrecisaEstarEmUmFormatoValido");
             const erroInputPrecoDaVacinacaoPrecoMinimo = this._oResourceBundle.getText("oPrecoDaVacinacaoDeveSerMaiorDoQue10");
 
-            if (precoFormatado < precoMinimo) {
+            if (preco < precoMinimo) {
                 this._definirStatusDeErro(NOME_CAMPO_PRECO_VACINACAO, erroInputPrecoDaVacinacaoPrecoMinimo);
                 MENSAGENS_DE_ERRO.push(erroInputPrecoDaVacinacaoPrecoMinimo);
             } else if (!precoDigitadoEhValido) {

@@ -91,7 +91,7 @@ sap.ui.define([
         _definirValorZeroSePrecoForVazio (preco) {
             if (!preco) {
                 const propriedadeDataDoModelo = "/custoDeVacinacao";
-                this._modeloAnimalSilvestre.setProperty(propriedadeDataDoModelo, ZERO)
+                this._modeloAnimalSilvestre().setProperty(propriedadeDataDoModelo, this.ZERO)
             }
         },
 
