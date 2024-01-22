@@ -1,56 +1,57 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"./BaseController",
 	"sap/ui/model/json/JSONModel",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "../model/FormatterAnimal"
-], (Controller, JSONModel, Filter, FilterOperator, FormatterAnimal) => {
+    "../model/FormatterAnimal",
+    "../common/HttpRequestAnimalSilvestre"
+], (BaseController, JSONModel, FormatterAnimal, HttpRequestAnimalSilvestre) => {
 	"use strict";
 
-	return Controller.extend("ui5.controledeanimaissilvestres.controller.Lista", {
+    const NOME_MODELO_ANIMAIS_SILVESTRES = "animais";
+
+	return BaseController.extend("ui5.controledeanimaissilvestres.controller.Lista", {
         formatterAnimal: FormatterAnimal,
 
 		onInit() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute("lista").attachPatternMatched(this.aoCoincidirRota, this);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_LISTA, this._aoCoincidirRota);
 		},
         
-        aoCoincidirRota() {
-            this.obterTodos();
+        _aoCoincidirRota() {
+            this._obterListaDeAnimais();
         },
 
-        aoFiltrarAnimais(oEvent) {
-            // cria o array do filtro
-            const aFilter = [];
-            const sQuery = oEvent.getParameter("query");
-            if (sQuery) {
-                aFilter.push(new Filter("nomeDoAnimal", FilterOperator.Contains, sQuery));
+        _modeloAnimaisSilvestres(dados) {
+            return this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, dados);
+        },
+
+        async aoFiltrarAnimais(evento) {
+            const nomeParametroQuery = "query";
+            const nomeASerFiltrado = evento.getParameter(nomeParametroQuery);
+            let animaisFiltrados = HttpRequestAnimalSilvestre.executarObterTodos(nomeASerFiltrado);
+            this._modeloAnimaisSilvestres(new JSONModel(await animaisFiltrados));
+        },
+
+        async _obterListaDeAnimais() {
+            const naoFoiPossivelCarregarAListaDeAnimaisi18n = "erroNaoFoiPossivelCarregarAListaDeAnimais"
+            const erroAoCarregarAListai18n = "erroAoCarregarALista";
+
+            try {
+                let listaDeAnimais = await HttpRequestAnimalSilvestre.executarObterTodos();
+                this._modeloAnimaisSilvestres(new JSONModel(await listaDeAnimais));
+            } catch (erro) {
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarAListaDeAnimaisi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoCarregarAListai18n, 
+                                            detalhesDoErro: erro});
             }
-
-            // binding do filtro
-            const oList = this.byId("listaDeAnimais");
-            const oBinding = oList.getBinding("items");
-            oBinding.filter(aFilter);
         },
 
-        obterTodos() {
-            fetch('/api/AnimalSilvestre')
-            .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animais"))
-            .catch(e => console.error(e));
-        },
-
-        aoClicarNoItemDaLista(oEvent) {
-            const oItem = oEvent.getSource();
-			const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.navTo("detalhes", {
-                id: oItem.getBindingContext("animais").getProperty("id")
-            });
+        aoClicarNoItemDaLista(evento) {
+            const nomePropriedadeId = "id";
+            const id = {id: this.obterFonteDoEvento(evento).getBindingContext(NOME_MODELO_ANIMAIS_SILVESTRES).getProperty(nomePropriedadeId)};
+            this.navegarPara(this.NOME_ROTA_DETALHES, id);
 		},
 
         aoClicarEmCadastrar() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("cadastro", {}, true);
+            this.navegarPara(this.NOME_ROTA_CADASTRO);
         }
 	});
 });

@@ -19,12 +19,19 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
         }
 
         [HttpGet]
-        public ActionResult<List<AnimalSilvestre>> ObterTodos()
+        public ActionResult<List<AnimalSilvestre>> ObterTodos([FromQuery]string? animal)
         {
             try
             {
-                var modelo = servico.ObterTodos();
-                return Ok(modelo);
+                if (animal ==  null)
+                {
+                    var modelo = servico.ObterTodos();
+                    return Ok(modelo);
+                } else
+                {
+                    var modelo = servico.ObterTodosComFiltro(animal);
+                    return Ok(modelo);
+                }
             }
             catch (Exception ex)
             {
@@ -38,11 +45,17 @@ namespace ControleDeAnimaisSilvestres.WebApp.controller
             try
             {
                 var modelo = servico.ObterPorId(id);
-                return Ok(modelo);
+                if (modelo != null)
+                {
+                    return Ok(modelo);
+                } else
+                {
+                    return NotFound("O animal selecionado não existe no registro");
+                }
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

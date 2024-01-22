@@ -18,6 +18,17 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             }
         }
 
+        public List<AnimalSilvestre> ObterTodosComFiltro(string animal)
+        {
+            using (var bancoDeDados = ObterConexao())
+            {
+                var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
+                                where colunas.NomeDoAnimal.StartsWith(animal)
+                                select colunas);
+                return consulta.ToList();
+            }
+        }
+
         public int Criar(AnimalSilvestre animalNovo)
         {
             using (var bancoDeDados = ObterConexao())
@@ -45,7 +56,7 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
                 var consulta = (from colunas in bancoDeDados.GetTable<AnimalSilvestre>()
                            where colunas.Id == id
                            select colunas).ToList();
-            return consulta.FirstOrDefault(x => x.Id.Equals(id));
+                return consulta.FirstOrDefault(x => x.Id.Equals(id));
             }
         }
 

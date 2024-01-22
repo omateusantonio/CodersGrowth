@@ -1,59 +1,53 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/History",
     "../model/FormatterAnimal",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, History, FormatterAnimal, MessageBox) => {
+    "sap/m/MessageBox",
+    "../common/HttpRequestAnimalSilvestre"
+], (BaseController, JSONModel, FormatterAnimal, MessageBox, HttpRequestAnimalSilvestre) => {
     "use strict";
 
     let ID_ANIMAL_SELECIONADO = null;
-    const NOME_MODELO_I18N = "i18n";
-    const NOME_ROTA_DETALHES = "detalhes";
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
+    return BaseController.extend("ui5.controledeanimaissilvestres.controller.Detalhes", {
         formatterAnimal: FormatterAnimal,
         
         onInit() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute(NOME_ROTA_DETALHES).attachPatternMatched(this.aoCoincidirRota, this);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_DETALHES, this._aoCoincidirRota);
         },
 
-        aoCoincidirRota(oEvent)  {
-            const id = oEvent.getParameter("arguments").id;
+        _aoCoincidirRota(evento)  {
+            const nomeParametroArguments = "arguments";
+            const id = evento.getParameter(nomeParametroArguments).id;
             this._definirAnimalPeloId(id);
-            ID_ANIMAL_SELECIONADO = id;
+            ID_ANIMAL_SELECIONADO = {id: id};
         },
 
-        _definirAnimalPeloId(id) {
-            fetch(`/api/AnimalSilvestre/${id}`)
-            .then(response => response.json())
-            .then(response => this.getView().setModel(new JSONModel(response), "animal"))
-            .catch(erro => console.error(erro));
+        _modeloAnimal(dados) {
+            const nomeDoModelo = "animal";
+            return this.modelo(nomeDoModelo, dados);
         },
 
-        aoClicarEmVoltar() {
-            const oHistory = History.getInstance();
-            const sPreviousHash = oHistory.getPreviousHash();
+        async _definirAnimalPeloId(id) {
+            const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
+            const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
 
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                const oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("lista", {}, true);
+            try {
+                let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
+                this._modeloAnimal(new JSONModel(await dados));
+            } catch (erro) {
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarOAnimalSelecionadoi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoCarregarOCadastroDoAnimali18n, 
+                                            detalhesDoErro: erro});
             }
         },
 
-        aoClicarEmEditar() {
-            this._navegarParaEdicao(ID_ANIMAL_SELECIONADO);
+        aoClicarEmVoltar() {
+            this.navegarPara(this.NOME_ROTA_LISTA);
         },
 
-        _navegarParaEdicao(id) {
-            const nomeRotaEdicao = "edicao"
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaEdicao, {
-                id : id
-            });
+        aoClicarEmEditar() {
+            this.navegarPara(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
         },
         
         aoClicarEmRemover() {
@@ -69,31 +63,22 @@ sap.ui.define([
         },
 
         _fecharCaixaDeDialogo() {
-            this.byId("confirmacaoDaRemocao").close();
+            const idDoFragment = "confirmacaoDaRemocao";
+            this.byId(idDoFragment).close();
         },
 
         aoClicarNoBotaoCancelar() {
             this._fecharCaixaDeDialogo();
         },
 
-        _obterIdDaRota() {
-            const vazio = "";
-            const cadastro = "Detalhes/";
-            const hash = this.getOwnerComponent().getRouter().getHashChanger().hash;
-            const id = hash.replace(cadastro, vazio);
-
-            return id;
-        },
-
         async aoClicarNoBotaoDeExcluir() {
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            const rotaDetalhes = "Detalhes/";
+            const id = this.obterIdAPartirDaRota(rotaDetalhes);
             const naoFoiPossivelExcluirOCadastroi18n = "erroNaoFoiPossivelExcluirOCadastro"
-            const naoFoiPossivelExcluirOCadastro = oResourceBundle.getText(naoFoiPossivelExcluirOCadastroi18n);
             const erroAoExcluir18n = "erroAoExcluir";
-            const erroAoExcluir = oResourceBundle.getText(erroAoExcluir18n);
 
             try {
-                const statusDaRemocao = await this._executarRemocao();
+                const statusDaRemocao = await HttpRequestAnimalSilvestre.executarRemocao(id);
                 if (statusDaRemocao) {
                     this._fecharCaixaDeDialogo();
                     this._exibirMensagemDeExclusaoBemSucedida();
@@ -101,51 +86,24 @@ sap.ui.define([
             }
             catch (erro) {
                 this._fecharCaixaDeDialogo();
-                MessageBox.error(naoFoiPossivelExcluirOCadastro, {
-                    title: erroAoExcluir,
-                    details: erro
-                })
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelExcluirOCadastroi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoExcluir18n, 
+                                            detalhesDoErro: erro});
             }
-        },
-        
-        _executarRemocao() {
-            const id = this._obterIdDaRota();
-            const metodoDoFetch = "DELETE";
-            const url = `/api/AnimalSilvestre/${id}`;
-            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>";
-    
-            return fetch (url, {
-                method: metodoDoFetch
-            })
-            .then(async (response) => {
-                if (!response.ok) {
-                    const mensagemDoBackEnd = await response.text();
-                    throw (mensagemDeErro + mensagemDoBackEnd);
-                } else {
-                    return response.ok;
-                }
-            });
         },
 
         _exibirMensagemDeExclusaoBemSucedida() {
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
             const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
-            const exclusaoFeitaComSucesso = oResourceBundle.getText(exclusaoFeitaComSucessoi18n);
+            const exclusaoFeitaComSucesso = this.obterStringDoi18n(exclusaoFeitaComSucessoi18n);
 
             MessageBox.success(exclusaoFeitaComSucesso, {
                 actions: [MessageBox.Action.OK],
                 onClose: (acao) => {
                     if (acao == MessageBox.Action.OK) {
-                        this._navegarParaLista();
+                        this.navegarPara(this.NOME_ROTA_LISTA);
                     }
                 }
             });
-        },
-
-        _navegarParaLista() {
-            const nomeRotaLista = "lista";
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaLista, {});
-        },
+        }
     });
 });

@@ -1,27 +1,22 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
-    "sap/m/MessageBox"
-], (Controller, JSONModel, ValidadorDeAnimalSilvestre, MessageBox) => {
+    "../common/HttpRequest",
+    "../common/HttpRequestAnimalSilvestre"
+], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequest, HttpRequestAnimalSilvestre) => {
     "use strict";
 
-    const NOME_ROTA_CADASTRO = "cadastro";
-    const NOME_ROTA_LISTA = "lista";
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
-    const NOME_MODELO_I18N = "i18n";
-    const NOME_ROTA_EDICAO = "edicao";
-    const NOME_PROPRIEDADE_VALUE = "value";
-    const ZERO = 0;
+    const ROTA_CADASTRO = "Cadastro/";
     let _validador = null;
     let edicaoAtivada = false;
 
-    return Controller.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
+    return BaseController.extend("ui5.controledeanimaissilvestres.controller.Cadastro", {
 
         onInit() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.getRoute(NOME_ROTA_CADASTRO).attachPatternMatched(this._aoCoincidirRotaDoCadastro, this);
-            oRouter.getRoute(NOME_ROTA_EDICAO).attachPatternMatched(this._aoCoincidirRotaDaEdicao, this);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_CADASTRO, this._aoCoincidirRotaDoCadastro);
+            this.obterRoteadorEManipularRota(this.NOME_ROTA_EDICAO, this._aoCoincidirRotaDaEdicao);
         },
 
         _aoCoincidirRotaComum() {
@@ -42,20 +37,34 @@ sap.ui.define([
         },
 
         aoClicarEmVoltar() {
-            this._navegarParaLista();
+            this._navegarParaListaOuDetalhes();
+        },
+
+        _navegarParaListaOuDetalhes() {
+            if (edicaoAtivada == false) {
+                this.navegarPara(this.NOME_ROTA_LISTA);
+            } else {
+                const id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
+                this.navegarPara(this.NOME_ROTA_DETALHES, id);
+            }
         },
 
         aoClicarEmCancelar() {
-            this._navegarParaLista();
+            this.navegarPara(this.NOME_ROTA_LISTA);
         },
 
         _obterDadosDoAnimal() {
             const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
             dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
-            dadosDeCadastro.classe = Number(dadosDeCadastro.classe);
-            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? ZERO : (dadosDeCadastro.custoDeVacinacao);
+            dadosDeCadastro.classe = dadosDeCadastro.classe == undefined || NaN ? this.ZERO : Number(dadosDeCadastro.classe);
+            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
             
             return dadosDeCadastro;
+        },
+
+        _modeloCombobox(dados) {
+            const nomeAliasLista = "classes";
+            return this.modelo(nomeAliasLista, dados);
         },
 
         aoClicarEmSalvar() {
@@ -67,7 +76,6 @@ sap.ui.define([
         },
 
         _definirItensDaCombobox() {
-            const nomeAliasLista = "classes";
 
             const enumClasseAnfibio = 0;
             const enumClasseAve = 1;
@@ -87,34 +95,7 @@ sap.ui.define([
                             {Nome : enumClassePeixeNome, Chave : enumClassePeixe}, 
                             {Nome : enumClasseReptilNome, Chave : enumClasseReptil}];
             const oLista = new JSONModel(oItems);
-            const oView = this.getView();
-
-            oView.setModel(oLista, nomeAliasLista);
-        },
-
-        async _executarSalvarAnimal(dados) {
-            const url = '/api/AnimalSilvestre';
-            const metodoDoFetch = "POST";
-            let resposta = null;
-            let formulario = null;
-            let idDoCadastro = null;
-            let mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
-
-            resposta = await fetch(url, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dados),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            });
-
-            if (!resposta.ok) {
-                const textoDoBackEnd = await resposta.text();
-                throw (mensagemDeErro + textoDoBackEnd);
-            }
-
-            formulario = await resposta.json();
-            idDoCadastro =  await formulario.id;
-
-            return idDoCadastro;
+            this._modeloCombobox(oLista);
         },
 
         _inicializarModeloAnimalSilvestre() {
@@ -122,22 +103,18 @@ sap.ui.define([
             this._modeloAnimalSilvestre(oModelo);
         },
 
-        _navegarParaDetalhes(id) {
-            const nomeRotaDetalhes = "detalhes"
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(nomeRotaDetalhes, {
-                id : id
-            });
+        _modeloAnimalSilvestre(dados) {
+            return this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, dados);
         },
 
-        aoAlterarData(oEvento) { 
+        aoAlterarData(evento) { 
             const nomePropriedadeValorDaData = "dateValue";
-            const data = oEvento.getSource().getProperty(nomePropriedadeValorDaData);
+            const data = this.obterFonteDoEvento(evento).getProperty(nomePropriedadeValorDaData);
             _validador.validarDataDeResgatePelaView(data);
         },
 
-        aoAlterarPreco(oEvento) {
-            const preco = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarPreco(evento) {
+            const preco = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             this._definirValorZeroSePrecoForVazio(preco);
             _validador.validarPrecoDeVacinacaoPelaView(preco);
         },
@@ -145,17 +122,17 @@ sap.ui.define([
         _definirValorZeroSePrecoForVazio (preco) {
             if (!preco) {
                 const propriedadeDataDoModelo = "/custoDeVacinacao";
-                this._modeloAnimalSilvestre().setProperty(propriedadeDataDoModelo, ZERO)
+                this._modeloAnimalSilvestre.setProperty(propriedadeDataDoModelo, ZERO)
             }
         },
 
-        aoAlterarNomeDoAnimal(oEvento) {
-            const nomeDoAnimal = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarNomeDoAnimal(evento) {
+            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDoAnimalPelaView(nomeDoAnimal);
         },
 
-        aoAlterarNomeDaEspecie(oEvento) {
-            const nomeDaEspecie = oEvento.getSource().getProperty(NOME_PROPRIEDADE_VALUE);
+        aoAlterarNomeDaEspecie(evento) {
+            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
             _validador.validarNomeDaEspeciePelaView(nomeDaEspecie);
         },
 
@@ -176,113 +153,66 @@ sap.ui.define([
         _redefinirPropriedadesDoStatus(id) {
             const stringEstadoDoCampo = "valueState";
             const stringTextoDeEstadoDoCampo = "valueStateText";
-            const oView = this.getView();
+            const oView = this.obterView();
 
             oView.byId(id).resetProperty(stringEstadoDoCampo);
             oView.byId(id).resetProperty(stringTextoDeEstadoDoCampo);
         },
 
         async _salvarAnimal() {
-            let oCadastro = this._obterDadosDoAnimal();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            let cadastro = this._obterDadosDoAnimal();
             const cabecalhoDeErroDoi18n = "erroAoSalvar";
             const corpoDoErroDoi18n = "naoFoiPossivelEnviarOCadastro";
-            const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
             let idDoNovoCadastro = null;
             
             try {
-                _validador.validacaoDeTodosOsCampos(oCadastro);
-                idDoNovoCadastro = await this._executarSalvarAnimal(oCadastro);
-                this._navegarParaDetalhes(idDoNovoCadastro);
+                _validador.validacaoDeTodosOsCampos(cadastro);
+                idDoNovoCadastro = {id: await HttpRequestAnimalSilvestre.executarCriarAnimal(cadastro)};
+                this.navegarPara(this.NOME_ROTA_DETALHES, idDoNovoCadastro);
             }
             catch (erro) {
-                MessageBox.error(erroAoSalvar, {
-                    title: mensagemDeErroCabecalho,
-                    details: erro
-                })
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: corpoDoErroDoi18n, 
+                                            textoDoCabecalhoDoErroi18n: cabecalhoDeErroDoi18n, 
+                                            detalhesDoErro: erro});
             }
-        },
-
-        _navegarParaLista() {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo(NOME_ROTA_LISTA, {});
         },
 
         _criarValidadorDeAnimalSilvestre() {
-            let oView = this.getView();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            let oView = this.obterView();
+            let oResourceBundle = this.obterResourceBundle();
             return new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
         },
 
         async _carregarAnimalSilvestre() {
-            const id = this._obterIdDaRota();
+            const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             let retorno = await this._obterAnimalPeloId(id);
             this._modeloAnimalSilvestre(new JSONModel(retorno));
         },
 
-        _modeloAnimalSilvestre(dados) {
-            if (dados) {
-                this.getView().setModel(dados, NOME_MODELO_ANIMAL_SILVESTRE);
-                return;
-            }
-            return this.getView().getModel(NOME_MODELO_ANIMAL_SILVESTRE);
-        },
-
-        _obterAnimalPeloId(id) {
-            const url = `/api/AnimalSilvestre/${id}`;
-
-            return fetch(url)
-            .then(response => response.json())
-            .then(response => {return response});
+        async _obterAnimalPeloId(id) {
+            return await HttpRequestAnimalSilvestre.executarObterPorId(id);
         },
 
         async _atualizarAnimal() {
             let dadosDoAnimal = this._obterDadosDoAnimal();
-            let id = this._obterIdDaRota();
-            let oResourceBundle = this.getOwnerComponent().getModel(NOME_MODELO_I18N).getResourceBundle();
+            let id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
             const cabecalhoDeErroDoi18n = "erroAoSalvarAEdicao";
             const corpoDoErroDoi18n = "naoFoiPossivelSalvarAEdicaoFeita";
-            const erroAoSalvar = oResourceBundle.getText(corpoDoErroDoi18n);
-            const mensagemDeErroCabecalho = oResourceBundle.getText(cabecalhoDeErroDoi18n);
             
             try {
                 _validador.validacaoDeTodosOsCampos(dadosDoAnimal);
                 await this._executarAtualizacao(dadosDoAnimal);
-                this._navegarParaDetalhes(id);
+                this.navegarPara(this.NOME_ROTA_DETALHES, id);
             }
             catch (erro) {
-                MessageBox.error(erroAoSalvar, {
-                    title: mensagemDeErroCabecalho,
-                    details: erro
-                })
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: corpoDoErroDoi18n, 
+                                            textoDoCabecalhoDoErroi18n: cabecalhoDeErroDoi18n, 
+                                            detalhesDoErro: erro});
             }
         },
 
         async _executarAtualizacao(dadosDoAnimal) {
-            const url = '/api/AnimalSilvestre';
-            const metodoDoFetch = "PUT";
-            const mensagemDeErro = "<strong>Ocorreu um erro:</strong> <br>"
-
-            await fetch(url, {
-                method: metodoDoFetch,
-                body: JSON.stringify(dadosDoAnimal),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            }).then(async (response) => {
-                    if (!response.ok) {
-                        const textoDoBackEnd = await response.text();
-                        throw (mensagemDeErro + textoDoBackEnd);
-                    }
-            });
-        },
-
-        _obterIdDaRota() {
-            const vazio = "";
-            const cadastro = "Cadastro/";
-            const hash = this.getOwnerComponent().getRouter().getHashChanger().hash;
-            const id = hash.replace(cadastro, vazio);
-
-            return id;
+            await HttpRequestAnimalSilvestre.executarSalvarAnimal(dadosDoAnimal);
         }
     });
 });
