@@ -4,9 +4,9 @@ sap.ui.define([
     "use strict";
 
     return {
-        obterNomeDaClasse(sClasse) {
+        obterNomeDaClasse(classe) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            switch (sClasse) {
+            switch (classe) {
                 case 0:
                     return oResourceBundle.getText("anfibio");
                 case 1:
@@ -18,28 +18,24 @@ sap.ui.define([
                 case 4:
                     return oResourceBundle.getText("reptil");
                 default:
-                    return sClasse;
+                    return classe;
             }
         },
         
-        obterTraducaoSeEstaEmExtincao(sStatusExtincao) {
+        obterTraducaoSeEstaEmExtincao(statusDeExtincao) {
             const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            switch (sStatusExtincao) {
+            switch (statusDeExtincao) {
                 case true:
                     return oResourceBundle.getText("sim");
                 case false:
                     return oResourceBundle.getText("nao");
                 default:
-                    return sStatusExtincao;
+                    return statusDeExtincao;
             }
         },
 
-        inserirTextoERCifrao(sPreco) {
-            const oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            return oResourceBundle.getText("precoDaVacinacaoRCifrao") + sPreco;
-        },
-
         formatarPreco(precoDeVacinacao) {
+            const moedaBRL = "BRL";
             const formatoDePreco = NumberFormat.getCurrencyInstance({
                 "currencyCode": false,
                 "customCurrencies": {
@@ -50,7 +46,7 @@ sap.ui.define([
                 }
             });
 
-            return formatoDePreco.format(precoDeVacinacao, "BRL");
+            return formatoDePreco.format(precoDeVacinacao, moedaBRL);
         }
     }
 })

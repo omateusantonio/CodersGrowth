@@ -16,38 +16,9 @@ sap.ui.define([
             this.obterRoteadorEManipularRota(this.NOME_ROTA_DETALHES, this._aoCoincidirRota);
         },
 
-        _aoCoincidirRota(evento)  {
-            const nomeParametroArguments = "arguments";
-            const id = evento.getParameter(nomeParametroArguments).id;
-            this._definirAnimalPeloId(id);
-            ID_ANIMAL_SELECIONADO = {id: id};
-        },
-
         _modeloAnimal(dados) {
             const nomeDoModelo = "animal";
             return this.modelo(nomeDoModelo, dados);
-        },
-
-        async _definirAnimalPeloId(id) {
-            const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
-            const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
-
-            try {
-                let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
-                this._modeloAnimal(new JSONModel(await dados));
-            } catch (erro) {
-                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarOAnimalSelecionadoi18n, 
-                                            textoDoCabecalhoDoErroi18n: erroAoCarregarOCadastroDoAnimali18n, 
-                                            detalhesDoErro: erro});
-            }
-        },
-
-        aoClicarEmVoltar() {
-            this.navegarPara(this.NOME_ROTA_LISTA);
-        },
-
-        aoClicarEmEditar() {
-            this.navegarPara(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
         },
         
         aoClicarEmRemover() {
@@ -62,13 +33,41 @@ sap.ui.define([
             this.dialogo.then((caixaDeDialogo) => caixaDeDialogo.open())
         },
 
+        aoClicarNoBotaoCancelar() {
+            this._fecharCaixaDeDialogo();
+        },
+
         _fecharCaixaDeDialogo() {
             const idDoFragment = "confirmacaoDaRemocao";
             this.byId(idDoFragment).close();
         },
 
-        aoClicarNoBotaoCancelar() {
-            this._fecharCaixaDeDialogo();
+        _exibirMensagemDeExclusaoBemSucedida() {
+            const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
+            const exclusaoFeitaComSucesso = this.obterStringDoi18n(exclusaoFeitaComSucessoi18n);
+
+            MessageBox.success(exclusaoFeitaComSucesso, {
+                actions: [MessageBox.Action.OK],
+                onClose: (acao) => {
+                    if (acao == MessageBox.Action.OK) {
+                        this.navegarPara(this.NOME_ROTA_LISTA);
+                    }
+                }
+            });
+        },
+
+        async _definirAnimalPeloId(id) {
+            const naoFoiPossivelCarregarOAnimalSelecionadoi18n = "erroNaoFoiPossivelCarregarOAnimalSelecionado"
+            const erroAoCarregarOCadastroDoAnimali18n = "erroAoCarregarOCadastroDoAnimal";
+
+            try {
+                let dados = await HttpRequestAnimalSilvestre.executarObterPorId(id);
+                this._modeloAnimal(new JSONModel(await dados));
+            } catch (erro) {
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarOAnimalSelecionadoi18n, 
+                                            textoDoCabecalhoDoErroi18n: erroAoCarregarOCadastroDoAnimali18n, 
+                                            detalhesDoErro: erro});
+            }
         },
 
         async aoClicarNoBotaoDeExcluir() {
@@ -92,18 +91,19 @@ sap.ui.define([
             }
         },
 
-        _exibirMensagemDeExclusaoBemSucedida() {
-            const exclusaoFeitaComSucessoi18n = "exclusaoFeitaComSucesso";
-            const exclusaoFeitaComSucesso = this.obterStringDoi18n(exclusaoFeitaComSucessoi18n);
+        aoClicarEmVoltar() {
+            this.navegarPara(this.NOME_ROTA_LISTA);
+        },
 
-            MessageBox.success(exclusaoFeitaComSucesso, {
-                actions: [MessageBox.Action.OK],
-                onClose: (acao) => {
-                    if (acao == MessageBox.Action.OK) {
-                        this.navegarPara(this.NOME_ROTA_LISTA);
-                    }
-                }
-            });
-        }
+        aoClicarEmEditar() {
+            this.navegarPara(this.NOME_ROTA_EDICAO, ID_ANIMAL_SELECIONADO);
+        },
+
+        _aoCoincidirRota(evento)  {
+            const nomeParametroArguments = "arguments";
+            const id = evento.getParameter(nomeParametroArguments).id;
+            this._definirAnimalPeloId(id);
+            ID_ANIMAL_SELECIONADO = {id: id};
+        },
     });
 });

@@ -2,9 +2,8 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../validation/ValidadorDeAnimalSilvestre",
-    "../common/HttpRequest",
     "../common/HttpRequestAnimalSilvestre"
-], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequest, HttpRequestAnimalSilvestre) => {
+], (BaseController, JSONModel, ValidadorDeAnimalSilvestre, HttpRequestAnimalSilvestre) => {
     "use strict";
 
     const NOME_MODELO_ANIMAL_SILVESTRE = "animalSilvestre";
@@ -19,47 +18,8 @@ sap.ui.define([
             this.obterRoteadorEManipularRota(this.NOME_ROTA_EDICAO, this._aoCoincidirRotaDaEdicao);
         },
 
-        _aoCoincidirRotaComum() {
-            _validador = this._criarValidadorDeAnimalSilvestre();
-            this._inicializarModeloAnimalSilvestre();
-            this._definirItensDaCombobox();
-            this._limparStatusDeErro();
-        },
-
-        _aoCoincidirRotaDoCadastro() {
-            this._aoCoincidirRotaComum();
-        },
-
-        _aoCoincidirRotaDaEdicao() {
-            edicaoAtivada = true;
-            this._aoCoincidirRotaComum();
-            this._carregarAnimalSilvestre();
-        },
-
-        aoClicarEmVoltar() {
-            this._navegarParaListaOuDetalhes();
-        },
-
-        _navegarParaListaOuDetalhes() {
-            if (edicaoAtivada == false) {
-                this.navegarPara(this.NOME_ROTA_LISTA);
-            } else {
-                const id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
-                this.navegarPara(this.NOME_ROTA_DETALHES, id);
-            }
-        },
-
-        aoClicarEmCancelar() {
-            this.navegarPara(this.NOME_ROTA_LISTA);
-        },
-
-        _obterDadosDoAnimal() {
-            const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
-            dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
-            dadosDeCadastro.classe = dadosDeCadastro.classe == undefined || NaN ? this.ZERO : Number(dadosDeCadastro.classe);
-            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
-            
-            return dadosDeCadastro;
+        _modeloAnimalSilvestre(dados) {
+            return this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, dados);
         },
 
         _modeloCombobox(dados) {
@@ -67,12 +27,9 @@ sap.ui.define([
             return this.modelo(nomeAliasLista, dados);
         },
 
-        aoClicarEmSalvar() {
-            if (!edicaoAtivada) {
-                this._salvarAnimal();
-            } else {
-                this._atualizarAnimal();
-            }
+        _inicializarModeloAnimalSilvestre() {
+            let oModelo = new JSONModel({});
+            this._modeloAnimalSilvestre(oModelo);
         },
 
         _definirItensDaCombobox() {
@@ -98,42 +55,13 @@ sap.ui.define([
             this._modeloCombobox(oLista);
         },
 
-        _inicializarModeloAnimalSilvestre() {
-            let oModelo = new JSONModel({});
-            this._modeloAnimalSilvestre(oModelo);
-        },
+        _redefinirPropriedadesDoStatus(id) {
+            const stringEstadoDoCampo = "valueState";
+            const stringTextoDeEstadoDoCampo = "valueStateText";
+            const oView = this.obterView();
 
-        _modeloAnimalSilvestre(dados) {
-            return this.modelo(NOME_MODELO_ANIMAL_SILVESTRE, dados);
-        },
-
-        aoAlterarData(evento) { 
-            const nomePropriedadeValorDaData = "dateValue";
-            const data = this.obterFonteDoEvento(evento).getProperty(nomePropriedadeValorDaData);
-            _validador.validarDataDeResgatePelaView(data);
-        },
-
-        aoAlterarPreco(evento) {
-            const preco = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
-            this._definirValorZeroSePrecoForVazio(preco);
-            _validador.validarPrecoDeVacinacaoPelaView(preco);
-        },
-
-        _definirValorZeroSePrecoForVazio (preco) {
-            if (!preco) {
-                const propriedadeDataDoModelo = "/custoDeVacinacao";
-                this._modeloAnimalSilvestre.setProperty(propriedadeDataDoModelo, ZERO)
-            }
-        },
-
-        aoAlterarNomeDoAnimal(evento) {
-            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
-            _validador.validarNomeDoAnimalPelaView(nomeDoAnimal);
-        },
-
-        aoAlterarNomeDaEspecie(evento) {
-            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
-            _validador.validarNomeDaEspeciePelaView(nomeDaEspecie);
+            oView.byId(id).resetProperty(stringEstadoDoCampo);
+            oView.byId(id).resetProperty(stringTextoDeEstadoDoCampo);
         },
 
         _limparStatusDeErro() {
@@ -150,13 +78,73 @@ sap.ui.define([
             this._redefinirPropriedadesDoStatus(campoDataDoResgate);
         },
 
-        _redefinirPropriedadesDoStatus(id) {
-            const stringEstadoDoCampo = "valueState";
-            const stringTextoDeEstadoDoCampo = "valueStateText";
-            const oView = this.obterView();
+        aoAlterarNomeDoAnimal(evento) {
+            const nomeDoAnimal = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
+            _validador.validarNomeDoAnimalPelaView(nomeDoAnimal);
+        },
 
-            oView.byId(id).resetProperty(stringEstadoDoCampo);
-            oView.byId(id).resetProperty(stringTextoDeEstadoDoCampo);
+        aoAlterarNomeDaEspecie(evento) {
+            const nomeDaEspecie = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
+            _validador.validarNomeDaEspeciePelaView(nomeDaEspecie);
+        },
+
+        _definirValorZeroSePrecoForVazio (preco) {
+            if (!preco) {
+                const propriedadeDataDoModelo = "/custoDeVacinacao";
+                this._modeloAnimalSilvestre.setProperty(propriedadeDataDoModelo, ZERO)
+            }
+        },
+
+        aoAlterarPreco(evento) {
+            const preco = this.obterFonteDoEvento(evento).getProperty(this.NOME_PROPRIEDADE_VALUE);
+            this._definirValorZeroSePrecoForVazio(preco);
+            _validador.validarPrecoDeVacinacaoPelaView(preco);
+        },
+
+        aoAlterarData(evento) { 
+            const nomePropriedadeValorDaData = "dateValue";
+            const data = this.obterFonteDoEvento(evento).getProperty(nomePropriedadeValorDaData);
+            _validador.validarDataDeResgatePelaView(data);
+        },
+
+        _obterDadosDoAnimal() {
+            const dadosDeCadastro = this._modeloAnimalSilvestre().getData();
+            dadosDeCadastro.emExtincao = dadosDeCadastro.emExtincao == undefined ? false : true;
+            dadosDeCadastro.classe = dadosDeCadastro.classe == undefined || NaN ? this.ZERO : Number(dadosDeCadastro.classe);
+            dadosDeCadastro.custoDeVacinacao = dadosDeCadastro.custoDeVacinacao == undefined ? this.ZERO : (dadosDeCadastro.custoDeVacinacao);
+            
+            return dadosDeCadastro;
+        },
+
+        _criarValidadorDeAnimalSilvestre() {
+            let oView = this.obterView();
+            let oResourceBundle = this.obterResourceBundle();
+            return new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
+        },
+
+        _aoCoincidirRotaComum() {
+            _validador = this._criarValidadorDeAnimalSilvestre();
+            this._inicializarModeloAnimalSilvestre();
+            this._definirItensDaCombobox();
+            this._limparStatusDeErro();
+        },
+
+        _aoCoincidirRotaDoCadastro() {
+            this._aoCoincidirRotaComum();
+        },
+
+        _aoCoincidirRotaDaEdicao() {
+            edicaoAtivada = true;
+            this._aoCoincidirRotaComum();
+            this._carregarAnimalSilvestre();
+        },
+
+        aoClicarEmSalvar() {
+            if (!edicaoAtivada) {
+                this._salvarAnimal();
+            } else {
+                this._atualizarAnimal();
+            }
         },
 
         async _salvarAnimal() {
@@ -177,12 +165,6 @@ sap.ui.define([
             }
         },
 
-        _criarValidadorDeAnimalSilvestre() {
-            let oView = this.obterView();
-            let oResourceBundle = this.obterResourceBundle();
-            return new ValidadorDeAnimalSilvestre(oView, oResourceBundle);
-        },
-
         async _carregarAnimalSilvestre() {
             const id = this.obterIdAPartirDaRota(ROTA_CADASTRO);
             let retorno = await this._obterAnimalPeloId(id);
@@ -191,6 +173,10 @@ sap.ui.define([
 
         async _obterAnimalPeloId(id) {
             return await HttpRequestAnimalSilvestre.executarObterPorId(id);
+        },
+
+        async _executarAtualizacao(dadosDoAnimal) {
+            await HttpRequestAnimalSilvestre.executarSalvarAnimal(dadosDoAnimal);
         },
 
         async _atualizarAnimal() {
@@ -211,8 +197,21 @@ sap.ui.define([
             }
         },
 
-        async _executarAtualizacao(dadosDoAnimal) {
-            await HttpRequestAnimalSilvestre.executarSalvarAnimal(dadosDoAnimal);
+        aoClicarEmVoltar() {
+            this._navegarParaListaOuDetalhes();
+        },
+
+        _navegarParaListaOuDetalhes() {
+            if (edicaoAtivada == false) {
+                this.navegarPara(this.NOME_ROTA_LISTA);
+            } else {
+                const id = {id: this.obterIdAPartirDaRota(ROTA_CADASTRO)};
+                this.navegarPara(this.NOME_ROTA_DETALHES, id);
+            }
+        },
+
+        aoClicarEmCancelar() {
+            this.navegarPara(this.NOME_ROTA_LISTA);
         }
     });
 });

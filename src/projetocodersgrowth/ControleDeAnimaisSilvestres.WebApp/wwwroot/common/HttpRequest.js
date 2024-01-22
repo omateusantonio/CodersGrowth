@@ -41,9 +41,6 @@ sap.ui.define([], () => {
             const metodoDoFetch = "DELETE";
             
             return this._request(urlComId, metodoDoFetch);
-            // return fetch (urlComId, {
-            //     method: metodoDoFetch
-            // });
         },
 
         _request(url, metodoHttp, dados, cabecalho={}) {

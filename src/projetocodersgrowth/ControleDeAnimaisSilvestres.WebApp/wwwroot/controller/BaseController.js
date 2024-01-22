@@ -59,13 +59,10 @@ sap.ui.define([
 
         obterStringDoi18n(string) {
             const i18n = this.obterResourceBundle();
-
             return i18n.getText(string);
         },
 
         mostrarMensagemDeErro(conteudoDoErro={}) {
-
-
             const corpoDaMessageBox = this.obterStringDoi18n(conteudoDoErro.textoDoCorpoDoErroi18n);
             const cabecalhoDaMessageBox = this.obterStringDoi18n(conteudoDoErro.textoDoCabecalhoDoErroi18n);
 

@@ -21,7 +21,8 @@
                 <ToolbarSpacer/>
                 <SearchField
                     width="25%"
-                    search=".aoFiltrarAnimais"/>
+                    search=".aoFiltrarAnimais"
+                    placeholder="{i18n>pesquisarPeloNomeDoAnimal}"/>
             </Toolbar>
         </headerToolbar>
 

@@ -14,13 +14,23 @@ sap.ui.define([
 		onInit() {
             this.obterRoteadorEManipularRota(this.NOME_ROTA_LISTA, this._aoCoincidirRota);
 		},
-        
-        _aoCoincidirRota() {
-            this._obterListaDeAnimais();
-        },
 
         _modeloAnimaisSilvestres(dados) {
             return this.modelo(NOME_MODELO_ANIMAIS_SILVESTRES, dados);
+        },
+        
+        async _obterListaDeAnimais() {
+            const naoFoiPossivelCarregarAListaDeAnimaisi18n = "erroNaoFoiPossivelCarregarAListaDeAnimais"
+            const erroAoCarregarAListai18n = "erroAoCarregarALista";
+            
+            try {
+                let listaDeAnimais = await HttpRequestAnimalSilvestre.executarObterTodos();
+                this._modeloAnimaisSilvestres(new JSONModel(await listaDeAnimais));
+            } catch (erro) {
+                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarAListaDeAnimaisi18n, 
+                    textoDoCabecalhoDoErroi18n: erroAoCarregarAListai18n, 
+                    detalhesDoErro: erro});
+                }
         },
 
         async aoFiltrarAnimais(evento) {
@@ -29,21 +39,11 @@ sap.ui.define([
             let animaisFiltrados = HttpRequestAnimalSilvestre.executarObterTodos(nomeASerFiltrado);
             this._modeloAnimaisSilvestres(new JSONModel(await animaisFiltrados));
         },
-
-        async _obterListaDeAnimais() {
-            const naoFoiPossivelCarregarAListaDeAnimaisi18n = "erroNaoFoiPossivelCarregarAListaDeAnimais"
-            const erroAoCarregarAListai18n = "erroAoCarregarALista";
-
-            try {
-                let listaDeAnimais = await HttpRequestAnimalSilvestre.executarObterTodos();
-                this._modeloAnimaisSilvestres(new JSONModel(await listaDeAnimais));
-            } catch (erro) {
-                this.mostrarMensagemDeErro({textoDoCorpoDoErroi18n: naoFoiPossivelCarregarAListaDeAnimaisi18n, 
-                                            textoDoCabecalhoDoErroi18n: erroAoCarregarAListai18n, 
-                                            detalhesDoErro: erro});
-            }
+            
+        _aoCoincidirRota() {
+            this._obterListaDeAnimais();
         },
-
+            
         aoClicarNoItemDaLista(evento) {
             const nomePropriedadeId = "id";
             const id = {id: this.obterFonteDoEvento(evento).getBindingContext(NOME_MODELO_ANIMAIS_SILVESTRES).getProperty(nomePropriedadeId)};
