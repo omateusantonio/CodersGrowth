@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres", "projetocodersgrowth\ControleDeAnimaisSilvestres.csproj", "{7D43A9C6-4201-4F07-B278-C4C1344739C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.Forms", "projetocodersgrowth\ControleDeAnimaisSilvestres.Forms.csproj", "{7D43A9C6-4201-4F07-B278-C4C1344739C1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7B6569BF-3951-46E2-A2D8-B76C2D25AB26} = {7B6569BF-3951-46E2-A2D8-B76C2D25AB26}
 	EndProjectSection
@@ -13,6 +13,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.Infra", "ControleDeAnimaisSilvestres.Infra\ControleDeAnimaisSilvestres.Infra.csproj", "{37B87599-9E46-498B-B79B-FB701F915BCA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7B6569BF-3951-46E2-A2D8-B76C2D25AB26} = {7B6569BF-3951-46E2-A2D8-B76C2D25AB26}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleDeAnimaisSilvestres.WebApp", "ControleDeAnimaisSilvestres.WebApp\ControleDeAnimaisSilvestres.WebApp.csproj", "{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37B87599-9E46-498B-B79B-FB701F915BCA} = {37B87599-9E46-498B-B79B-FB701F915BCA}
 	EndProjectSection
 EndProject
 Global
@@ -33,6 +38,10 @@ Global
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B87599-9E46-498B-B79B-FB701F915BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7D618F5-A8D1-4E98-BE6B-DAAACD6CFCAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

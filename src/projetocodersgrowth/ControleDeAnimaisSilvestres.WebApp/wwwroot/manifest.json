@@ -1,0 +1,104 @@
+{
+	"_version": "1.58.0",
+	"sap.app": {
+		"id": "ui5.controledeanimaissilvestres",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{controleDeAnimaisSilvestresWeb}}",
+		"description": "{{umaListaDeControleDeAnimaisSilvestresResgatados}}",
+		"type": "application",
+		"applicationVersion": {
+			"version": "1.0.0"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"dependencies": {
+			"minUI5Version": "1.108.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.resource.ResourceModel",
+				"settings": {
+					"bundleName": "ui5.controledeanimaissilvestres.i18n.i18n",
+					"supportedLocales": [
+						""
+					],
+					"fallbackLocale": ""
+				}
+			}
+		},
+		"rootView": {
+			"viewName": "ui5.controledeanimaissilvestres.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "ui5.controledeanimaissilvestres.view",
+				"controlId": "app",
+				"controlAggregation": "pages"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "lista",
+					"target": "lista"
+				},
+				{
+					"pattern": "Detalhes/{id}",
+					"name": "detalhes",
+					"target": "detalhes"
+				},
+				{
+					"pattern": "Cadastro",
+					"name": "cadastro",
+					"target": "cadastro"
+				},
+				{
+					"pattern": "Cadastro/{id}",
+					"name": "edicao",
+					"target": "edicao"
+				}
+			],
+			"targets": {
+				"lista": {
+					"id": "lista",
+					"name": "Lista"
+				},
+				"detalhes": {
+					"id": "detalhes",
+					"name": "Detalhes"
+				},
+				"cadastro": {
+					"id": "cadastro",
+					"name": "Cadastro"
+				},
+				"edicao": {
+					"id": "edicao",
+					"name": "Cadastro"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		}
+	}
+}

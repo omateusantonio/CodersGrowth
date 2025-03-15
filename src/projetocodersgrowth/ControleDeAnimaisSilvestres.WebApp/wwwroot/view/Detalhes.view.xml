@@ -1,0 +1,84 @@
+<mvc:View
+    controllerName="ui5.controledeanimaissilvestres.controller.Detalhes"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Shell>
+        <Page
+            showHeader="true"
+            title="{i18n>detalhes}"
+            showNavButton="true"
+            navButtonTooltip="Retornar"
+            navButtonPress=".aoClicarEmVoltar">
+            <headerContent>
+                <Button
+                    text="{i18n>editar}"
+                    iconFirst="true"
+                    icon="sap-icon://edit"
+                    type="Transparent"
+                    width="7rem"
+                    press=".aoClicarEmEditar"
+                />
+                <Button
+                    text="{i18n>remover}"
+                    iconFirst="true"
+                    icon="sap-icon://delete"
+                    type="Transparent"
+                    width="7rem"
+                    press=".aoClicarEmRemover"
+                />
+            </headerContent>
+                <VBox class="sapUiSmallMargin">
+                    <form:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        title="Mais sobre: {animal>/nomeDoAnimal}"
+                        labelSpanXL="4"
+                        labelSpanL="4"
+                        labelSpanM="12"
+                        labelSpanS="12"
+                        adjustLabelSpan="true"
+                        emptySpanXL="0"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        emptySpanS="0"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+                        <form:content>
+                            <Label text="{i18n>nomeDaEspecie}" />
+                            <Text text="{animal>/nomeDaEspecie}" />
+                            <Label text="{i18n>classeDeAnimal}" />
+                            <Text text="{
+                                path: 'animal>/classe',
+                                formatter: '.formatterAnimal.obterNomeDaClasse'
+                            }"/>
+                            <Label text="{i18n>emExtincao}" />
+                            <Text text="{
+                                    path: 'animal>/emExtincao',
+                                    formatter: '.formatterAnimal.obterTraducaoSeEstaEmExtincao'
+                            }"/>
+                            <Label text="{i18n>precoDeVacinacao}"/>
+                            <Text text="{
+                                    path: 'animal>/custoDeVacinacao',
+                                    formatter: '.formatterAnimal.formatarPreco'
+                            }"/>
+                            <Label text="{i18n>dataDoResgate}"/>
+                            <Text text="{
+                                    path: 'animal>/dataDoResgate',
+                                    type: 'sap.ui.model.type.Date',
+                                    formatOptions: {
+                                        style: 'long',
+                                        source: {
+                                            pattern: 'yyyy-MM-ddTHH:mm:ss'
+                                        }
+                                    }
+                            }"/>
+                        </form:content>
+                    </form:SimpleForm>
+                </VBox>
+        </Page>
+    </Shell>
+</mvc:View>

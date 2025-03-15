@@ -1,0 +1,149 @@
+<mvc:View
+    controllerName="ui5.controledeanimaissilvestres.controller.Cadastro"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout">
+
+    <Shell>
+        <Page
+            id="paginaDeCadastro"
+            showHeader="true"
+            title="{i18n>cadastroDeNovoAnimal}"
+            showNavButton="true"
+            navButtonTooltip="Retornar"
+            navButtonPress=".aoClicarEmVoltar">
+            <headerContent>
+                <Button
+                    text="{i18n>Cancelar}"
+                    iconFirst="true"
+                    icon="sap-icon://cancel"
+                    press=".aoClicarEmCancelar"
+                    type="Transparent"
+                    width="7rem"
+                />
+                <Button
+                    text="{i18n>Salvar}"
+                    iconFirst="true"
+                    icon="sap-icon://save"
+                    type="Transparent"
+                    width="7rem"
+                    press=".aoClicarEmSalvar"
+                />
+            </headerContent>
+
+            <layout:VerticalLayout 
+                id="formularioDeCadastro"
+                class="sapUiContentPadding"
+                width="100%"
+                >
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%" id="teste">
+                        <Label 
+                            required="true"
+                            showColon="true"
+                            text="{i18n>nomeDoAnimal}"
+                            labelFor="inputNomeDoAnimal"
+                            design="Bold"/>
+                        <Input
+                            id="inputNomeDoAnimal"
+                            type="Text"
+                            value="{animalSilvestre>/nomeDoAnimal}"
+                            showValueStateMessage="true"
+                            change=".aoAlterarNomeDoAnimal"
+                            maxLength="50"
+                            placeholder="{i18n>digiteONomeDoAnimalResgatado}"/>
+                    </VBox>
+                    <VBox width="40%">
+                        <Label 
+                            required="true"
+                            text="{i18n>nomeDaEspecie}"
+                            labelFor="inputNomeDaEspecie"
+                            design="Bold"
+                            showColon="true"/>
+                        <Input 
+                            id="inputNomeDaEspecie"
+                            value="{animalSilvestre>/nomeDaEspecie}"
+                            change=".aoAlterarNomeDaEspecie"
+                            maxLength="50"
+                            placeholder="{i18n>digiteONomeDaEspecieDoAnimalResgatado}"/>
+                    </VBox>
+                </HBox>
+
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%">
+                        <Label 
+                            required="true"
+                            showColon="true"
+                            text="{i18n>classeDeAnimal}"
+                            labelFor="inputClasseDeAnimal"
+                            design="Bold"/>
+                        <Select 
+                            id="inputClasseDeAnimal" 
+                            items="{classes>/}" 
+                            width="100%"
+                            selectedKey="{animalSilvestre>/classe}">
+                                <core:Item text="{classes>Nome}" key="{classes>Chave}"/>
+                        </Select>
+                    </VBox>
+                    <VBox width="40%">
+                        <Label 
+                            required="true"
+                            showColon="true"
+                            text="{i18n>precoDeVacinacao}"
+                            labelFor="inputPrecoDaVacinacao"
+                            design="Bold"/>
+                        <Input
+                            id="inputPrecoDaVacinacao" 
+                            value="{
+                                path: 'animalSilvestre>/custoDeVacinacao',
+                                type: 'sap.ui.model.type.Float',
+                                formatOptions: {
+                                    decimals: '2'
+                                },
+                                constraints:{
+                                    minimum:0
+                                }
+                                }"
+                            change=".aoAlterarPreco"
+                            placeholder="{i18n>digiteOPrecoDaVacinacaoApenasNumerosComOuSemVirgula}"/>
+                    </VBox>
+                </HBox>
+
+                <HBox width="100%" justifyContent="SpaceAround" class="sapUiSmallMarginTop">
+                    <VBox width="40%">
+                        <Label 
+                            required="true"
+                            showColon="true"
+                            text="{i18n>dataDoResgate}"
+                            labelFor="inputDataDoResgate"
+                            design="Bold"/>
+                        <DatePicker 
+                            id="inputDataDoResgate"
+                            valueFormat="yyyy-MM-ddTHH:mm"
+                            displayFormat="dd-MM-yyyy"
+                            value="{ 
+                                path: 'animalSilvestre>/dataDoResgate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: {
+                                    style: 'short',
+                                    source: {
+                                        pattern: 'yyyy-MM-ddTHH:mm:ss'
+                                    }
+                                }
+                            }"
+                            change=".aoAlterarData"/>
+                    </VBox>
+                    <VBox width="40%">
+                        <CheckBox 
+                            text="{i18n>emExtincao}" 
+                            id="inputEmExtincao" 
+                            class="sapUiSmallMarginTop" 
+                            selected="{animalSilvestre>/emExtincao}"/>
+                    </VBox>
+                </HBox>
+            </layout:VerticalLayout>
+        </Page>
+    </Shell>
+
+</mvc:View>

@@ -33,9 +33,37 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
             }
         }
 
-        public void Criar(AnimalSilvestre animalNovo)
+        public List<AnimalSilvestre> ObterTodosComFiltro(string animal)
         {
-            const string textoDeComando = "INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
+            var textoDeComando = $"SELECT * from AnimalSilvestre WHERE NomeDoAnimal LIKE '%{animal}%'";
+            var listaFiltrada = new List<AnimalSilvestre>();
+            using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
+            {
+                conexaoSql.Open();
+                SqlCommand comandoSql = new SqlCommand(textoDeComando, conexaoSql);
+                var reader = comandoSql.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var animalCorrespondente = new AnimalSilvestre();
+                    animalCorrespondente.Id = Convert.ToInt32(reader["Id"]);
+                    animalCorrespondente.NomeDoAnimal = reader["NomeDoAnimal"].ToString();
+                    animalCorrespondente.NomeDaEspecie = reader["NomeDaEspecie"].ToString();
+                    animalCorrespondente.Classe = (AnimalSilvestre.ClasseDeAnimal)Enum.Parse(typeof(AnimalSilvestre.ClasseDeAnimal), reader["ClasseDeAnimal"].ToString());
+                    animalCorrespondente.DataDoResgate = Convert.ToDateTime(reader["DataDoResgate"]);
+                    animalCorrespondente.EmExtincao = (bool)reader["EmExtincao"];
+                    animalCorrespondente.CustoDeVacinacao = (decimal)reader["CustoDeVacinacao"];
+                    listaFiltrada.Add(animalCorrespondente);
+                }
+                return listaFiltrada;
+            }
+        }
+
+        public int Criar(AnimalSilvestre animalNovo)
+        {
+            const string textoDeComando = @"INSERT INTO AnimalSilvestre (NomeDoAnimal, NomeDaEspecie, ClasseDeAnimal, DataDoResgate, EmExtincao, CustoDeVacinacao) 
+                                            OUTPUT INSERTED.Id 
+                                            VALUES (@NomeDoAnimal, @NomeDaEspecie, @ClasseDeAnimal, @DataDoResgate, @EmExtincao, @CustoDeVacinacao)";
             using (SqlConnection conexaoSql = new SqlConnection(stringDeConexao))
             {
                 conexaoSql.Open();
@@ -47,6 +75,8 @@ namespace ControleDeAnimaisSilvestres.Infra.Repositorios
                 comandoSql.Parameters.AddWithValue("@EmExtincao", animalNovo.EmExtincao);
                 comandoSql.Parameters.AddWithValue("@CustoDeVacinacao", animalNovo.CustoDeVacinacao);
                 comandoSql.ExecuteNonQuery();
+                int id = (int)comandoSql.ExecuteScalar();
+                return id;
             }
         }
 
